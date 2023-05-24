@@ -1,6 +1,7 @@
 node_modules/
 build/
 .vscode/settings.json
+options.json
 *.crt
 *.key
 *.p12

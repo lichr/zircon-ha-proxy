@@ -4,7 +4,11 @@
 npm run dev
 ```
 
-Open designer page in browser: <https://dev.zircon.run/designer/#FrCOUUzBcuCS/bke19Xd6bzoT>
+Open designer page in browser:
+- <http://localhost:3100>
+
+The target url should be:
+- <https://dev.zircon.run/designer/#FrCOUUzBcuCS/bke19Xd6bzoT>
 
 ## Test With HA Dev Container
 
@@ -14,7 +18,6 @@ Open designer page in browser: <https://dev.zircon.run/designer/#FrCOUUzBcuCS/bk
 - install addon
 - start addon XX
 
-http://localhost:3100/zircon/designer/#FrCOUUzBcuCS/bke19Xd6bzoT
 
 ## Build Local Image
 
@@ -22,6 +25,13 @@ http://localhost:3100/zircon/designer/#FrCOUUzBcuCS/bke19Xd6bzoT
 docker build -t proxy-local .
 docker run --rm -p 3100:3100 proxy-local
 docker run --rm -it -p 3100:3100 proxy-local /bin/sh
+
+```
+## Build Image and Push to Registry
+
+```sh
+docker build -t lichr/zircon-studio-ha-proxy-amd64:1.0.0 -t lichr/zircon-studio-ha-proxy-amd64:latest .
+docker push --all-tags lichr/zircon-studio-ha-proxy-amd64
 
 ```
 

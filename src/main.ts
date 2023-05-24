@@ -1,17 +1,26 @@
-import express, { Request, Response } from 'express';
-import { Options, createProxyMiddleware } from 'http-proxy-middleware';
-import { makeAgentPem } from './make-agent';
 import axios from 'axios';
+import express, { Request, Response } from 'express';
+import fs from 'fs';
+import { Options, createProxyMiddleware } from 'http-proxy-middleware';
 import _ from 'lodash';
+import minimist from 'minimist';
+import { makeAgentPemStrings } from './make-agent';
+import { IOptions } from './types';
 
-// https agent that uses client certificate
-const agent = makeAgentPem('certs/dev.key', 'certs/dev.crt');
-const options: Options = {
+// parse command line arguments
+const argv = minimist(process.argv.slice(2));
+const optionFile = argv.options;
+if (_.isEmpty(optionFile)) {
+  throw new Error('Please specify options file with --options option.');
+}
+const options = JSON.parse(fs.readFileSync(optionFile).toString()) as IOptions;
+
+// create https agent that uses client certificate
+const agent = options.certs ? makeAgentPemStrings(options.certs.key, options.certs.cert) : undefined;
+
+// make default proxy options
+const proxyOptions: Options = {
   target: 'https://dev.zircon.run', // Target host
-  // path rewrite rules
-  pathRewrite: {
-    '^/': '/designer/'
-  },
   changeOrigin: true, // Needed for virtual hosted sites
   ws: true, // Proxy websockets
   secure: true, // If you want to verify the SSL Certs
@@ -19,7 +28,7 @@ const options: Options = {
   logLevel: 'debug'
 };
 
-const proxy = createProxyMiddleware(options);
+// create express app
 const app = express();
 const host = '0.0.0.0';
 const port = 3100;
@@ -28,8 +37,6 @@ const port = 3100;
 app.get('/config/page.json', async (req: Request, res: Response) => {
   try {
     const ingressPath = req.headers['x-ingress-path'];
-    console.log('>>> ingress-path: ', ingressPath);
-
     const response = await axios.get('https://dev.zircon.run/designer/config/page.json', {
       httpsAgent: agent
     });
@@ -37,14 +44,13 @@ app.get('/config/page.json', async (req: Request, res: Response) => {
     // Add login info to received JSON data
     const modifiedData = {
       ...response.data,
-      signIn: {
-        email: 'dev@zircon.app',
-        password: '111111'
+      page: {
+        baseUrl: ingressPath ?? '',
+        apiBaseUrl: 'zircon/api',
+        xpiBaseUrl: 'zircon/xpi'
       },
-      location: {
-        group: 'FrCOUUzBcuCS',
-        project: 'bke19Xd6bzoT'
-      }
+      signIn: options.signIn,
+      location: options.location
     };
 
     res.json(modifiedData);
@@ -55,13 +61,30 @@ app.get('/config/page.json', async (req: Request, res: Response) => {
 });
 
 // proxy
-app.use('/', proxy);
+app.use(
+  '/zircon',
+  createProxyMiddleware({
+    ...proxyOptions,
+    pathRewrite: {
+      '^/zircon': ''
+    }
+  })
+);
+app.use(
+  '/',
+  createProxyMiddleware({
+    ...proxyOptions,
+    pathRewrite: {
+      '^/': '/designer/'
+    }
+  })
+);
 
 // start the server
 app.listen(
   port,
   host,
   () => {
-    console.log(`Proxy server is running at http://${host}:{port}`);
+    console.log(`Proxy server is running at http://${host}:${port}`);
   }
 );

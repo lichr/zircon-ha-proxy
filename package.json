@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf build && tsc",
-    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q -r dotenv/config build/main.js\"",
+    "dev": "concurrently \"npx tsc --watch\" \"nodemon -q -r dotenv/config build/main.js -- --options options.json\"",
     "start": "node -r dotenv/config build/main.js",
     "lint": "eslint src",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -23,6 +23,7 @@
     "lodash": "^4.17.21",
     "luxon": "^3.3.0",
     "mime": "^3.0.0",
+    "minimist": "^1.2.8",
     "typescript": "^5.0.4"
   },
   "devDependencies": {
@@ -32,6 +33,7 @@
     "@types/jest": "^29.5.1",
     "@types/lodash": "^4.14.194",
     "@types/luxon": "^3.3.0",
+    "@types/minimist": "^1.2.2",
     "@typescript-eslint/eslint-plugin": "^5.59.6",
     "@typescript-eslint/parser": "^5.59.6",
     "concurrently": "^8.0.1",

@@ -25,3 +25,16 @@ export function makeAgentPem(
     rejectUnauthorized: true,
   })
 }
+
+export function makeAgentPemStrings(
+  key: string,
+  cert: string,
+  passphrase?: string
+) {
+  return new https.Agent({
+    cert,
+    key,
+    passphrase,
+    rejectUnauthorized: true,
+  })
+}
