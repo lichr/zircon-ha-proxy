@@ -14,9 +14,10 @@ if (_.isEmpty(optionFile)) {
   throw new Error('Please specify options file with --options option.');
 }
 const options = JSON.parse(fs.readFileSync(optionFile).toString()) as IOptions;
+const { key, cert, email, password, group, project } = options;
 
 // create https agent that uses client certificate
-const agent = options.certs ? makeAgentPemStrings(options.certs.key, options.certs.cert) : undefined;
+const agent = key && cert ? makeAgentPemStrings(key, cert) : undefined;
 
 // make default proxy options
 const proxyOptions: Options = {
@@ -49,8 +50,14 @@ app.get('/config/page.json', async (req: Request, res: Response) => {
         apiBaseUrl: 'zircon/api',
         xpiBaseUrl: 'zircon/xpi'
       },
-      signIn: options.signIn,
-      location: options.location
+      signIn: {
+        email,
+        password
+      },
+      location: {
+        group,
+        project
+      }
     };
 
     res.json(modifiedData);

@@ -17,23 +17,17 @@ arch:
   - i386
 options:
   baseUrl: https://zircon.app
-  signIn:
-    email: null
-    password: null
-  location:
-    group: null
-    project: null
-  certs:
-    key: null
-    cert: null
+  email: null
+  password: null
+  group: null
+  project: null
+  key: null
+  cert: null
 schema:
   baseUrl: url
-  signIn:
-    email: email
-    password: password
-  location:
-    group: "match(^[a-zA-Z0-9]+$)"
-    project: "match(^[a-zA-Z0-9]+$)"
-  certs:
-    key: "str?"
-    cert: "str?"
+  email: email
+  password: password
+  group: "match(^[a-zA-Z0-9]+$)"
+  project: "match(^[a-zA-Z0-9]+$)"
+  key: "str?"
+  cert: "str?"
