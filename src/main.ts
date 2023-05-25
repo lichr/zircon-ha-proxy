@@ -14,14 +14,14 @@ if (_.isEmpty(optionFile)) {
   throw new Error('Please specify options file with --options option.');
 }
 const options = JSON.parse(fs.readFileSync(optionFile).toString()) as IOptions;
-const { key, cert, email, password, group, project } = options;
+const { baseUrl, email, password, group, project, key, cert } = options;
 
 // create https agent that uses client certificate
 const agent = key && cert ? makeAgentPemStrings(key, cert) : undefined;
 
 // make default proxy options
 const proxyOptions: Options = {
-  target: 'https://dev.zircon.run', // Target host
+  target: baseUrl, // Target host
   changeOrigin: true, // Needed for virtual hosted sites
   ws: true, // Proxy websockets
   secure: true, // If you want to verify the SSL Certs
@@ -38,7 +38,7 @@ const port = 3100;
 app.get('/config/page.json', async (req: Request, res: Response) => {
   try {
     const ingressPath = req.headers['x-ingress-path'];
-    const response = await axios.get('https://dev.zircon.run/designer/config/page.json', {
+    const response = await axios.get(`${baseUrl}/designer/config/page.json`, {
       httpsAgent: agent
     });
 
