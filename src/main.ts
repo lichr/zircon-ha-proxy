@@ -1,91 +1,42 @@
-import axios from 'axios';
-import express, { Request, Response } from 'express';
-import fs from 'fs';
-import { Options, createProxyMiddleware } from 'http-proxy-middleware';
+import express from 'express';
+import http from 'http';
 import _ from 'lodash';
-import minimist from 'minimist';
+import WebSocket from 'ws';
 import { makeAgentPemStrings } from './make-agent';
-import { IOptions } from './types';
+import { pageConfig } from './page-config';
+import { useOptions } from './use-options';
+import { HaSocketClient, useHaSocket } from './ha-socket-client';
+import { useZirconProxy } from './use-zircon-proxy';
+import { useHaProxy } from './use-ha-proxy';
+import { WebSocketService } from './use-web-socket';
 
-// parse command line arguments
-const argv = minimist(process.argv.slice(2));
-const optionFile = argv.options;
-if (_.isEmpty(optionFile)) {
-  throw new Error('Please specify options file with --options option.');
-}
-const options = JSON.parse(fs.readFileSync(optionFile).toString()) as IOptions;
-const { baseUrl, email, password, group, project, key, cert } = options;
+const options = useOptions();
+const { baseUrl, key, cert, haBaseUrl, haAccessToken } = options;
 
 // create https agent that uses client certificate
 const agent = key && cert ? makeAgentPemStrings(key, cert) : undefined;
 
-// make default proxy options
-const proxyOptions: Options = {
-  target: baseUrl, // Target host
-  changeOrigin: true, // Needed for virtual hosted sites
-  ws: true, // Proxy websockets
-  secure: true, // If you want to verify the SSL Certs
-  agent,
-  logLevel: 'debug'
-};
-
 // create express app
 const app = express();
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 const host = '0.0.0.0';
 const port = 3100;
 
 // serve page config
-app.get('/config/page.json', async (req: Request, res: Response) => {
-  try {
-    const ingressPath = req.headers['x-ingress-path'];
-    const response = await axios.get(`${baseUrl}/designer/config/page.json`, {
-      httpsAgent: agent
-    });
+app.get('/config/page.json', pageConfig(options, agent));
 
-    // Add login info to received JSON data
-    const modifiedData = {
-      ...response.data,
-      page: {
-        baseUrl: ingressPath ?? '',
-        apiBaseUrl: 'zircon/api',
-        xpiBaseUrl: 'zircon/xpi'
-      },
-      signIn: {
-        email,
-        password
-      },
-      location: {
-        group,
-        project
-      }
-    };
+// proxy to zircon services
+useZirconProxy(app, baseUrl, agent);
 
-    res.json(modifiedData);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('An error occurred.');
-  }
-});
+// proxy to ha api
+useHaProxy(app, haBaseUrl ?? '', agent);
 
-// proxy
-app.use(
-  '/zircon',
-  createProxyMiddleware({
-    ...proxyOptions,
-    pathRewrite: {
-      '^/zircon': ''
-    }
-  })
-);
-app.use(
-  '/',
-  createProxyMiddleware({
-    ...proxyOptions,
-    pathRewrite: {
-      '^/': '/designer/'
-    }
-  })
-);
+// proxy to ha socket
+const ha = new HaSocketClient(`ws://${haBaseUrl}/api/websocket`, haAccessToken ?? '');
+
+new WebSocketService(wss, ha);
+useHaSocket(options, wss);
 
 // start the server
 app.listen(

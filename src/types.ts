@@ -6,4 +6,6 @@ export interface IOptions {
   project: string;
   key?: string;
   cert?: string;
+  haBaseUrl?: string;
+  haAccessToken?: string;
 }
