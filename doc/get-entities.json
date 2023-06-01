@@ -1,0 +1,1542 @@
+[
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "1172e1d089f0146cb91d5ffa9b29d079",
+    "disabled_by": null,
+    "entity_category": "config",
+    "entity_id": "update.home_assistant_supervisor_update",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "c367bdbaf0dd2e8d22d99096ba65b052",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Update",
+    "platform": "hassio",
+    "translation_key": null,
+    "unique_id": "home_assistant_supervisor_version_latest"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "a891d2335516578c21b272056b4123e0",
+    "disabled_by": null,
+    "entity_category": "config",
+    "entity_id": "update.home_assistant_core_update",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "cda0279079c557fc301ae0abf145f10e",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Update",
+    "platform": "hassio",
+    "translation_key": null,
+    "unique_id": "home_assistant_core_version_latest"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "83609680a9b5d46898579f54f76227f3",
+    "disabled_by": null,
+    "entity_category": "config",
+    "entity_id": "update.home_assistant_operating_system_update",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "bcc159264e293ec3fbac2e991fe171cd",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Update",
+    "platform": "hassio",
+    "translation_key": null,
+    "unique_id": "home_assistant_os_version_latest"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "a891d2335516578c21b272056b4123e0",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.home_assistant_core_cpu_percent",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "6ef70eb718cf2a415d76cb5b197aeb33",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "CPU percent",
+    "platform": "hassio",
+    "translation_key": "cpu_percent",
+    "unique_id": "home_assistant_core_cpu_percent"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "a891d2335516578c21b272056b4123e0",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.home_assistant_core_memory_percent",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "aad3bdaaf3404120cf3c8c12c2afdfb2",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Memory percent",
+    "platform": "hassio",
+    "translation_key": "memory_percent",
+    "unique_id": "home_assistant_core_memory_percent"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "1172e1d089f0146cb91d5ffa9b29d079",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.home_assistant_supervisor_cpu_percent",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "66deb82fcbf82aa989c4ad9258988e61",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "CPU percent",
+    "platform": "hassio",
+    "translation_key": "cpu_percent",
+    "unique_id": "home_assistant_supervisor_cpu_percent"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "1172e1d089f0146cb91d5ffa9b29d079",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.home_assistant_supervisor_memory_percent",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "e78783fbb9c208964e6b248dc9871c36",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Memory percent",
+    "platform": "hassio",
+    "translation_key": "memory_percent",
+    "unique_id": "home_assistant_supervisor_memory_percent"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "20ba5aff2b13b4d7605ac2242641569d",
+    "disabled_by": "integration",
+    "entity_category": "diagnostic",
+    "entity_id": "sensor.home_assistant_host_os_agent_version",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "841ac5a59e5bdf9499cc481dd1af2523",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "OS Agent version",
+    "platform": "hassio",
+    "translation_key": "agent_version",
+    "unique_id": "home_assistant_host_agent_version"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "20ba5aff2b13b4d7605ac2242641569d",
+    "disabled_by": "integration",
+    "entity_category": "diagnostic",
+    "entity_id": "sensor.home_assistant_host_apparmor_version",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "37eaee18b37c4f330df06ceee405e92b",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Apparmor version",
+    "platform": "hassio",
+    "translation_key": "apparmor_version",
+    "unique_id": "home_assistant_host_apparmor_version"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "20ba5aff2b13b4d7605ac2242641569d",
+    "disabled_by": "integration",
+    "entity_category": "diagnostic",
+    "entity_id": "sensor.home_assistant_host_disk_total",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "496a5a989346c84f3584e52f662627ac",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Disk total",
+    "platform": "hassio",
+    "translation_key": "disk_total",
+    "unique_id": "home_assistant_host_disk_total"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "20ba5aff2b13b4d7605ac2242641569d",
+    "disabled_by": "integration",
+    "entity_category": "diagnostic",
+    "entity_id": "sensor.home_assistant_host_disk_used",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "82e58dad8597bcabe2740d2fb1e0512e",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Disk used",
+    "platform": "hassio",
+    "translation_key": "disk_used",
+    "unique_id": "home_assistant_host_disk_used"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "20ba5aff2b13b4d7605ac2242641569d",
+    "disabled_by": "integration",
+    "entity_category": "diagnostic",
+    "entity_id": "sensor.home_assistant_host_disk_free",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "dc8b5a00948f36c5304eac5ee316df42",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Disk free",
+    "platform": "hassio",
+    "translation_key": "disk_free",
+    "unique_id": "home_assistant_host_disk_free"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "83609680a9b5d46898579f54f76227f3",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.home_assistant_operating_system_version",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "c16cdbd101267930870e59d3f7b6aa8e",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Version",
+    "platform": "hassio",
+    "translation_key": "version",
+    "unique_id": "home_assistant_os_version"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "83609680a9b5d46898579f54f76227f3",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.home_assistant_operating_system_newest_version",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "9a9688893ec956b39a3dbf18ed86006f",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Newest version",
+    "platform": "hassio",
+    "translation_key": "version_latest",
+    "unique_id": "home_assistant_os_version_latest"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "1adb24fba1a42d08901388d9d6d5437d",
+    "device_id": "e48e2b95abce57c8175c0b9d5de1a400",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.sun_next_dawn",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "7ef25b1975b07b8cd659e9132651983f",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Next dawn",
+    "platform": "sun",
+    "translation_key": "next_dawn",
+    "unique_id": "1adb24fba1a42d08901388d9d6d5437d-next_dawn"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "1adb24fba1a42d08901388d9d6d5437d",
+    "device_id": "e48e2b95abce57c8175c0b9d5de1a400",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.sun_next_dusk",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "c4777f3385de2a57f767777ea23e0500",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Next dusk",
+    "platform": "sun",
+    "translation_key": "next_dusk",
+    "unique_id": "1adb24fba1a42d08901388d9d6d5437d-next_dusk"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "1adb24fba1a42d08901388d9d6d5437d",
+    "device_id": "e48e2b95abce57c8175c0b9d5de1a400",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.sun_next_midnight",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "b762bdf3236fd5bde79d98e7d72704d2",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Next midnight",
+    "platform": "sun",
+    "translation_key": "next_midnight",
+    "unique_id": "1adb24fba1a42d08901388d9d6d5437d-next_midnight"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "1adb24fba1a42d08901388d9d6d5437d",
+    "device_id": "e48e2b95abce57c8175c0b9d5de1a400",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.sun_next_noon",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "b9c7fb564f394ca786b11e1433846e6b",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Next noon",
+    "platform": "sun",
+    "translation_key": "next_noon",
+    "unique_id": "1adb24fba1a42d08901388d9d6d5437d-next_noon"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "1adb24fba1a42d08901388d9d6d5437d",
+    "device_id": "e48e2b95abce57c8175c0b9d5de1a400",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.sun_next_rising",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "4db116ed9a2d0e0b1b90f8003a78d69c",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Next rising",
+    "platform": "sun",
+    "translation_key": "next_rising",
+    "unique_id": "1adb24fba1a42d08901388d9d6d5437d-next_rising"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "1adb24fba1a42d08901388d9d6d5437d",
+    "device_id": "e48e2b95abce57c8175c0b9d5de1a400",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.sun_next_setting",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "7b4a727cb7913fd6ce6f32615a34ed41",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Next setting",
+    "platform": "sun",
+    "translation_key": "next_setting",
+    "unique_id": "1adb24fba1a42d08901388d9d6d5437d-next_setting"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "1adb24fba1a42d08901388d9d6d5437d",
+    "device_id": "e48e2b95abce57c8175c0b9d5de1a400",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.sun_solar_elevation",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "e6c54da84df9042ea0e60809dd8e01dd",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Solar elevation",
+    "platform": "sun",
+    "translation_key": "solar_elevation",
+    "unique_id": "1adb24fba1a42d08901388d9d6d5437d-solar_elevation"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "1adb24fba1a42d08901388d9d6d5437d",
+    "device_id": "e48e2b95abce57c8175c0b9d5de1a400",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.sun_solar_azimuth",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "f00ae189c139f6d861a20cb8e309f0e2",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Solar azimuth",
+    "platform": "sun",
+    "translation_key": "solar_azimuth",
+    "unique_id": "1adb24fba1a42d08901388d9d6d5437d-solar_azimuth"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": null,
+    "device_id": null,
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "person.chris",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "d78c63540b1bce0b488d95fc5dca5915",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Chris",
+    "platform": "person",
+    "translation_key": null,
+    "unique_id": "chris"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "3731c0caf96c3bb508c016c9a865db79",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.temperature_sensor",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "164107af90eed650d46a40d9e4879e8d",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": true
+      }
+    },
+    "original_name": "Temperature Sensor",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_33_4"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "3731c0caf96c3bb508c016c9a865db79",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.temperature_sensor_humidity_sensor",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "8d65998052c95982d8bf982561675f5e",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": true
+      }
+    },
+    "original_name": "Temperature Sensor Humidity Sensor",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_33_5"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "3731c0caf96c3bb508c016c9a865db79",
+    "disabled_by": null,
+    "entity_category": "diagnostic",
+    "entity_id": "sensor.temperature_sensor_battery_sensor",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "f13a912c7a5504cba6bd8d2f6bde3c94",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Temperature Sensor Battery Sensor",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_33_6"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "7232154b91e3ade893705645be304cd3",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.temperature_sensor_2",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "5e5324d0a226a7d57f1187527f7903f7",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": true
+      }
+    },
+    "original_name": "Temperature Sensor",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_34_4"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "7232154b91e3ade893705645be304cd3",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.temperature_sensor_humidity_sensor_2",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "39b58e2ffbe6747ee1db65b58414beb5",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": true
+      }
+    },
+    "original_name": "Temperature Sensor Humidity Sensor",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_34_5"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "7232154b91e3ade893705645be304cd3",
+    "disabled_by": null,
+    "entity_category": "diagnostic",
+    "entity_id": "sensor.temperature_sensor_battery_sensor_2",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "0b8a522da6a1c34e8492790fd2fa8499",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Temperature Sensor Battery Sensor",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_34_6"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "1be91484443fa7053877f092f726cee0",
+    "disabled_by": null,
+    "entity_category": "diagnostic",
+    "entity_id": "sensor.motion_sensor_battery_sensor",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "ac94ef8f6506e681f888acb3f79aa200",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Motion Sensor Battery Sensor",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_35_5"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "b9ed4c7c7b33532d45e6aae7924497d8",
+    "disabled_by": null,
+    "entity_category": "diagnostic",
+    "entity_id": "sensor.contact_sensor_battery_sensor",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "5281333686fc7d4ba186922045f49200",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Contact Sensor Battery Sensor",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_36_5"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "1be91484443fa7053877f092f726cee0",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "binary_sensor.motion_sensor",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "066e9b12493971677bce8055f51a4456",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": true
+      }
+    },
+    "original_name": "Motion Sensor",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_35_4"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "b9ed4c7c7b33532d45e6aae7924497d8",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "binary_sensor.contact_sensor",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "7d4104a2f0129cc5fc463dee1c6ad5bc",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": true
+      }
+    },
+    "original_name": "Contact Sensor",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_36_4"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "b4feb2607dd3f7aede717f0881463eef",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "alarm_control_panel.aqara_hub_m2_e4d1_security_system",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "ed492d41f3e3bb45c2bfcd943eaf3db2",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Aqara-Hub-M2-E4D1 Security System",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_1_16"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "b4feb2607dd3f7aede717f0881463eef",
+    "disabled_by": null,
+    "entity_category": "diagnostic",
+    "entity_id": "button.aqara_hub_m2_e4d1_identify",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "103f53b5678675619923335ab18b1156",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Aqara-Hub-M2-E4D1 Identify",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_1_1_65537"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "3731c0caf96c3bb508c016c9a865db79",
+    "disabled_by": null,
+    "entity_category": "diagnostic",
+    "entity_id": "button.temperature_sensor_identify",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "e546e037338e62f7fdb4b5d97e20240d",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Temperature Sensor Identify",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_33_1_65537"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "7232154b91e3ade893705645be304cd3",
+    "disabled_by": null,
+    "entity_category": "diagnostic",
+    "entity_id": "button.temperature_sensor_identify_2",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "8e6e5d13b9642d60cd6b052fd64ee054",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Temperature Sensor Identify",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_34_1_65537"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "1be91484443fa7053877f092f726cee0",
+    "disabled_by": null,
+    "entity_category": "diagnostic",
+    "entity_id": "button.motion_sensor_identify",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "20e2ccd806a415a7cf10d0cd24ed4155",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Motion Sensor Identify",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_35_1_65537"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "b9ed4c7c7b33532d45e6aae7924497d8",
+    "disabled_by": null,
+    "entity_category": "diagnostic",
+    "entity_id": "button.contact_sensor_identify",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "0a9c41179c7785693a7881ada0a6d404",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Contact Sensor Identify",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_36_1_65537"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "b4feb2607dd3f7aede717f0881463eef",
+    "disabled_by": null,
+    "entity_category": "config",
+    "entity_id": "number.aqara_hub_m2_e4d1_volume",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "0df23eda7b5d02fe513def3d8a6f4439",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Aqara-Hub-M2-E4D1 Volume",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_1_17_1114116"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "8ab02d46e28e856d70e5e50db0e9f9f8",
+    "device_id": "b4feb2607dd3f7aede717f0881463eef",
+    "disabled_by": null,
+    "entity_category": "config",
+    "entity_id": "switch.aqara_hub_m2_e4d1_pairing_mode",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "70ff4c06f9c873282b82b9df2db11a46",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Aqara-Hub-M2-E4D1 Pairing Mode",
+    "platform": "homekit_controller",
+    "translation_key": null,
+    "unique_id": "B5:C0:64:EE:A3:84_1_17_1114117"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "d8e9552c4667e1511bdeee411b75768d",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "binary_sensor.terminal_ssh_running",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "7a06ca2bb8ac19f29088b35a9ee9edd1",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Running",
+    "platform": "hassio",
+    "translation_key": "state",
+    "unique_id": "core_ssh_state"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "d8e9552c4667e1511bdeee411b75768d",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.terminal_ssh_version",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "581fdb94de5a56c4c657fdc5942d79e7",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Version",
+    "platform": "hassio",
+    "translation_key": "version",
+    "unique_id": "core_ssh_version"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "d8e9552c4667e1511bdeee411b75768d",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.terminal_ssh_newest_version",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "1443c67ea8471407bea314bbd366ca7a",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Newest version",
+    "platform": "hassio",
+    "translation_key": "version_latest",
+    "unique_id": "core_ssh_version_latest"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "d8e9552c4667e1511bdeee411b75768d",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.terminal_ssh_cpu_percent",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "5e8ee2ebc1c930f4088937e8039cd928",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "CPU percent",
+    "platform": "hassio",
+    "translation_key": "cpu_percent",
+    "unique_id": "core_ssh_cpu_percent"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "d8e9552c4667e1511bdeee411b75768d",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.terminal_ssh_memory_percent",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "de44b320776a1c0ab94ff3d9f4087c36",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Memory percent",
+    "platform": "hassio",
+    "translation_key": "memory_percent",
+    "unique_id": "core_ssh_memory_percent"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "d8e9552c4667e1511bdeee411b75768d",
+    "disabled_by": null,
+    "entity_category": "config",
+    "entity_id": "update.terminal_ssh_update",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "23102d1708f094cbd5dc09de4df52ca8",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Update",
+    "platform": "hassio",
+    "translation_key": null,
+    "unique_id": "core_ssh_version_latest"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": "diagnostic",
+    "entity_id": "device_tracker.lis_iphone",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "22850b97ca8a000c28fbd5b00660ace3",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "B0A6CADF-1E9C-47ED-A7AA-FE2930AFB3DE"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_battery_level",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "473dc1b6a0aa9fff7148ce1d4297718b",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Battery Level",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_battery_level"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_battery_state",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "ed06fb5c63808299bdb6977d92ae94ba",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Battery State",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_battery_state"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_storage",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "32ed6cc1ac1a40146bad58e57366d39a",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Storage",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_storage"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_sim_1",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "3db5df4f806724f001077ed140e6356d",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone SIM 1",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_connectivity_sim_1"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_bssid",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "68c0c559822c3731f2c2a941b845949a",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone BSSID",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_connectivity_bssid"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_connection_type",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "88b0333e6c09c061a57676fec56134f5",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Connection Type",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_connectivity_connection_type"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_last_update_trigger",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "2008339af223ae1c80362dae3f8b7ce5",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Last Update Trigger",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_last_update_trigger"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_geocoded_location",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "da82532313ef9b789d61ae9bdb27d502",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Geocoded Location",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_geocoded_location"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_ssid",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "bd6d95a9d674f03848fc6338ce4f1ef8",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone SSID",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_connectivity_ssid"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_activity",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "afd9721761ce349945980bb9a1b1b857",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Activity",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_activity"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "binary_sensor.lis_iphone_focus",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "81b9021bb9025efec9f413b101dc78f6",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Focus",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_focus"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_distance",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "8ebd7074673f188532aa3d17456be62b",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Distance",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_pedometer_distance"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_floors_descended",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "f00f6759e7a4cea4bab136551c5e9fa3",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Floors Descended",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_pedometer_floors_descended"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_floors_ascended",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "92a92c5142b216cecadfd480105f61c7",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Floors Ascended",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_pedometer_floors_ascended"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_steps",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "6a3227e3c002ee063b5eb36e9735e32e",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Steps",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_pedometer_steps"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "3ef0c7f88dbdb5a92cd6a4f459196c11",
+    "device_id": "d5754394c2edb4af8a55b61e26930f02",
+    "disabled_by": null,
+    "entity_category": null,
+    "entity_id": "sensor.lis_iphone_average_active_pace",
+    "has_entity_name": false,
+    "hidden_by": null,
+    "icon": null,
+    "id": "da1dfcb8140dc9d87dfa1e74bd07f90e",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Li’s iPhone Average Active Pace",
+    "platform": "mobile_app",
+    "translation_key": null,
+    "unique_id": "50c1fd1b260a994ebeb7252449ab1911ebc10664965f0a89de9f312514694dc6_pedometer_avg_active_pace"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "7b735c41f8d869d558af66127a8e15eb",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "binary_sensor.zircon_studio_proxy_running",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "b258983f6734c15ac71082224787c722",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Running",
+    "platform": "hassio",
+    "translation_key": "state",
+    "unique_id": "7276820f_zircon_proxy_state"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "7b735c41f8d869d558af66127a8e15eb",
+    "disabled_by": null,
+    "entity_category": "config",
+    "entity_id": "update.zircon_studio_proxy_update",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "01a90d528be22d91591d116995f529a2",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Update",
+    "platform": "hassio",
+    "translation_key": null,
+    "unique_id": "7276820f_zircon_proxy_version_latest"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "7b735c41f8d869d558af66127a8e15eb",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.zircon_studio_proxy_version",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "a20062a33a84a3b60f9afc79af8c06e2",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Version",
+    "platform": "hassio",
+    "translation_key": "version",
+    "unique_id": "7276820f_zircon_proxy_version"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "7b735c41f8d869d558af66127a8e15eb",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.zircon_studio_proxy_newest_version",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "cb4ce77f68e263653fe7c6f32b693c2f",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Newest version",
+    "platform": "hassio",
+    "translation_key": "version_latest",
+    "unique_id": "7276820f_zircon_proxy_version_latest"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "7b735c41f8d869d558af66127a8e15eb",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.zircon_studio_proxy_cpu_percent",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "eff66be68bd508b3f7ff777658f6196e",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "CPU percent",
+    "platform": "hassio",
+    "translation_key": "cpu_percent",
+    "unique_id": "7276820f_zircon_proxy_cpu_percent"
+  },
+  {
+    "area_id": null,
+    "config_entry_id": "aceef8ef81e5b1b3ecef6536eebf4fb2",
+    "device_id": "7b735c41f8d869d558af66127a8e15eb",
+    "disabled_by": "integration",
+    "entity_category": null,
+    "entity_id": "sensor.zircon_studio_proxy_memory_percent",
+    "has_entity_name": true,
+    "hidden_by": null,
+    "icon": null,
+    "id": "975069cbeeea2f6af2c1c177e5e1700a",
+    "name": null,
+    "options": {
+      "conversation": {
+        "should_expose": false
+      }
+    },
+    "original_name": "Memory percent",
+    "platform": "hassio",
+    "translation_key": "memory_percent",
+    "unique_id": "7276820f_zircon_proxy_memory_percent"
+  }
+]

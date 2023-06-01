@@ -1,0 +1,319 @@
+{
+  "id": 3,
+  "type": "result",
+  "success": true,
+  "result": [
+    {
+      "area_id": null,
+      "configuration_url": null,
+      "config_entries": [
+        "aceef8ef81e5b1b3ecef6536eebf4fb2"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "hw_version": null,
+      "id": "a891d2335516578c21b272056b4123e0",
+      "identifiers": [
+        [
+          "hassio",
+          "core"
+        ]
+      ],
+      "manufacturer": "Home Assistant",
+      "model": "Home Assistant Core",
+      "name_by_user": null,
+      "name": "Home Assistant Core",
+      "sw_version": "2023.5.3",
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": null,
+      "config_entries": [
+        "aceef8ef81e5b1b3ecef6536eebf4fb2"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "hw_version": null,
+      "id": "1172e1d089f0146cb91d5ffa9b29d079",
+      "identifiers": [
+        [
+          "hassio",
+          "supervisor"
+        ]
+      ],
+      "manufacturer": "Home Assistant",
+      "model": "Home Assistant Supervisor",
+      "name_by_user": null,
+      "name": "Home Assistant Supervisor",
+      "sw_version": "2023.04.1",
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": null,
+      "config_entries": [
+        "aceef8ef81e5b1b3ecef6536eebf4fb2"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "hw_version": null,
+      "id": "20ba5aff2b13b4d7605ac2242641569d",
+      "identifiers": [
+        [
+          "hassio",
+          "host"
+        ]
+      ],
+      "manufacturer": "Home Assistant",
+      "model": "Home Assistant Host",
+      "name_by_user": null,
+      "name": "Home Assistant Host",
+      "sw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": null,
+      "config_entries": [
+        "aceef8ef81e5b1b3ecef6536eebf4fb2"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "hw_version": null,
+      "id": "83609680a9b5d46898579f54f76227f3",
+      "identifiers": [
+        [
+          "hassio",
+          "OS"
+        ]
+      ],
+      "manufacturer": "Home Assistant",
+      "model": "Home Assistant Operating System",
+      "name_by_user": null,
+      "name": "Home Assistant Operating System",
+      "sw_version": "10.1",
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": null,
+      "config_entries": [
+        "1adb24fba1a42d08901388d9d6d5437d"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "hw_version": null,
+      "id": "e48e2b95abce57c8175c0b9d5de1a400",
+      "identifiers": [
+        [
+          "sun",
+          "1adb24fba1a42d08901388d9d6d5437d"
+        ]
+      ],
+      "manufacturer": null,
+      "model": null,
+      "name_by_user": null,
+      "name": "Sun",
+      "sw_version": null,
+      "via_device_id": null
+    },
+    {
+      "area_id": "bedroom",
+      "configuration_url": null,
+      "config_entries": [
+        "8ab02d46e28e856d70e5e50db0e9f9f8"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "hw_version": "1.0",
+      "id": "b4feb2607dd3f7aede717f0881463eef",
+      "identifiers": [
+        [
+          "homekit_controller:accessory-id",
+          "B5:C0:64:EE:A3:84:aid:1"
+        ]
+      ],
+      "manufacturer": "Aqara",
+      "model": "HM2-G01",
+      "name_by_user": null,
+      "name": "Aqara-Hub-M2-E4D1",
+      "sw_version": "3.3.4",
+      "via_device_id": null
+    },
+    {
+      "area_id": "bedroom",
+      "configuration_url": null,
+      "config_entries": [
+        "8ab02d46e28e856d70e5e50db0e9f9f8"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "hw_version": "1.0",
+      "id": "3731c0caf96c3bb508c016c9a865db79",
+      "identifiers": [
+        [
+          "homekit_controller:accessory-id",
+          "B5:C0:64:EE:A3:84:aid:33"
+        ]
+      ],
+      "manufacturer": "Aqara",
+      "model": "AS008",
+      "name_by_user": null,
+      "name": "Temperature Sensor",
+      "sw_version": "5",
+      "via_device_id": "b4feb2607dd3f7aede717f0881463eef"
+    },
+    {
+      "area_id": "living_room",
+      "configuration_url": null,
+      "config_entries": [
+        "8ab02d46e28e856d70e5e50db0e9f9f8"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "hw_version": "1.0",
+      "id": "7232154b91e3ade893705645be304cd3",
+      "identifiers": [
+        [
+          "homekit_controller:accessory-id",
+          "B5:C0:64:EE:A3:84:aid:34"
+        ]
+      ],
+      "manufacturer": "Aqara",
+      "model": "AS008",
+      "name_by_user": null,
+      "name": "Temperature Sensor",
+      "sw_version": "5",
+      "via_device_id": "b4feb2607dd3f7aede717f0881463eef"
+    },
+    {
+      "area_id": "bedroom",
+      "configuration_url": null,
+      "config_entries": [
+        "8ab02d46e28e856d70e5e50db0e9f9f8"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "hw_version": "1.0",
+      "id": "1be91484443fa7053877f092f726cee0",
+      "identifiers": [
+        [
+          "homekit_controller:accessory-id",
+          "B5:C0:64:EE:A3:84:aid:35"
+        ]
+      ],
+      "manufacturer": "Aqara",
+      "model": "AS007",
+      "name_by_user": null,
+      "name": "Motion Sensor",
+      "sw_version": "5",
+      "via_device_id": "b4feb2607dd3f7aede717f0881463eef"
+    },
+    {
+      "area_id": "bedroom",
+      "configuration_url": null,
+      "config_entries": [
+        "8ab02d46e28e856d70e5e50db0e9f9f8"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "hw_version": "1.0",
+      "id": "b9ed4c7c7b33532d45e6aae7924497d8",
+      "identifiers": [
+        [
+          "homekit_controller:accessory-id",
+          "B5:C0:64:EE:A3:84:aid:36"
+        ]
+      ],
+      "manufacturer": "Aqara",
+      "model": "AS006",
+      "name_by_user": null,
+      "name": "Contact Sensor",
+      "sw_version": "3",
+      "via_device_id": "b4feb2607dd3f7aede717f0881463eef"
+    },
+    {
+      "area_id": null,
+      "configuration_url": "homeassistant://hassio/addon/core_ssh",
+      "config_entries": [
+        "aceef8ef81e5b1b3ecef6536eebf4fb2"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "hw_version": null,
+      "id": "d8e9552c4667e1511bdeee411b75768d",
+      "identifiers": [
+        [
+          "hassio",
+          "core_ssh"
+        ]
+      ],
+      "manufacturer": "Official add-ons",
+      "model": "Home Assistant Add-on",
+      "name_by_user": null,
+      "name": "Terminal & SSH",
+      "sw_version": "9.7.0",
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": null,
+      "config_entries": [
+        "3ef0c7f88dbdb5a92cd6a4f459196c11"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": null,
+      "hw_version": null,
+      "id": "d5754394c2edb4af8a55b61e26930f02",
+      "identifiers": [
+        [
+          "mobile_app",
+          "B0A6CADF-1E9C-47ED-A7AA-FE2930AFB3DE"
+        ]
+      ],
+      "manufacturer": "Apple",
+      "model": "iPhone8,1",
+      "name_by_user": null,
+      "name": "Li’s iPhone",
+      "sw_version": "15.7.5",
+      "via_device_id": null
+    },
+    {
+      "area_id": null,
+      "configuration_url": "homeassistant://hassio/addon/7276820f_zircon_proxy",
+      "config_entries": [
+        "aceef8ef81e5b1b3ecef6536eebf4fb2"
+      ],
+      "connections": [],
+      "disabled_by": null,
+      "entry_type": "service",
+      "hw_version": null,
+      "id": "7b735c41f8d869d558af66127a8e15eb",
+      "identifiers": [
+        [
+          "hassio",
+          "7276820f_zircon_proxy"
+        ]
+      ],
+      "manufacturer": "Zircon Studio Home Assistant Add-ons",
+      "model": "Home Assistant Add-on",
+      "name_by_user": null,
+      "name": "Zircon Studio Proxy",
+      "sw_version": "1.0.0",
+      "via_device_id": null
+    }
+  ]
+}

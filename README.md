@@ -50,3 +50,14 @@ npm run dev
 2. Go to our [addon repository](https://github.com/lichr/zircon-ha-repository)
    1. Update version in `zircon-studio-proxy/config.yaml`
 3. User can update their addon in home assistant ui
+
+## TODO
+- mpi request (REST)
+  - get-devices
+- mpi event (ws)
+- ui-integration
+  - option: mpi
+
+## Future
+- cloud mpi
+- multiple mpi
