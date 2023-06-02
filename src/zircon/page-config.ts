@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Request, Response } from 'express';
 import _ from 'lodash';
 import { Agent } from 'https'
-import { IOptions } from './types';
+import { IOptions } from '../types';
 
 export function pageConfig(options: IOptions, agent?: Agent ) {
   const { baseUrl, email, password, group, project } = options;

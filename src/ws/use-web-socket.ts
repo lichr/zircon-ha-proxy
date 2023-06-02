@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-import { HaSocketClient } from "./ha-socket-client";
+import { HaSocketClient } from "../mpi/ha-socket-client";
 
 export class WebSocketService {
   ha: HaSocketClient;

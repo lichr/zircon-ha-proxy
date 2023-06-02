@@ -2,12 +2,10 @@ import express from 'express';
 import http from 'http';
 import _ from 'lodash';
 import WebSocket from 'ws';
-import { makeAgentPemStrings } from './make-agent';
-import { pageConfig } from './page-config';
-import { useOptions } from './use-options';
-import { HaSocketClient } from './ha-socket-client';
-import { useZirconProxy } from './use-zircon-proxy';
-import { WebSocketService } from './use-web-socket';
+import { HaSocketClient } from './mpi';
+import { makeAgentPemStrings, useOptions } from './tools';
+import { WebSocketService } from './ws';
+import { pageConfig, useZirconProxy } from './zircon';
 
 const options = useOptions();
 const { baseUrl, key, cert, haBaseUrl, haAccessToken } = options;
@@ -30,7 +28,6 @@ app.get('/config/page.json', pageConfig(options, agent));
 const ha = new HaSocketClient(`ws://${haBaseUrl}/api/websocket`, haAccessToken ?? '');
 
 new WebSocketService(wss, ha);
-// useHaSocket(options, wss);
 
 // access ha internal
 app.get('/ha/_/devices', async (req, res) => {

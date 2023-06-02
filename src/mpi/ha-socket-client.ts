@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import WebSocket from 'ws';
-import { IOptions } from './types';
+import { IOptions } from '../types';
 
 
 function makeSlug(str: string) {
@@ -231,39 +231,4 @@ export class HaSocketClient {
   check() {
   }
 
-}
-
-export function useHaSocket(options: IOptions, wss: WebSocket.Server) {
-  const messageId = 1;
-  const { haBaseUrl, haAccessToken } = options;
-  if (_.isEmpty(haBaseUrl) || _.isEmpty(haAccessToken)) {
-    throw new Error('Please specify haBaseUrl and haAccessToken in options file.');
-  }
-  // proxy to home assistant websocket
-  const ha = new HaSocketClient(`ws://${haBaseUrl}/api/websocket`, haAccessToken ?? '');
-
-  // haSocket.on('message', (data) => {
-  //   console.log('<<< receive: ', data.toString());
-  //   wss.clients.forEach(client => {
-  //     if (client.readyState === WebSocket.OPEN) {
-  //       client.send(data);
-  //     }
-  //   });
-  // });
-
-  // handle client websocket
-  wss.on('connection', ws => {
-    console.log('Client connected');
-
-    // On receiving message from a client, send it to Home Assistant
-    ws.on('message', message => {
-      // convert the data schema here before sending
-      let convertedMessage = message;
-      // ha.send(convertedMessage);
-    });
-
-    ws.on('close', () => {
-      console.log('Client disconnected');
-    });
-  });
 }

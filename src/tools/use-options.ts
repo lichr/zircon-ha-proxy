@@ -1,7 +1,7 @@
 import fs from 'fs';
 import _ from 'lodash';
 import minimist from 'minimist';
-import { IOptions } from './types';
+import { IOptions } from '../types';
 
 export function useOptions(): IOptions {
   // parse command line arguments

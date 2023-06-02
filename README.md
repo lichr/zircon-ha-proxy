@@ -3,11 +3,18 @@
 This addon enables access zircon studio web application from home-assistant.
 
 ## Features
+
+### Standalone
+- Run in container
+- Configure via environment variables
+
+### Add On
+- Install as home assistant addon
+- Configure via options
 - Ingress access
-- Proxy port access (default to 3100)
-- Auto sign in to zircon studio
-- Configure group_id and project_id in options
-- Use client certificate if upstream server is required
+- Expose proxy port access (default to 3100)
+
+
 
 ### Ingress Access
 
