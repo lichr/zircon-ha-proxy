@@ -1,5 +1,6 @@
 import WebSocket from 'ws';
 import { HaSocketClient } from "../mpi/ha-socket-client";
+import _ from 'lodash';
 
 export class WebSocketService {
   ha: HaSocketClient;
@@ -7,21 +8,44 @@ export class WebSocketService {
 
   constructor(wss: WebSocket.Server, ha: HaSocketClient) {
     this.ha = ha;
+    this.ha.emitter.on('event', (event) => this.onEvent(event));
     this.wss = wss;
-    this.wss.on('connection', () => this.onConnection);
-    this.wss.on('message', (data) => this.onMessage(data));
-    this.wss.on('close', () => this.onClose());
+    this.wss.on('connection', (ws) => this.onConnection(ws));
   }
 
-  onConnection() {
+  onEvent(event: any) {
+    const message = JSON.stringify({
+      type: 'event',
+      event
+    });
+
+    // send event to all connected clients
+    this.wss.clients.forEach(client => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(message);
+      }
+    });
+  }
+
+  onConnection(ws: WebSocket) {
     console.log('Client connected');
+    ws.on('message', (data) => this.onMessage(ws, JSON.parse(data.toString())).then());
+    ws.on('close', () => this.onClose(ws));
+    ws.on('error', (err) => {
+      console.log('Client error: ', err);
+    });
   }
 
-  onMessage(data: WebSocket.RawData) {
-    
+  async onMessage(ws: WebSocket, message: any) {
+    console.log('Client message: ', message);    
+    const type: string = message.type;
+    if (type === 'get_states') {
+      const states = await this.ha.getStates();
+      ws.send(JSON.stringify({ type: 'states', states }));
+    }
   }
 
-  onClose() {
-
+  onClose(ws: WebSocket) {
+    console.log('Client closed');
   }
 }

@@ -16,20 +16,20 @@ const agent = key && cert ? makeAgentPemStrings(key, cert) : undefined;
 // create express app
 const app = express();
 const server = http.createServer(app);
-const wss = new WebSocket.Server({ server, path: '/mpi' });
 const host = '0.0.0.0';
 const port = 3100;
 
 // serve page config
 app.get('/config/page.json', pageConfig(options, agent));
 
-
 // proxy to ha socket
 const ha = new HaSocketClient(`ws://${haBaseUrl}/api/websocket`, haAccessToken ?? '');
 
+// ws server for mpi events
+const wss = new WebSocket.Server({ server, path: '/mpi/ws' });
 new WebSocketService(wss, ha);
 
-// access ha internal
+// access ha internal, only for development purposes
 app.get('/ha/_/devices', async (req, res) => {
   try {
     const response = await ha.getRawDevices();
@@ -51,11 +51,11 @@ app.get('/mpi/devices', async (req, res) => {
   }
 });
 
-// proxy to zircon services
+// proxy to zircon services: designer-page, api, xpi and others
 useZirconProxy(app, baseUrl, agent);
 
 // start the server
-app.listen(
+server.listen(
   port,
   host,
   () => {
