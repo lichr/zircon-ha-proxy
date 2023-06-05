@@ -4,6 +4,7 @@ export interface IMpiDevice {
   name: string;
   model: string;
   manufacturer: string;
+  tags: string[];
   metrics: Record<string, IMpiMetric>;
 }
 
@@ -11,6 +12,8 @@ export interface IMpiMetric {
   id: string;
   uid: string;
   name: string;
+  type: string;
+  tags: string[];
   state: IMpiState | null;
 }
 

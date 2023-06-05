@@ -39,9 +39,14 @@ export class WebSocketService {
   async onMessage(ws: WebSocket, message: any) {
     console.log('Client message: ', message);    
     const type: string = message.type;
-    if (type === 'get_states') {
+    if (type === 'get_devices') {
+      const devices = await this.ha.getDevices();
+      const data = JSON.stringify({ type: 'devices', devices });
+      ws.send(data);
+    } else if (type === 'get_states') {
       const states = await this.ha.getStates();
-      ws.send(JSON.stringify({ type: 'states', states }));
+      const data = JSON.stringify({ type: 'states', states });
+      ws.send(data);
     }
   }
 

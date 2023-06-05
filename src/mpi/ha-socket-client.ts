@@ -91,10 +91,10 @@ export class HaSocketClient {
           haDeviceToDevice
         ),
         // exclude Home Assistant devices
-        (device: any) => device.manufacturer !== 'Home Assistant' && device.model !== 'Home Assistant Add-on'
+        (device) => device !== null
       ),
       'id'
-    );
+    ) as Record<string, IMpiDevice>;
 
     // make metrics
     const metrics: Record<string, any> = {};
@@ -102,8 +102,10 @@ export class HaSocketClient {
       const device = devices[entity.device_id];
       if (device) {
         const metric = haEntityToMetric(entity, device.name);
-        device.metrics[metric.id] = metric;
-        metrics[metric.uid] = metric;
+        if (metric) {
+          device.metrics[metric.id] = metric;
+          metrics[metric.uid] = metric;  
+        }
       }
     });
 
@@ -112,7 +114,9 @@ export class HaSocketClient {
       const entity_id = state.entity_id;
       const metric = metrics[entity_id];
       if (metric) {
-        metric.state = haStateToState(state);
+        const s = haStateToState(state)
+        metric.type = s.type;
+        metric.state = s;
       }
     });
 
