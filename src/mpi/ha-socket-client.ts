@@ -1,11 +1,9 @@
+import EventEmitter from 'eventemitter3';
 import _ from 'lodash';
 import WebSocket from 'ws';
-import { IOptions } from '../types';
-
-
-function makeSlug(str: string) {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '_').trim();
-}
+import { haDeviceToDevice, haEntityToMetric, haStateToState } from './convert';
+import { makeSlug } from '../tools';
+import { IMpiDevice, IMpiState } from './mpi-types';
 
 class WsRequest {
   id: number;
@@ -33,6 +31,7 @@ export class HaSocketClient {
   connected = false;
   status: 'disconnected' | 'connecting' | 'authoring' | 'authorized' = 'disconnected';
   requests: Record<number, WsRequest> = {};
+  emitter: EventEmitter = new EventEmitter();
 
   constructor(url: string, accessToken: string) {
     this.accessToken = accessToken;
@@ -59,9 +58,6 @@ export class HaSocketClient {
     // area_registry_updated
     // entity_registry_updated
     // device_registry_updated
-
-    // this.getStates();
-    // this.getEntities();
   }
 
   getConfig() {    
@@ -70,63 +66,61 @@ export class HaSocketClient {
     })
   }
 
-  async getDevices(): Promise<any> {
+  async getStates(): Promise<Record<string, IMpiState>> {
+    const stateList = (await this._command({ type: 'get_states' })).result;
+
+    return _.mapValues(
+      _.keyBy(
+        stateList,
+        'entity_id'
+      ),
+      (state) => haStateToState(state)
+    );
+  }
+
+  async getDevices(): Promise<Record<string, IMpiDevice>> {
     const deviceList = (await this._command({ type: 'config/device_registry/list' })).result;
     const entityList = (await this._command({ type: 'config/entity_registry/list' })).result;
     const stateList = (await this._command({ type: 'get_states' })).result;
 
+    // make devices
     const devices = _.keyBy(
         _.filter(
           _.map(
           deviceList,
-          (device: any) => {
-            return {
-              id: device.id,
-              name: device.name,
-              model: device.model,
-              manufacturer: device.manufacturer,
-              metrics: {} as Record<string, any>
-            }
-          }
+          haDeviceToDevice
         ),
-        (device: any) => device.manufacturer !== 'Home Assistant' && device.model !== 'Home Assistant Add-on'
+        // exclude Home Assistant devices
+        (device) => device !== null
       ),
       'id'
-    );
+    ) as Record<string, IMpiDevice>;
 
+    // make metrics
     const metrics: Record<string, any> = {};
     _.forEach(entityList, (entity: any) => {
       const device = devices[entity.device_id];
       if (device) {
-        let name = entity.name ?? entity.original_name ?? '';
-        name = name === device.name ? name : name.replace(device.name, '').trim();
-        name = name.replace(/\sSensor$/, '');
-        const id = makeSlug(name);
-        const metric = {
-          id,
-          uid: entity.entity_id,
-          name,
-          state: {}
+        const metric = haEntityToMetric(entity, device.name);
+        if (metric) {
+          device.metrics[metric.id] = metric;
+          metrics[metric.uid] = metric;  
         }
-        device.metrics[id] = metric;
-        metrics[metric.uid] = metric;
       }
     });
 
+    // make states
     _.forEach(stateList, (state: any) => {
       const entity_id = state.entity_id;
       const metric = metrics[entity_id];
       if (metric) {
-        metric.state = {
-          type: state.attributes.state_class === 'measurement' ? 'number' : 'string',
-          class: state.attributes.device_class,
-          value: state.state,
-          last_changed: state.last_changed,
-          unit: state.attributes.unit_of_measurement
-        }
+        const s = haStateToState(state)
+        metric.type = s.type;
+        metric.state = s;
       }
     });
 
+    // return
     return devices;
   };
 
@@ -212,23 +206,29 @@ export class HaSocketClient {
       this.sendAuth();
     } else if (message.type === 'auth_ok') {
       this.onConnected();
+    } else if (message.type === 'result') {
+      const id = message.id;
+      const request = this.requests[id];
+      if (request) {
+        request.responseData = message;
+        request.resolve(message);
+        delete this.requests[id];
+      }
+    } else if (message.type === 'event') {
+      const event = message.event;
+      if (event.event_type === 'state_changed') {
+        const entity_id = event.data.entity_id;
+        const state = haStateToState(event.data.new_state);
+        this.emitter.emit(
+          'event',
+          {
+            type: 'state_changed',
+            data: {
+              states: { [entity_id] : state }
+            }
+          }
+        );
+      }
     }
-
-    const id = message.id;
-    const request = this.requests[id];
-    if (request) {
-      request.responseData = message;
-      request.resolve(message);
-      delete this.requests[id];
-    }
-    // wss.clients.forEach(client => {
-    //   if (client.readyState === WebSocket.OPEN) {
-    //     client.send(data);
-    //   }
-    // });    
   }
-
-  check() {
-  }
-
 }
