@@ -1,6 +1,6 @@
 import { makeSlug } from "../tools";
-import { IMpiDevice, IMpiMetric, IMpiState } from "./mpi-types";
-import { makeTagsByName } from "./tags";
+import { IMpiDevice, IMpiMetric, IMpiState } from "../mpi/mpi-types";
+import { makeTagsByName } from "../mpi/tags";
 
 export function haStateToState(haState: any): IMpiState {
   const {

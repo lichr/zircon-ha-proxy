@@ -2,9 +2,8 @@ import express from 'express';
 import http from 'http';
 import _ from 'lodash';
 import WebSocket from 'ws';
-import { HaSocketClient } from './mpi';
 import { makeAgentPemStrings, useOptions } from './tools';
-import { WebSocketService } from './ws';
+import { HaProxyServer, HaSocketClient } from './ws';
 import { pageConfig, useZirconProxy } from './zircon';
 
 const options = useOptions();
@@ -27,7 +26,7 @@ const ha = new HaSocketClient(`ws://${haBaseUrl}/api/websocket`, haAccessToken ?
 
 // ws server for mpi events
 const wss = new WebSocket.Server({ server, path: '/mpi/ws' });
-new WebSocketService(wss, ha);
+new HaProxyServer(wss, ha);
 
 // access ha internal, only for development purposes
 app.get('/ha/_/devices', async (req, res) => {

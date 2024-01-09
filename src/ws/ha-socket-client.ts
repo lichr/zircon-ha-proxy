@@ -3,7 +3,7 @@ import _ from 'lodash';
 import WebSocket from 'ws';
 import { haDeviceToDevice, haEntityToMetric, haStateToState } from './convert';
 import { makeSlug } from '../tools';
-import { IMpiDevice, IMpiState } from './mpi-types';
+import { IMpiDevice, IMpiState } from '../mpi/mpi-types';
 
 class WsRequest {
   id: number;

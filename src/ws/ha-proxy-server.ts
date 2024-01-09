@@ -1,8 +1,8 @@
 import WebSocket from 'ws';
-import { HaSocketClient } from "../mpi/ha-socket-client";
+import { HaSocketClient } from "./ha-socket-client";
 import _ from 'lodash';
 
-export class WebSocketService {
+export class HaProxyServer {
   ha: HaSocketClient;
   wss: WebSocket.Server;
 
