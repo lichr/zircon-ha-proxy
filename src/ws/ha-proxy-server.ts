@@ -1,12 +1,12 @@
 import WebSocket from 'ws';
-import { HaSocketClient } from "./ha-socket-client";
+import { HaUpstreamConnection } from "./ha-upstream-connection";
 import _ from 'lodash';
 
 export class HaProxyServer {
-  ha: HaSocketClient;
+  ha: HaUpstreamConnection;
   wss: WebSocket.Server;
 
-  constructor(wss: WebSocket.Server, ha: HaSocketClient) {
+  constructor(wss: WebSocket.Server, ha: HaUpstreamConnection) {
     this.ha = ha;
     this.ha.emitter.on('event', (event) => this.onEvent(event));
     this.wss = wss;

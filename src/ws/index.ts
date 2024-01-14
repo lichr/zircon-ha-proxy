@@ -1,2 +1,2 @@
 export * from './ha-proxy-server';
-export * from './ha-socket-client';
+export * from './ha-upstream-connection';

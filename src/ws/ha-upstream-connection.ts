@@ -23,7 +23,7 @@ class WsRequest {
   }
 }
 
-export class HaSocketClient {
+export class HaUpstreamConnection {
   messageId = 0;
   url: string;
   accessToken: string;

@@ -3,7 +3,7 @@ import http from 'http';
 import _ from 'lodash';
 import WebSocket from 'ws';
 import { makeAgentPemStrings, useOptions } from './tools';
-import { HaProxyServer, HaSocketClient } from './ws';
+import { HaProxyServer, HaUpstreamConnection } from './ws';
 import { pageConfig, useZirconProxy } from './zircon';
 
 const options = useOptions();
@@ -22,7 +22,7 @@ const port = 3100;
 app.get('/config/page.json', pageConfig(options, agent));
 
 // proxy to ha socket
-const ha = new HaSocketClient(`ws://${haBaseUrl}/api/websocket`, haAccessToken ?? '');
+const ha = new HaUpstreamConnection(`ws://${haBaseUrl}/api/websocket`, haAccessToken ?? '');
 
 // ws server for mpi events
 const wss = new WebSocket.Server({ server, path: '/mpi/ws' });
