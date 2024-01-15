@@ -1,56 +1,60 @@
+import _ from 'lodash';
 import WebSocket from 'ws';
 import { HaUpstreamConnection } from "./ha-upstream-connection";
-import _ from 'lodash';
+import { MpiDownstreamConnection } from './mpi-downstream-connection';
 
 export class HaProxyServer {
   ha: HaUpstreamConnection;
   wss: WebSocket.Server;
+  timer: NodeJS.Timeout | undefined;
+  clients: Record<string, MpiDownstreamConnection> = {};
 
   constructor(wss: WebSocket.Server, ha: HaUpstreamConnection) {
     this.ha = ha;
     this.ha.emitter.on('event', (event) => this.onEvent(event));
     this.wss = wss;
     this.wss.on('connection', (ws) => this.onConnection(ws));
+    this.timer = setInterval(() => this.onTimer(), 60000);
+  }
+
+  onTimer() {
+    // scan for inactive connections
+    const now = Date.now();
+    _.each(
+      this.clients,
+      (client) => {
+        if (now - client.lastActive > 60000) {
+          // discard inactive connection
+          client.close();
+          delete this.clients[client.id];
+        }
+      }
+    );
   }
 
   onEvent(event: any) {
-    const message = JSON.stringify({
+    const message = {
       type: 'event',
       event
-    });
+    };
 
     // send event to all connected clients
-    this.wss.clients.forEach(client => {
-      if (client.readyState === WebSocket.OPEN) {
+    _.each(
+      this.clients,
+      (client) => {
         client.send(message);
       }
-    });
+    );
   }
 
   onConnection(ws: WebSocket) {
     console.log('Client connected');
-    ws.on('message', (data) => this.onMessage(ws, JSON.parse(data.toString())).then());
-    ws.on('close', () => this.onClose(ws));
-    ws.on('error', (err) => {
-      console.log('Client error: ', err);
-    });
+    const client = new MpiDownstreamConnection(ws, () => this.ha, this.onClose);
+    this.clients[client.id] = client;
   }
 
-  async onMessage(ws: WebSocket, message: any) {
-    console.log('Client message: ', message);    
-    const type: string = message.type;
-    if (type === 'get_devices') {
-      const devices = await this.ha.getDevices();
-      const data = JSON.stringify({ type: 'devices', devices });
-      ws.send(data);
-    } else if (type === 'get_states') {
-      const states = await this.ha.getStates();
-      const data = JSON.stringify({ type: 'states', states });
-      ws.send(data);
-    }
-  }
-
-  onClose(ws: WebSocket) {
+  onClose = (client: MpiDownstreamConnection) => {
     console.log('Client closed');
+    delete this.clients[client.id];
   }
 }

@@ -18,9 +18,15 @@ export function pageConfig(options: IOptions, agent?: Agent ) {
       const modifiedData = {
         ...response.data,
         page: {
-          baseUrl: ingressPath ?? '',
+          baseUrl: ingressPath ?? '/',
           apiBaseUrl: 'zircon/api',
-          xpiBaseUrl: 'zircon/xpi'
+          xpiBaseUrl: 'zircon/xpi',
+          "mpi": {
+            "mode": "proxy",
+            "config": {
+              "url": `ws://${ingressPath ?? 'localhost:3100'}/mpi/ws`
+            }
+          }           
         },
         // set for auto login
         autoLogin: {
