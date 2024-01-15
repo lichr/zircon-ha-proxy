@@ -1,7 +1,7 @@
 # Development
 
 ```sh
-npm run dev
+yarn dev
 ```
 
 Open designer page in browser:

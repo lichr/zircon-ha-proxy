@@ -36,7 +36,7 @@ External Url | Proxy Url | Remote Url
 
 2. Start the proxy
 ```sh
-npm run dev
+yarn dev
 ```
 
 3. Access proxy in browser: <http://localhost:3100>
