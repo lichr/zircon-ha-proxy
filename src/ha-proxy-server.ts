@@ -1,15 +1,15 @@
 import _ from 'lodash';
 import WebSocket from 'ws';
-import { HaUpstreamConnection } from "./ha-upstream-connection";
-import { MpiDownstreamConnection } from './mpi-downstream-connection';
+import { HaClient } from "./ha";
+import { MpiDownstreamConnection } from './mpi/mpi-downstream-connection';
 
 export class HaProxyServer {
-  ha: HaUpstreamConnection;
+  ha: HaClient;
   wss: WebSocket.Server;
   timer: NodeJS.Timeout | undefined;
   clients: Record<string, MpiDownstreamConnection> = {};
 
-  constructor(wss: WebSocket.Server, ha: HaUpstreamConnection) {
+  constructor(wss: WebSocket.Server, ha: HaClient) {
     this.ha = ha;
     this.ha.emitter.on('event', (event) => this.onEvent(event));
     this.wss = wss;
