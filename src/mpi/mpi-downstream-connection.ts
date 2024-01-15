@@ -1,17 +1,17 @@
 import WebSocket from 'ws';
-import { HaUpstreamConnection } from './ha-upstream-connection';
+import { HaClient } from '../ha';
 import { makeUid } from '../tools';
 
 export class MpiDownstreamConnection {
   id: string = makeUid();
   ws: WebSocket;
   onClose: (client: MpiDownstreamConnection) => void;
-  ha: () => HaUpstreamConnection;
+  ha: () => HaClient;
   lastActive: number = Date.now();
 
   constructor(
     ws: WebSocket,
-    ha: () => HaUpstreamConnection,
+    ha: () => HaClient,
     onClose: (client: MpiDownstreamConnection) => void
   ) {
     this.onClose = onClose;

@@ -1,5 +1,3 @@
-import { IMpiDevice } from "./mpi-types";
-
 export function makeTagsByName(name: string): string[] {
   const s = name.toLowerCase();
   const tags = [];
