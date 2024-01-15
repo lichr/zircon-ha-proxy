@@ -36,7 +36,7 @@ External Url | Proxy Url | Remote Url
 
 2. Start the proxy
 ```sh
-npm run dev
+yarn dev
 ```
 
 3. Access proxy in browser: <http://localhost:3100>
@@ -51,6 +51,16 @@ npm run dev
 
 [local add-on testing](https://developers.home-assistant.io/docs/add-ons/testing)
 
+## Build Image
+
+```sh
+# Build image
+docker build -t lichr/zircon-ha-proxy-amd64:1.0.1 -t lichr/zircon-ha-proxy-amd64:latest .
+
+# Publish
+docker push
+```
+
 ## Publish
 
 1. Create a version tag (like 1.0.1) on main branch
@@ -58,13 +68,3 @@ npm run dev
    1. Update version in `zircon-studio-proxy/config.yaml`
 3. User can update their addon in home assistant ui
 
-## TODO
-- mpi request (REST)
-  - get-devices
-- mpi event (ws)
-- ui-integration
-  - option: mpi
-
-## Future
-- cloud mpi
-- multiple mpi

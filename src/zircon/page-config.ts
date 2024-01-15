@@ -8,6 +8,7 @@ export function pageConfig(options: IOptions, agent?: Agent ) {
   const { baseUrl, email, password, group, project } = options;
   return async (req: Request, res: Response) => {
     try {
+      // get ingress path from header
       const ingressPath = req.headers['x-ingress-path'];
       const response = await axios.get(`${baseUrl}/designer/config/page.json`, {
         httpsAgent: agent
@@ -17,14 +18,22 @@ export function pageConfig(options: IOptions, agent?: Agent ) {
       const modifiedData = {
         ...response.data,
         page: {
-          baseUrl: ingressPath ?? '',
+          baseUrl: ingressPath ?? '/',
           apiBaseUrl: 'zircon/api',
-          xpiBaseUrl: 'zircon/xpi'
+          xpiBaseUrl: 'zircon/xpi',
+          "mpi": {
+            "mode": "proxy",
+            "config": {
+              "url": `ws://${ingressPath ?? 'localhost:3100'}/mpi/ws`
+            }
+          }           
         },
-        signIn: {
-          email,
+        // set for auto login
+        autoLogin: {
+          name: email,
           password
         },
+        // set project and group
         location: {
           group,
           project
