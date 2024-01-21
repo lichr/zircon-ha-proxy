@@ -36,7 +36,7 @@ External Url | Proxy Url | Remote Url
 
 2. Start the proxy
 ```sh
-yarn dev
+npm run dev
 ```
 
 3. Access proxy in browser: <http://localhost:3100>
@@ -55,10 +55,10 @@ yarn dev
 
 ```sh
 # Build image
-docker build -t lichr/zircon-ha-proxy-amd64:1.0.1 -t lichr/zircon-ha-proxy-amd64:latest .
+sudo docker build -t lichr/zircon-ha-proxy-amd64:1.0.1 -t lichr/zircon-ha-proxy-amd64:latest .
 
 # Publish
-docker push
+sudo docker push  --all-tags lichr/zircon-ha-proxy-amd64
 ```
 
 ## Publish
