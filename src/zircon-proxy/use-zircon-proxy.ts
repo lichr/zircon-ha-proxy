@@ -7,7 +7,7 @@ export function useZirconProxy(app: Express, baseUrl: string, agent?: any) {
   const proxyOptions: Options = {
     target: baseUrl, // Target host
     changeOrigin: true, // Needed for virtual hosted sites
-    ws: true,
+    ws: false,
     secure: true,
     agent,
     logLevel: 'debug'
@@ -15,13 +15,18 @@ export function useZirconProxy(app: Express, baseUrl: string, agent?: any) {
 
   // proxy to zircon services
   app.use(
-    '/zircon',
-    createProxyMiddleware({
-      ...proxyOptions,
-      pathRewrite: {
-        '^/zircon': ''
-      }
-    })
+    '/api',
+    createProxyMiddleware(proxyOptions)
+  );
+
+  // app.use(
+  //   '/mpi',
+  //   createProxyMiddleware(proxyOptions)
+  // );
+
+  app.use(
+    '/xpi',
+    createProxyMiddleware(proxyOptions)
   );
 
   // proxy to zircon designer page

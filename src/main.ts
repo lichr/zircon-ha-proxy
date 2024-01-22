@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import http from 'http';
 import _ from 'lodash';
 import WebSocket from 'ws';
@@ -8,10 +9,15 @@ import { HaProxyServer } from './ha-proxy-server';
 import { pageConfig, useZirconProxy } from './zircon-proxy';
 
 const options = useOptions();
-const { baseUrl, key, cert, haBaseUrl, haAccessToken } = options;
+const { dev, haWebSocketUrl, haAccessToken, baseUrl } = options;
 
 // create https agent that uses client certificate
-const agent = key && cert ? makeAgentPemStrings(key, cert) : undefined;
+// this is generally NOT needed
+// it is only used for testing with our protected environment, such as dev
+let agent = undefined;
+if (dev) {
+  agent = makeAgentPemStrings(dev.key, dev.cert);
+}
 
 // create express app
 const app = express();
@@ -23,7 +29,7 @@ const port = 3100;
 app.get('/config/page.json', pageConfig(options, agent));
 
 // proxy to ha socket
-const ha = new HaClient(`ws://${haBaseUrl}/api/websocket`, haAccessToken ?? '');
+const ha = new HaClient(haWebSocketUrl, haAccessToken);
 
 // ws server for mpi events
 const wss = new WebSocket.Server({ server, path: '/mpi/ws' });
@@ -53,6 +59,8 @@ app.get('/mpi/devices', async (req, res) => {
 
 // proxy to zircon services: designer-page, api, xpi and others
 useZirconProxy(app, baseUrl, agent);
+
+app.use(cors());
 
 // start the server
 server.listen(

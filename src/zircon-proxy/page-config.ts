@@ -14,13 +14,15 @@ export function pageConfig(options: IOptions, agent?: Agent ) {
         httpsAgent: agent
       });
   
+      const prefix = ingressPath ? `http://${ingressPath}` : '';
+
       // Add login info to received JSON data
       const modifiedData = {
         ...response.data,
         page: {
-          baseUrl: ingressPath ?? '/',
-          apiBaseUrl: 'zircon/api',
-          xpiBaseUrl: 'zircon/xpi',
+          baseUrl: prefix,
+          apiBaseUrl: `${prefix}/api`,
+          xpiBaseUrl: `${prefix}/xpi`,
           "mpi": {
             "mode": "proxy",
             "config": {
@@ -34,9 +36,9 @@ export function pageConfig(options: IOptions, agent?: Agent ) {
           password
         },
         // set project and group
-        location: {
-          group,
-          project
+        project: {
+          groupId: group,
+          projectId: project
         }
       };
   

@@ -29,7 +29,14 @@ export class MpiDownstreamConnection {
   }
 
   send(data: any) {
-    this.ws.send(JSON.stringify(data));
+    try {
+      if (this.ws.readyState === WebSocket.OPEN) {
+        console.log('>>> mpi send: ', data);
+        this.ws.send(JSON.stringify(data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async onMessage(data: any) {
