@@ -7,7 +7,7 @@ export class HaUpstreamConnection {
   messageId = 0;
   url: string;
   accessToken: string;
-  socket: WebSocket | null = null;
+  ws: WebSocket | null = null;
   connected = false;
   status: 'disconnected' | 'connecting' | 'authoring' | 'authorized' = 'disconnected';
   // timer for ping / pong
@@ -24,21 +24,23 @@ export class HaUpstreamConnection {
   }
 
   private _open() {
+    console.log('>>> connecting to ha: ', this.url);
     this.status = 'connecting';
     try {
-      this.socket = new WebSocket(this.url);
-      this.socket.on('open', this.onOpen);
-      this.socket.on('message', this.onMessage);
-      this.socket.on('close', this.onClose);
-      this.socket.on('error', this.onError);
+      this.ws = new WebSocket(this.url);
+      this.ws.on('open', this.onOpen);
+      this.ws.on('message', this.onMessage);
+      this.ws.on('close', this.onClose);
+      this.ws.on('error', this.onError);
     } catch (error) {
+      console.log('>>> error connecting to ha: ', error);
       this._close();
     }
   }
 
   private _close() {
     this.status = 'disconnected';
-    this.socket?.close();
+    this.ws?.close();
   }
 
   private _startTimer() {
@@ -64,7 +66,7 @@ export class HaUpstreamConnection {
         this._close();
       } else {
         this.pongReceived = false; // Reset the pongReceived flag
-        this.send({ type: 'ping' }) // Send a ping
+        this.sendMessage({ type: 'ping' }) // Send a ping
       }
     } else if (this.status === 'disconnected') {
       // retry to connect for every 10 seconds
@@ -74,7 +76,6 @@ export class HaUpstreamConnection {
 
   onOpen = () => {
     this.status = 'authoring';
-    console.log('>>> send: auth');
   }
 
   onConnected() {
@@ -83,13 +84,13 @@ export class HaUpstreamConnection {
   }
 
   getConfig() {
-    this.send({
+    this.sendMessage({
       type: 'get_config'
     })
   }
 
   async command(data: any): Promise<any> {
-    const messageId = this.send(data);
+    const messageId = this.sendMessage(data);
     const request = new HaRequest(
       this.messageId,
       data
@@ -99,38 +100,50 @@ export class HaUpstreamConnection {
   }
 
   subscribeEvents(eventType: string) {
-    return this.send({
+    return this.sendMessage({
       type: 'subscribe_events',
       event_type: eventType
     })
   }
 
-  send(request: any) {
+  send(data: any) {
+      try {
+          if (this.ws?.readyState === WebSocket.OPEN) {
+            console.log('>>> ha send: ', data.type);
+            this.ws?.send(JSON.stringify(data));
+          }
+      } catch (error) {
+          console.log(error);
+      }
+  }
+
+  sendMessage(request: any) {
     this.messageId += 1;
-    const req = { id: this.messageId, ...request };
-    this.socket?.send(JSON.stringify(req));
+    this.send({ id: this.messageId, ...request });
     return this.messageId;
   }
 
   sendAuth() {
-    this.socket?.send(JSON.stringify({
+    this.send({
       type: 'auth',
       access_token: this.accessToken
-    }));
+    });
   }
 
   // XXX: messages may come in a batch
   onMessage = (data: WebSocket.RawData) => {
     const message = JSON.parse(data.toString());
-    console.log('<<< receive: ', JSON.stringify(message, null, 2));
 
     if (message.type === 'auth_required') {
+      console.log('<<< ha receive: ', message.type, message);
       this.sendAuth();
     } else if (message.type === 'auth_ok') {
+      console.log('<<< ha receive: ', message.type, message);
       this.onConnected();
     } else if (message.type === 'result') {
       const id = message.id;
       const request = this.requests[id];
+      console.log('<<< ha receive: ', message.type, id);
       if (request) {
         request.responseData = message;
         request.resolve(message);
@@ -138,15 +151,20 @@ export class HaUpstreamConnection {
       }
     } else if (message.type === 'event') {
       const event = message.event;
+      console.log('<<< ha event: ', event.event_type);
       this.emitter.emit('event', event);
+    } else {
+      console.log('<<< ha receive-unknown: ', message.type, message);
     }
   }
 
   onClose = () => {
+    console.log('>>> ha connection closed');
     this.status = 'disconnected';
   }
 
-  onError = () => {
+  onError = (error: any) => {
+    console.log('>>> ha connection error', error);
     this.status = 'disconnected';
   }
 }

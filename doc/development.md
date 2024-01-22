@@ -13,7 +13,7 @@ The target url should be:
 ## Test With HA Dev Container
 
 - `Rebuild and Reopen in Container`
-- `F1` and choose `Tasks: run task`
+- `F1` and choose `Tasks: run task`,  
 - access ha: <http://localhost:7123/>
 - install addon
 - start addon XX

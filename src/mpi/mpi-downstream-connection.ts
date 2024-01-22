@@ -29,13 +29,21 @@ export class MpiDownstreamConnection {
   }
 
   send(data: any) {
-    this.ws.send(JSON.stringify(data));
+    try {
+      if (this.ws.readyState === WebSocket.OPEN) {
+        console.log('>>> mpi send: ', data.type);
+        this.ws.send(JSON.stringify(data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async onMessage(data: any) {
     const message = JSON.parse(data.toString());
     const type: string = message.type;
     this.lastActive = Date.now();
+    console.log('>>> mpi receive: ', type);
 
     if (type === 'get_devices') {
       this.handleGetDevices();

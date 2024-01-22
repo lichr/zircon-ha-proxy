@@ -43,8 +43,15 @@ npm run dev
 
 ### Test Add-On Locally
 
-1. `Dev Container: Rebuild and Open in container`
-2. `Run Task` -> `Start Home Assistant`
+Make sure you can run docker without `sudo`:
+```sh
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
+
+
+1. `F1` -> `Dev Container: Rebuild and Open in container`
+2. `F1` -> `Run Task` -> `Start Home Assistant`
 3. Access home assistant via `http://localhost:7123/`
 4. Setup home assistant
 5. Go to `Settings` -> `Addon`, find `Zircon Studio Proxy` addon in `Local Repository`
