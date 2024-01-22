@@ -31,7 +31,7 @@ export class MpiDownstreamConnection {
   send(data: any) {
     try {
       if (this.ws.readyState === WebSocket.OPEN) {
-        console.log('>>> mpi send: ', data);
+        console.log('>>> mpi send: ', data.type);
         this.ws.send(JSON.stringify(data));
       }
     } catch (error) {
@@ -43,6 +43,7 @@ export class MpiDownstreamConnection {
     const message = JSON.parse(data.toString());
     const type: string = message.type;
     this.lastActive = Date.now();
+    console.log('>>> mpi receive: ', type);
 
     if (type === 'get_devices') {
       this.handleGetDevices();

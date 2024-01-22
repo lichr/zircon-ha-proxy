@@ -76,7 +76,6 @@ export class HaUpstreamConnection {
 
   onOpen = () => {
     this.status = 'authoring';
-    console.log('>>> send: auth');
   }
 
   onConnected() {
@@ -110,7 +109,7 @@ export class HaUpstreamConnection {
   send(data: any) {
       try {
           if (this.ws?.readyState === WebSocket.OPEN) {
-            console.log('>>> ha send: ', data);
+            console.log('>>> ha send: ', data.type);
             this.ws?.send(JSON.stringify(data));
           }
       } catch (error) {
@@ -134,15 +133,17 @@ export class HaUpstreamConnection {
   // XXX: messages may come in a batch
   onMessage = (data: WebSocket.RawData) => {
     const message = JSON.parse(data.toString());
-    console.log('<<< receive: ', JSON.stringify(message, null, 2));
 
     if (message.type === 'auth_required') {
+      console.log('<<< ha receive: ', message.type, message);
       this.sendAuth();
     } else if (message.type === 'auth_ok') {
+      console.log('<<< ha receive: ', message.type, message);
       this.onConnected();
     } else if (message.type === 'result') {
       const id = message.id;
       const request = this.requests[id];
+      console.log('<<< ha receive: ', message.type, id);
       if (request) {
         request.responseData = message;
         request.resolve(message);
@@ -150,7 +151,10 @@ export class HaUpstreamConnection {
       }
     } else if (message.type === 'event') {
       const event = message.event;
+      console.log('<<< ha event: ', event.event_type);
       this.emitter.emit('event', event);
+    } else {
+      console.log('<<< ha receive-unknown: ', message.type, message);
     }
   }
 
