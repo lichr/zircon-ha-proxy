@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf build && tsc",
-    "dev": "npm run build && node build/main.js --options options.json",
+    "dev": "npm run build && node build/main.js --options options.json --dev-options options-dev.json --zircon-options options-zircon.json",
     "start": "node -r dotenv/config build/main.js",
     "lint": "eslint src",
     "client": "node build/test/client.js",

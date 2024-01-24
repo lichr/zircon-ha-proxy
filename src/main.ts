@@ -9,14 +9,13 @@ import { HaProxyServer } from './ha-proxy-server';
 import { pageConfig, useZirconProxy } from './zircon-proxy';
 
 const options = useOptions();
-const { dev, haWebSocketUrl, haAccessToken, baseUrl } = options;
-
+const { ha: { webSocketUrl, accessToken }, zircon: { baseUrl, client } } = options;
 // create https agent that uses client certificate
 // this is generally NOT needed
 // it is only used for testing with our protected environment, such as dev
 let agent = undefined;
-if (dev) {
-  agent = makeAgentPemStrings(dev.key, dev.cert);
+if (client) {
+  agent = makeAgentPemStrings(client.key, client.cert);
 }
 
 // create express app
@@ -29,7 +28,7 @@ const port = 3100;
 app.get('/config/page.json', pageConfig(options, agent));
 
 // proxy to ha socket
-const ha = new HaClient(haWebSocketUrl, haAccessToken);
+const ha = new HaClient(webSocketUrl, accessToken);
 
 // ws server for mpi events
 const wss = new WebSocket.Server({ server, path: '/mpi/ws' });
@@ -47,7 +46,7 @@ app.get('/ha/_/devices', async (req, res) => {
 });
 
 // access mpi (monitoring platform interface)
-app.get('/mpi/devices', async (req, res) => {
+app.get('/mpi/devices', async (_req, res) => {
   try {
     const response = await ha.getDevices();
     res.json(response);

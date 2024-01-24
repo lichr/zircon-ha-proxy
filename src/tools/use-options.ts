@@ -1,56 +1,101 @@
 import fs from 'fs';
 import _ from 'lodash';
 import minimist from 'minimist';
-import { IAddonOptions, IOptions } from '../types';
+import { IAddonOptions, IDevOptions, IOptions, IOptionsHa, IOptionsZircon, IZirconOptions, RunMode } from '../types';
+
+function tryLoadOptions<T>(argv: any, key: string): T | undefined {
+  const file = argv[key];
+  const exists = file ? fs.existsSync(file) : false;
+  return exists ? JSON.parse(fs.readFileSync(file).toString()) : undefined;
+}
 
 export function useOptions(): IOptions {
   // parse command line arguments
   const argv = minimist(process.argv.slice(2));
-  const optionFile = argv.options;
-  if (_.isEmpty(optionFile)) {
+
+  // read options file
+  // when running as add-on, this is the file provided by HA addon host
+  // when running in development, this is the file placed in project root
+  const addonOptions = tryLoadOptions<IAddonOptions>(argv, 'options');
+  if (!addonOptions) {
     throw new Error('Please specify options file with --options option.');
   }
-  const addonOptions = JSON.parse(fs.readFileSync(optionFile).toString()) as IAddonOptions;
-  const devOptionsFile = 'certs/dev-options.json';
-  const devExits = fs.existsSync(devOptionsFile);
-  const devOptions = devExits ? JSON.parse(fs.readFileSync(devOptionsFile).toString()) : undefined;
 
-  let options: IOptions;
+  // read dev-options file
+  // this file is not needed when running as add-on
+  const devOptions = tryLoadOptions<IDevOptions>(argv, 'dev-options');
+
+  // read zircon-options file
+  // this file is only need when running dev-containers
+  const zirconOptions = tryLoadOptions<IZirconOptions>(argv, 'zircon-options');
+
+  let ha: IOptionsHa;
+  let zircon: IOptionsZircon;
+  let mode: RunMode;
   if (devOptions) {
-    // create options for development
-    options = {
-      mode: 'dev',
-      email: addonOptions.email,
-      password: addonOptions.password,
-      baseUrl: devOptions.baseUrl,
-      group: addonOptions.group,
-      project: addonOptions.project,
-      haApiUrl: `http://${devOptions.haBaseUrl}/api`,
-      haWebSocketUrl: `ws://${devOptions.haBaseUrl}/api/websocket`,
-      haAccessToken: devOptions.haAccessToken,
-      dev: {
-        key: devOptions.key,
-        cert: devOptions.cert
-      }
+    // for running as dev-command
+    mode = 'dev';
+    ha = {
+      apiUrl: `http://${devOptions.haBaseUrl}/api`,
+      webSocketUrl: `ws://${devOptions.haBaseUrl}/api/websocket`,
+      accessToken: devOptions.haAccessToken,
     }
   } else {
-    // create options for addon
-    const haAccessToken = process.env.SUPERVISOR_TOKEN;
-    if (!haAccessToken || _.isEmpty(haAccessToken)) {
+    // for running as add-on
+    mode = 'addon';
+    const accessToken = process.env.SUPERVISOR_TOKEN;
+    if (!accessToken || _.isEmpty(accessToken)) {
       throw new Error('SUPERVISOR_TOKEN is not set.');
     }
-    options = {
-      mode: 'addon',
+    ha = {
+      apiUrl: 'http://supervisor/core/api',
+      webSocketUrl: 'ws://supervisor/core/websocket',
+      accessToken
+    }
+  }
+
+  if (zirconOptions) {
+    // pre-configured zircon options
+    // for running as dev-command and dev-containers
+    zircon = {
+      email: addonOptions.email,
+      password: addonOptions.password,
+      baseUrl: zirconOptions.baseUrl,
+      group: addonOptions.group,
+      project: addonOptions.project,
+      mpiUrl: zirconOptions.mpiUrl,
+      client: zirconOptions.client
+    }
+  } else {
+    // default zircon options
+    // for production
+    zircon = {
       email: addonOptions.email,
       password: addonOptions.password,
       baseUrl: 'https://zircon3d.com',
       group: addonOptions.group,
       project: addonOptions.project,
-      haApiUrl: 'http://supervisor/core/api',
-      haWebSocketUrl: 'ws://supervisor/core/websocket',
-      haAccessToken
     }
   }
+  const options = {
+    mode,
+    zircon,
+    ha
+  }
+
+
+  console.log('>>> options: ', {
+    mode: options.mode,
+    zircon: {
+      ...options.zircon,
+      client: options.zircon.client ? '***': undefined,
+      password: '***'
+    },
+    ha: {
+      ...options.ha,
+      accessToken: '***'
+    }
+  });
 
   return options;
 }

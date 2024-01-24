@@ -62,7 +62,7 @@ sudo usermod -aG docker $USER
 
 ```sh
 # Build image
-sudo docker build -t lichr/zircon-ha-proxy-amd64:1.0.1 -t lichr/zircon-ha-proxy-amd64:latest .
+sudo docker build -t lichr/zircon-ha-proxy-amd64:1.0.7 -t lichr/zircon-ha-proxy-amd64:latest .
 
 # Publish
 sudo docker push  --all-tags lichr/zircon-ha-proxy-amd64
