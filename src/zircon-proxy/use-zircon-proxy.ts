@@ -19,11 +19,6 @@ export function useZirconProxy(app: Express, baseUrl: string, agent?: any) {
     createProxyMiddleware(proxyOptions)
   );
 
-  // app.use(
-  //   '/mpi',
-  //   createProxyMiddleware(proxyOptions)
-  // );
-
   app.use(
     '/xpi',
     createProxyMiddleware(proxyOptions)

@@ -5,31 +5,43 @@ export interface IAddonOptions {
   project: string;
 }
 
-export interface IDevOptions {
-  baseUrl: string;
-  /**
-   * private key and cert for client certificate, for accessing protected environments
-  */
+export interface IZirconClient {
   key: string;
   cert: string;
+}
+export interface IDevOptions {
+  haBaseUrl: string;
   haHost: string;
   haAccessToken: string;
 }
 
-export interface IOptions {
-  mode: 'addon' | 'dev';
+export interface IZirconOptions {
+  baseUrl: string;
+  mpiUrl?: string;
+  client?: IZirconClient;
+}
+
+export interface IOptionsHa {
+  apiUrl: string;
+  webSocketUrl: string;
+  accessToken: string;
+}
+
+export interface IOptionsZircon {
   email: string;
   password: string;
   baseUrl: string;
   group: string;
-  project: string;
-  haApiUrl: string;
-  haWebSocketUrl: string;
-  haAccessToken: string;
-  dev?: {
-    key: string;
-    cert: string;
-  }
+  project: string;  
+  mpiUrl?: string;
+  client?: IZirconClient;
+}
+
+export type RunMode = 'addon' | 'dev';
+export interface IOptions {
+  mode: RunMode;
+  zircon: IOptionsZircon,
+  ha: IOptionsHa,
 }
 
 export interface IProjectLocation {

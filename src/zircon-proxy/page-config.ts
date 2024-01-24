@@ -5,44 +5,47 @@ import { Agent } from 'https'
 import { IOptions } from '../types';
 
 export function pageConfig(options: IOptions, agent?: Agent ) {
-  const { baseUrl, email, password, group, project } = options;
+  const { zircon: { baseUrl, email, password, group, project, mpiUrl }} = options;
   return async (req: Request, res: Response) => {
     try {
-      // get ingress path from header
       const ingressPath = req.headers['x-ingress-path'];
       const response = await axios.get(`${baseUrl}/designer/config/page.json`, {
         httpsAgent: agent
       });
-  
-      const prefix = ingressPath ? `http://${ingressPath}` : '';
+
+      console.log('>>> original page config: ', response.data);
+      console.log('>>> ingressPath: ', ingressPath);
+      console.log('>>> headers: ', req.headers);
 
       // Add login info to received JSON data
-      const modifiedData = {
-        ...response.data,
-        page: {
-          baseUrl: prefix,
-          apiBaseUrl: `${prefix}/api`,
-          xpiBaseUrl: `${prefix}/xpi`,
-          "mpi": {
-            "mode": "proxy",
-            "config": {
-              "url": `ws://${ingressPath ?? 'localhost:3100'}/mpi/ws`
-            }
-          }           
-        },
-        // set for auto login
-        autoLogin: {
-          name: email,
-          password
-        },
-        // set project and group
-        project: {
-          groupId: group,
-          projectId: project
+      const pageConfig = response.data;
+      const pageBaseUrl = ingressPath ?? ''
+      pageConfig.page.baseUrl = pageBaseUrl;
+
+      // override api, xpi and mpi config
+      pageConfig.page.apiBaseUrl = `${pageBaseUrl}/api`;
+      pageConfig.page.xpiBaseUrl = `${pageBaseUrl}/xpi`;
+      pageConfig.page.mpi = {
+        "mode": "proxy",
+        "config": {
+          "path": `${pageBaseUrl}/mpi/ws`,
+          "url": mpiUrl
         }
       };
-  
-      res.json(modifiedData);
+
+      // auto-login: user don't need to login
+      pageConfig.page.autoLogin = {
+        name: email,
+        password
+      };
+
+      // auto-location: user don't need to specify group and project in url
+      pageConfig.project = {
+        groupId: group,
+        projectId: project
+      };
+
+      res.json(pageConfig);
     } catch (error) {
       console.error(error);
       res.status(500).send('An error occurred.');
