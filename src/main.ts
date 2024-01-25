@@ -22,7 +22,7 @@ if (client) {
 const app = express();
 const server = http.createServer(app);
 const host = '0.0.0.0';
-const port = 3100;
+const port = 11200;
 
 // serve page config
 app.get('/config/page.json', pageConfig(options, agent));

@@ -5,7 +5,7 @@ yarn dev
 ```
 
 Open designer page in browser:
-- <http://localhost:3100>
+- <http://localhost:11200>
 
 The target url should be:
 - <https://dev.zircon.run/designer/#FrCOUUzBcuCS/bke19Xd6bzoT>
@@ -23,8 +23,8 @@ The target url should be:
 
 ```sh
 docker build -t proxy-local .
-docker run --rm -p 3100:3100 proxy-local
-docker run --rm -it -p 3100:3100 proxy-local /bin/sh
+docker run --rm -p 11200:11200 proxy-local
+docker run --rm -it -p 11200:11200 proxy-local /bin/sh
 
 ```
 ## Build Image and Push to Registry

@@ -1,5 +1,5 @@
 import WebSocket from 'ws';
-const socket = new WebSocket('ws://localhost:3100/mpi/ws');
+const socket = new WebSocket('ws://localhost:11200/mpi/ws');
 
 socket.on('open', () => {
   console.log('Connected');

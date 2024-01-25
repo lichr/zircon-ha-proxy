@@ -1,77 +1,44 @@
-# Zircon Studio Proxy
+# Zircon3D Home Assistant Proxy
 
-This addon enables access zircon studio web application from home-assistant.
+Provides a secure way to access your smart home data and devices within your home network.
 
-## Features
+## Why It Is Needed
 
-### Standalone
-- Run in container
-- Configure via environment variables
+Zircon3D and Home Assistant communicate within your home network to ensure safety, preventing new data exposures in your smart home system. Therefore, while you can edit and view your Zircon3D projects from anywhere with an internet connection, you cannot see data or control devices outside your home network.
 
-### Add On
-- Install as home assistant addon
-- Configure via options
-- Ingress access
-- Expose proxy port access (default to 3100)
+Furthermore, when accessing from home, Zircon3D cannot reach your data and devices due to browser security protocols that prevent web applications opened with `https` from accessing `http` services, which is common in most Home Assistant installations. 
 
+## How It Works
 
+This addon:
+- Proxies access to the Home Assistant system via an internal channel.
+- Proxies access to Zircon3D cloud services via `https`.
+- Allows access to the Zircon3D UI from the Home Assistant's sidebar.
+- Enables Zircon3D UI access on Home Assistant's dashboards using a `web page card`.
+- Permits access to the Zircon3D UI from any web browser via `http://homeassistant.local:11200`.
 
-### Ingress Access
+## How to Install
 
-External Url | Proxy Url | Remote Url
--- | -- | --
-{`ingress_url`} | / | {`base_url`}/designer
+1. **Create a Zircon3D Account**:
+   - If you don't have a Zircon3D account, sign up for free at `https://zircon3d.com`. A smart home visualization project will be automatically created.
 
-### Proxy Access
+2. **Record Project Information**:
+   - In your Zircon3D project console, note your group id and project id.
 
-External Url | Proxy Url | Remote Url
--- | -- | --
-{`ha_host`}:{`proxy_port`}/ | / | {`base_url`}/designer
-{`ha_host`}:{`proxy_port`}/zircon/{`path`} | /zircon/{`path`} | {`base_url`}/{`path`}
+3. **Add Zircon HA Repository**:
+   - In the Home Assistant UI, navigate to `Settings -> Add-on Store`.
+   - Click the vertical dots button at the top-right corner, then click `Manage Repositories`.
+   - Add a new repository with the provided URL.
 
-## Development
-### Test Proxy Locally
+4. **Install Zircon HA Proxy Add-on**:
+   - Return to the Add-on Store page, where you should find `Zircon HA Proxy`.
+   - Click `Install`. Installation may take a few minutes.
 
-1. Edit `options.json`
+5. **Configure and Start Zircon HA Proxy Add-on**:
+   - In the Zircon HA Proxy add-on's settings page, click the `Configure` tab.
+   - Fill in your `email` and `password` (same as your Zircon3D login credentials). Enter your `group` and `project` ids from the project management console.
+   - Go to the `Info` tab and enable `Show in Sidebar`.
+   - Click `Start`.
 
-2. Start the proxy
-```sh
-npm run dev
-```
-
-3. Access proxy in browser: <http://localhost:3100>
-
-### Test Add-On Locally
-
-Make sure you can run docker without `sudo`:
-```sh
-sudo groupadd docker
-sudo usermod -aG docker $USER
-```
-
-
-1. `F1` -> `Dev Container: Rebuild and Open in container`
-2. `F1` -> `Run Task` -> `Start Home Assistant`
-3. Access home assistant via `http://localhost:7123/`
-4. Setup home assistant
-5. Go to `Settings` -> `Addon`, find `Zircon Studio Proxy` addon in `Local Repository`
-
-[local add-on testing](https://developers.home-assistant.io/docs/add-ons/testing)
-
-## Build Image
-
-```sh
-# Build image
-sudo docker build -t lichr/zircon-ha-proxy-amd64:1.0.7 -t lichr/zircon-ha-proxy-amd64:latest .
-
-# Publish
-sudo docker push  --all-tags lichr/zircon-ha-proxy-amd64
-```
-
-## Publish
-
-1. Create a version tag (like 1.0.1) on main branch
-2. Go to our [addon repository](https://github.com/lichr/zircon-ha-repository)
-   1. Update version in `zircon-studio-proxy/config.yaml`
-3. User can update their addon in home assistant ui
-
+6. **Access Zircon3D**:
+   - Click the `Zircon3D` icon in the sidebar to access the Zircon3D web UI. You should now be able to view your devices from the `Monitoring` side panel.
