@@ -1,11 +1,11 @@
 ###
-GET http://localhost:3100/zircon/api/info
+GET http://localhost:11200/zircon/api/info
 
 ###
-GET http://localhost:3100/ha/_/devices
+GET http://localhost:11200/ha/_/devices
 
 ###
-GET http://localhost:3100/mpi/devices
+GET http://localhost:11200/mpi/devices
 
 ###
 GET https://dev.zircon.run/api/info

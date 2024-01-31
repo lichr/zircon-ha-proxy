@@ -58,8 +58,7 @@ export function useOptions(): IOptions {
     // pre-configured zircon options
     // for running as dev-command and dev-containers
     zircon = {
-      email: addonOptions.email,
-      password: addonOptions.password,
+      zirconAccessToken: addonOptions.zircon_access_token,
       baseUrl: zirconOptions.baseUrl,
       group: addonOptions.group,
       project: addonOptions.project,
@@ -70,8 +69,7 @@ export function useOptions(): IOptions {
     // default zircon options
     // for production
     zircon = {
-      email: addonOptions.email,
-      password: addonOptions.password,
+      zirconAccessToken: addonOptions.zircon_access_token,
       baseUrl: 'https://zircon3d.com',
       group: addonOptions.group,
       project: addonOptions.project,
@@ -89,7 +87,7 @@ export function useOptions(): IOptions {
     zircon: {
       ...options.zircon,
       client: options.zircon.client ? '***': undefined,
-      password: '***'
+      zirconAccessToken: '***'
     },
     ha: {
       ...options.ha,
