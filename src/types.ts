@@ -1,6 +1,5 @@
 export interface IAddonOptions {
-  email: string;
-  password: string;
+  zircon_access_token: string;
   group: string;
   project: string;
 }
@@ -28,8 +27,7 @@ export interface IOptionsHa {
 }
 
 export interface IOptionsZircon {
-  email: string;
-  password: string;
+  zirconAccessToken: string;
   baseUrl: string;
   group: string;
   project: string;  

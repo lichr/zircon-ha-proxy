@@ -13,12 +13,10 @@ ports:
 arch:
   - amd64
 options:
-  email: null
-  password: null
+  zircon_access_token: null
   group: null
   project: null
 schema:
-  email: email
-  password: password
+  zircon_access_token: str
   group: "match(^[a-zA-Z0-9]+$)"
   project: "match(^[a-zA-Z0-9]+$)"
