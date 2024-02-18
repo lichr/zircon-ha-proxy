@@ -1,5 +1,6 @@
 node_modules/
 build/
+data/
 .vscode/settings.json
 options.json
 options-*.json
