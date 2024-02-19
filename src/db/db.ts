@@ -1,5 +1,6 @@
 import { Database } from "sqlite3";
-import { BundleTable } from './tables';
+import { BundleLogTable, BundleResourceTable, BundleTable } from './tables';
+import { SettingTable } from './tables/setting-table';
 
 export interface IZirconDBConfig {
   path: string;
@@ -14,7 +15,10 @@ export class ZirconDB {
     }
     return this.db;
   }
+  setting: SettingTable = new SettingTable(this.getDB);
   bundle: BundleTable = new BundleTable(this.getDB);
+  bundleResource: BundleResourceTable = new BundleResourceTable(this.getDB);
+  bundleLog: BundleLogTable = new BundleLogTable(this.getDB);
 
   constructor(config: IZirconDBConfig) {
     this.config = config;
@@ -37,7 +41,10 @@ export class ZirconDB {
           }
           console.log("Connected to the SQLite database.");
 
+          this.setting.create().then().catch(reject);
           this.bundle.create().then().catch(reject);
+          this.bundleResource.create().then().catch(reject);
+          this.bundleLog.create().then().catch(reject);
 
           resolve();
         }

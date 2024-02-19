@@ -4,6 +4,7 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+    
     {
       "type": "node",
       "request": "launch",
@@ -16,8 +17,22 @@
         "${workspaceFolder}/build/**/*.js"
       ],
       "args": [
-        "--options", "options.json"
+        "--options", "../../options/options.json",
+        "--dev-options", "../../options/dev-options.json",
+        "--zircon-options", "../../options/zircon-options.json"
       ]
-    }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Start Bundler",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "program": "${workspaceFolder}/src/create-bundle.ts",
+      "outFiles": [
+        "${workspaceFolder}/build/**/*.js"
+      ]
+    }    
   ]
 }

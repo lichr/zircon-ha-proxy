@@ -1,7 +1,6 @@
 import { Database } from 'sqlite3';
-import { IBundle } from '../../types';
 
-export class BundleTable {
+export class SettingTable {
   getDB: () => Database;
 
   constructor(getDB: () => Database) {
@@ -12,7 +11,7 @@ export class BundleTable {
     return new Promise((resolve, reject) => {
       this.getDB().run(
         `
-          CREATE TABLE IF NOT EXISTS bundle (
+          CREATE TABLE IF NOT EXISTS setting (
             id              text PRIMARY KEY,
             body            jsonb NOT NULL
           )
@@ -32,22 +31,23 @@ export class BundleTable {
   }
 
   async upsert(
-    body: IBundle
+    id: string,
+    body: any
   ): Promise<void> {
     return new Promise((resolve, reject) => {
       this.getDB().run(
         `
-          INSERT INTO bundle (id, body)
+          INSERT INTO setting (id, body)
             VALUES (?, ?)
             ON CONFLICT(id) DO UPDATE SET body = excluded.body
         `,
         [
-          body.id,
+          id,
           JSON.stringify(body)
         ],
         (err) => {
           if (err) {
-            console.error("Error inserting bundle", err);
+            console.error("Error inserting setting", err);
             reject(err);
           } else {
             resolve();
@@ -57,41 +57,38 @@ export class BundleTable {
     });
   }
 
-  async get(id: string): Promise<IBundle> {
+  async get(id: string): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getDB().get(
-        `
-          SELECT body
-            FROM bundle
-            WHERE id = ?
-        `,
+        `SELECT body FROM setting WHERE id = ?`,
         [id],
-        (err, row) => {
+        (err, row: any) => {
           if (err) {
-            console.error("Error getting bundle", err);
+            console.error("Error getting setting", err);
             reject(err);
           } else {
-            resolve(row ? JSON.parse((row as any).body) : null);
+            resolve(row ? JSON.parse(row.body) : null);
           }
         }
       );
     });
   }
 
-  async query(): Promise<IBundle[]> {
+  async query(): Promise<Record<string, any>> {
     return new Promise((resolve, reject) => {
       this.getDB().all(
-        `
-          SELECT body
-            FROM bundle
-        `,
+        `SELECT id, body FROM setting`,
         [],
-        (err, rows) => {
+        (err, rows: any[]) => {
           if (err) {
-            console.error("Error getting bundles", err);
+            console.error("Error getting settings", err);
             reject(err);
           } else {
-            resolve(rows.map((row) => JSON.parse((row as any).body)));
+            const settings: any = {};
+            rows.forEach((row) => {
+              settings[row.id] = JSON.parse(row.body);
+            });
+            resolve(settings);
           }
         }
       );

@@ -63,7 +63,7 @@ export function useOptions(): IOptions {
       group: addonOptions.group,
       project: addonOptions.project,
       mpiUrl: zirconOptions.mpiUrl,
-      client: zirconOptions.client
+      clientCert: zirconOptions.clientCert
     }
   } else {
     // default zircon options
@@ -86,7 +86,7 @@ export function useOptions(): IOptions {
     mode: options.mode,
     zircon: {
       ...options.zircon,
-      client: options.zircon.client ? '***': undefined,
+      clientCert: options.zircon.clientCert ? '***': undefined,
       zirconAccessToken: '***'
     },
     ha: {
