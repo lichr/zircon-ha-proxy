@@ -30,7 +30,7 @@ export class ZirconDB {
     }
   }
 
-  async init(): Promise<void> {
+  async _createDB(): Promise<void> {
     return new Promise((resolve, reject) => {
       this.db = new Database(
         this.config.path,
@@ -40,15 +40,17 @@ export class ZirconDB {
             reject(err);
           }
           console.log("Connected to the SQLite database.");
-
-          this.setting.create().then().catch(reject);
-          this.bundle.create().then().catch(reject);
-          this.bundleResource.create().then().catch(reject);
-          this.bundleLog.create().then().catch(reject);
-
           resolve();
         }
       );
     });
+  }
+
+  async init(): Promise<void> {
+    await this._createDB();
+    await this.setting.create();
+    await this.bundle.create();
+    await this.bundleResource.create();
+    await this.bundleLog.create();
   };
 }

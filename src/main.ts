@@ -6,10 +6,8 @@ import WebSocket from 'ws';
 import { makeAgentPemStrings, useOptions } from './tools';
 import { HaClient } from './ha';
 import { HaProxyServer } from './ha-proxy-server';
-import { pageConfig, useZirconProxy } from './zircon-proxy';
 import { Bundler } from './bundler';
-
-const pathRegex = /^\/(?<path>.*)$/;
+import { useOffline, useOnline } from './routes';
 
 async function main() {
   const options = useOptions();
@@ -42,9 +40,6 @@ async function main() {
   const host = '0.0.0.0';
   const port = 11200;
 
-  // serve page config
-  app.get('/config/page.json', pageConfig(options, agent));
-
   // proxy to ha socket
   const ha = new HaClient(webSocketUrl, accessToken);
 
@@ -74,31 +69,11 @@ async function main() {
     }
   });
 
-  app.use(
-    '/offline',
-    async (req, res) => {
-      const path = req.url.match(pathRegex)?.groups?.path;
-      if (path) {
-        const r = await bundler.getResource(path);
-        console.log('>>>> get resource: ', r?.url);
-        if (r) {
-          _.each(
-            r.headers,
-            (value, key) => {
-              res.setHeader(key, value);
-            }
-          );
-          res.end(r.body);
-          return;
-        }
-      }
-      res.status(404).send('Not found');
-    }
-  );
+  // use offline data
+  app.use('/offline', useOffline(bundler));
 
   // proxy to zircon services: designer-page, api, xpi and others
-  useZirconProxy(app, baseUrl, agent);
-
+  useOnline(app, options, agent);
 
   // set cors
   app.use(cors());

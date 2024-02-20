@@ -19,7 +19,8 @@ export class BundleResourceTable {
             size            integer NOT NULL,
             body            blob NOT NULL,
             options         jsonb NOT NULL,
-            PRIMARY KEY     (bundle_id, url)
+            PRIMARY KEY     (bundle_id, url),
+            FOREIGN KEY (bundle_id) REFERENCES bundle(id) ON DELETE CASCADE
           )
         `,
         [],

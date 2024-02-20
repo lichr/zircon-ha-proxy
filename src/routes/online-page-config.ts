@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { Agent } from 'https'
 import { IOptions } from '../types';
 
-export function pageConfig(options: IOptions, agent?: Agent) {
+export function onlinePageConfig(options: IOptions, agent?: Agent) {
   const { zircon: { baseUrl, zirconAccessToken, group, project, mpiUrl } } = options;
   return async (req: Request, res: Response) => {
     try {
@@ -13,13 +13,15 @@ export function pageConfig(options: IOptions, agent?: Agent) {
         httpsAgent: agent
       });
 
+      console.log('>>> options: ', options);
       console.log('>>> original page config: ', response.data);
       console.log('>>> ingressPath: ', ingressPath);
       console.log('>>> headers: ', req.headers);
 
       // Add login info to received JSON data
       const pageConfig = response.data;
-      const pageBaseUrl = ingressPath ?? ''
+      const siteBaseUrl = ingressPath ?? '';
+      const pageBaseUrl = `${siteBaseUrl}/online`
       pageConfig.page.baseUrl = pageBaseUrl;
 
       // override api, xpi and mpi config
@@ -28,7 +30,7 @@ export function pageConfig(options: IOptions, agent?: Agent) {
       pageConfig.page.mpi = {
         "mode": "proxy",
         "config": {
-          "path": `${pageBaseUrl}/mpi/ws`,
+          "path": `${siteBaseUrl}/mpi/ws`,
           "url": mpiUrl
         }
       };

@@ -28,7 +28,7 @@ export class Bundler {
 
   async getResource(url: string) {
     if (this.activeBundleId) {
-      const res = await this.db.bundleResource.get('YIq0ZQz7xG0g', url);
+      const res = await this.db.bundleResource.get(this.activeBundleId, url);
       return res;
     }
     return null;
