@@ -22,7 +22,11 @@ export function useOnline(
     ws: false,
     secure: true,
     agent,
-    logLevel: 'debug'
+    logLevel: 'debug',
+    onProxyRes: (proxyRes, req, res) => {
+      // set cors to allow all origins
+      proxyRes.headers['Access-Control-Allow-Origin'] = '*';
+    }
   };
 
   // proxy to zircon services

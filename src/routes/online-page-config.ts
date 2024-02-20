@@ -13,10 +13,7 @@ export function onlinePageConfig(options: IOptions, agent?: Agent) {
         httpsAgent: agent
       });
 
-      console.log('>>> options: ', options);
-      console.log('>>> original page config: ', response.data);
       console.log('>>> ingressPath: ', ingressPath);
-      console.log('>>> headers: ', req.headers);
 
       // Add login info to received JSON data
       const pageConfig = response.data;
