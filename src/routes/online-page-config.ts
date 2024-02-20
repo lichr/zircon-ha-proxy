@@ -61,6 +61,8 @@ export function onlinePageConfig(options: IOptions, agent?: Agent) {
         projectId: project
       };
 
+      // prevent caching
+      res.setHeader('Cache-Control', 'no-store');
       res.json(pageConfig);
     } catch (error) {
       console.error(error);

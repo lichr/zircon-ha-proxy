@@ -4,6 +4,7 @@ import { Bundler, IBundlerConfig } from './bundler';
 import { IZirconClientConfig, ZirconClient, ZirconSession } from './zircon-client';
 import { IZirconOptions } from './types';
 import _ from 'lodash';
+import { useOptions } from './tools';
 
 
 function tryLoadOptions<T>(file: string): T | undefined {
@@ -12,28 +13,31 @@ function tryLoadOptions<T>(file: string): T | undefined {
 }
 
 
-const clientConfig: IZirconClientConfig = {
-  zirconAccessToken: 'z6dB7FtqWnd4.r1c9isqtX03dGOtdLbL9HM04LhjYnMr9',
-  baseUrl: 'https://dev.zircon.run',
-  group: 'FrCOUUzBcuCS',
-  project: 'smxhtZa6arCt',
-}
+// const clientConfig: IZirconClientConfig = {
+//   zirconAccessToken: 'g0yQNInyov69.8ftTZdzr1NifU6yVW9hJXi4GAvINAG3X',
+//   baseUrl: 'https://dev.zircon.run',
+//   group: 'ZA7SAvKGkJE6',
+//   project: 'avqzYxQ9jbMh',
+// }
 
 async function main() {
+  // const zirconOptions = tryLoadOptions<IZirconOptions>('../../options/zircon-options.json');
+  // if (!zirconOptions) {
+  //   throw new Error('Please specify options file with --options option.');
+  // }
+  // clientConfig.clientCert = zirconOptions.clientCert;
 
-  const zirconOptions = tryLoadOptions<IZirconOptions>('../../options/zircon-options.json');
-  if (!zirconOptions) {
-    throw new Error('Please specify options file with --options option.');
-  }
-  clientConfig.clientCert = zirconOptions.clientCert;
-
-  const config: IBundlerConfig = {
-    db: {
-      path: 'data/zircon.db'
-    },
-    client: clientConfig
-  };
-  const bundler = new Bundler(config);
+  const options = useOptions();
+  const bundler = new Bundler({
+    db: { path: 'data/zircon.db' },
+    client: {
+      zirconAccessToken: options.zircon.zirconAccessToken,
+      baseUrl: options.zircon.baseUrl,
+      group: options.zircon.group,
+      project: options.zircon.project,
+      clientCert: options.zircon.clientCert
+    }
+  });
   await bundler.init();
   await bundler.createBundle();
 

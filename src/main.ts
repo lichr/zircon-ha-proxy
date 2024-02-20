@@ -70,7 +70,7 @@ async function main() {
   });
 
   // use offline data
-  app.use('/offline', useOffline(bundler));
+  app.use('/offline', useOffline(options, bundler));
 
   // proxy to zircon services: designer-page, api, xpi and others
   useOnline(app, options, agent);

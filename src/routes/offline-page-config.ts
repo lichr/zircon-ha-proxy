@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 
-export function offlinePageConfig(): any {
+import { IOptions } from '../types';
+
+export function offlinePageConfig(options: IOptions): any {
+  const { zircon: { group, project } } = options;
+
   return async (req: Request, res: Response) => {
     const config = {
       mode: 'offline',
@@ -16,10 +20,12 @@ export function offlinePageConfig(): any {
         }
       },
       project: {
-        groupId: "FrCOUUzBcuCS",
-        projectId: "smxhtZa6arCt"
+        groupId: group,
+        projectId: project
       }      
     };
+    // prevent caching
+    res.setHeader('Cache-Control', 'no-store');
     res.json(config);
   }
 }

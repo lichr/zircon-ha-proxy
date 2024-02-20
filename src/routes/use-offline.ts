@@ -1,15 +1,16 @@
 import express from 'express';
-import _ from 'lodash';
+import _, { rest } from 'lodash';
 import { Bundler } from '../bundler';
 import { offlinePageConfig } from './offline-page-config';
+import { IOptions } from '../types';
 
 
 const pathRegex = /^\/(?<path>.*)$/;
 
-export function useOffline(bundler: Bundler) {
+export function useOffline(options: IOptions, bundler: Bundler) {
   const router = express.Router();
-  router.get('/designer/config/page.json', offlinePageConfig());
-  router.get('/viewer/config/page.json', offlinePageConfig());
+  router.get('/designer/config/page.json', offlinePageConfig(options));
+  router.get('/viewer/config/page.json', offlinePageConfig(options));
 
   router.use(
     '/api',
@@ -26,6 +27,7 @@ export function useOffline(bundler: Bundler) {
               res.setHeader(key, value);
             }
           );
+          res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
           res.end(r.body);
           return;
         }
@@ -49,6 +51,11 @@ export function useOffline(bundler: Bundler) {
               res.setHeader(key, value);
             }
           );
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          // encourage browser to cache s3 resources
+          if (path.startsWith('s3/')) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+          }
           res.end(r.body);
           return;
         }
