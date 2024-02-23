@@ -1,6 +1,6 @@
 import WebSocket from 'ws';
 import { HaClient } from '../ha';
-import { makeUid } from '../tools';
+import { makeUid } from '../../tools';
 
 export class MpiDownstreamConnection {
   id: string = makeUid();

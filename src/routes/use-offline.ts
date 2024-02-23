@@ -1,6 +1,6 @@
 import express from 'express';
 import _, { rest } from 'lodash';
-import { Bundler } from '../bundler';
+import { Bundler } from '../services';
 import { offlinePageConfig } from './offline-page-config';
 import { IOptions } from '../types';
 

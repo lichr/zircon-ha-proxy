@@ -1,6 +1,6 @@
 import EventEmitter from 'eventemitter3';
 import _ from 'lodash';
-import { makeSlug } from '../tools';
+import { makeSlug } from '../../tools';
 import { IMpiDevice, IMpiState } from '../mpi';
 import { haDeviceToDevice, haEntityToMetric, haStateToState } from './convert';
 import { HaUpstreamConnection } from './ha-upstream-connection';

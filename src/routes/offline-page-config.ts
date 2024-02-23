@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-
 import { IOptions } from '../types';
 
 export function offlinePageConfig(options: IOptions): any {

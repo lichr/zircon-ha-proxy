@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { IBundleManifest, IResourceResponse, IZirconClientCert } from '../types';
+import { IBundleManifest, IResourceResponse, IZirconClientCert } from '../../types';
 import { Agent } from 'https';
-import { makeAgentPemStrings } from '../tools';
+import { makeAgentPemStrings } from '../../tools';
 import _ from 'lodash';
 import { ZirconSession } from './zircon-session';
 

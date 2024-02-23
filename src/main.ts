@@ -4,9 +4,7 @@ import http from 'http';
 import _ from 'lodash';
 import WebSocket from 'ws';
 import { makeAgentPemStrings, useOptions } from './tools';
-import { HaClient } from './ha';
-import { HaProxyServer } from './ha-proxy-server';
-import { Bundler } from './bundler';
+import { Bundler, HaClient, ProxyServer } from './services';
 import { useOffline, useOnline } from './routes';
 
 async function main() {
@@ -45,7 +43,7 @@ async function main() {
 
   // ws server for mpi events
   const wss = new WebSocket.Server({ server, path: '/mpi/ws' });
-  new HaProxyServer(wss, ha);
+  new ProxyServer(wss, ha);
 
   // access ha internal, only for development purposes
   app.get('/ha/_/devices', async (req, res) => {

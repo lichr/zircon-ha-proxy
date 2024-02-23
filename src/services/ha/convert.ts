@@ -1,4 +1,4 @@
-import { makeSlug } from "../tools";
+import { makeSlug } from "../../tools";
 import { IMpiDevice, IMpiMetric, IMpiState, makeTagsByName } from "../mpi";
 
 export function haStateToState(haState: any): IMpiState {

@@ -1,8 +1,5 @@
 import fs from 'fs';
-import { Database } from 'sqlite3';
-import { Bundler, IBundlerConfig } from './bundler';
-import { IZirconClientConfig, ZirconClient, ZirconSession } from './zircon-client';
-import { IZirconOptions } from './types';
+import { Bundler } from './services';
 import _ from 'lodash';
 import { useOptions } from './tools';
 

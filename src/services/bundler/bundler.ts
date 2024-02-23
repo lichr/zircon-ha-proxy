@@ -1,7 +1,7 @@
 import _ from 'lodash';
-import { IZirconDBConfig, ZirconDB } from '../db';
+import { IZirconDBConfig, ZirconDB } from '../../db';
 import { IZirconClientConfig, ZirconClient } from '../zircon-client';
-import { makeNow } from '../tools';
+import { makeNow } from '../../tools';
 
 export interface IBundlerConfig {
   db: IZirconDBConfig;

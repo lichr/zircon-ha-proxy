@@ -1,9 +1,8 @@
 import _ from 'lodash';
 import WebSocket from 'ws';
-import { HaClient } from "./ha";
-import { MpiDownstreamConnection } from './mpi/mpi-downstream-connection';
+import { HaClient, MpiDownstreamConnection } from "..";
 
-export class HaProxyServer {
+export class ProxyServer {
   ha: HaClient;
   wss: WebSocket.Server;
   timer: NodeJS.Timeout | undefined;
