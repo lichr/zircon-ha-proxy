@@ -1,13 +1,13 @@
 import express from 'express';
-import _, { rest } from 'lodash';
-import { Bundler } from '../services';
+import _ from 'lodash';
+import { ProxyCore } from '../services';
 import { offlinePageConfig } from './offline-page-config';
 import { IOptions } from '../types';
 
 
 const pathRegex = /^\/(?<path>.*)$/;
 
-export function useOffline(options: IOptions, bundler: Bundler) {
+export function useOffline(options: IOptions, core: ProxyCore) {
   const router = express.Router();
   router.get('/designer/config/page.json', offlinePageConfig(options));
   router.get('/viewer/config/page.json', offlinePageConfig(options));
@@ -18,7 +18,7 @@ export function useOffline(options: IOptions, bundler: Bundler) {
       // include query string
       const path = req.url.match(pathRegex)?.groups?.path;
       if (path) {
-        const r = await bundler.getResource(`api/${path}`);
+        const r = await core.bundler.getResource(`api/${path}`);
         console.log('>>>> get resource: ', r?.url);
         if (r) {
           _.each(
@@ -42,7 +42,7 @@ export function useOffline(options: IOptions, bundler: Bundler) {
       // ignore query string
       const path = req.path.match(pathRegex)?.groups?.path;
       if (path) {
-        const r = await bundler.getResource(path);
+        const r = await core.bundler.getResource(path);
         console.log('>>>> get resource: ', r?.url);
         if (r) {
           _.each(

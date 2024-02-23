@@ -3,34 +3,15 @@ import cors from 'cors';
 import http from 'http';
 import _ from 'lodash';
 import WebSocket from 'ws';
-import { makeAgentPemStrings, useOptions } from './tools';
-import { Bundler, HaClient, ProxyServer } from './services';
+import { useOptions } from './tools';
+import { HaClient, ProxyCore, ProxyServer } from './services';
 import { useOffline, useOnline } from './routes';
 
 async function main() {
   const options = useOptions();
   const { ha: { webSocketUrl, accessToken }, zircon: { baseUrl, clientCert } } = options;
+  const core = new ProxyCore(options);
 
-  // offline bundle
-  const bundler = new Bundler({
-    db: { path: 'data/zircon.db' },
-    client: {
-      zirconAccessToken: options.zircon.zirconAccessToken,
-      baseUrl: options.zircon.baseUrl,
-      group: options.zircon.group,
-      project: options.zircon.project,
-      clientCert: options.zircon.clientCert
-    }
-  });
-  await bundler.init();
-
-  // create https agent that uses client certificate
-  // this is generally NOT needed
-  // it is only used for testing with our protected environment, such as dev
-  let agent = undefined;
-  if (clientCert) {
-    agent = makeAgentPemStrings(clientCert.key, clientCert.cert);
-  }
 
   // create express app
   const app = express();
@@ -68,10 +49,10 @@ async function main() {
   });
 
   // use offline data
-  app.use('/offline', useOffline(options, bundler));
+  app.use('/offline', useOffline(options, core));
 
   // proxy to zircon services: designer-page, api, xpi and others
-  useOnline(app, options, agent);
+  useOnline(app, core);
 
   // set cors
   app.use(cors());

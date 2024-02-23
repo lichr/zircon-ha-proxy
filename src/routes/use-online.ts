@@ -1,18 +1,17 @@
 import { Express } from 'express';
 import { Options, createProxyMiddleware } from 'http-proxy-middleware';
 import { onlinePageConfig } from './online-page-config';
-import { IOptions } from '../types';
 import _ from 'lodash';
+import { ProxyCore } from '../services';
 
 export function useOnline(
   app: Express,
-  options: IOptions,
-  agent?: any
+  core: ProxyCore
 ) {
-  const { zircon: { baseUrl } } = options;
+  const { zircon: { baseUrl } } = core.options;
 
-  app.get('/online/designer/config/page.json', onlinePageConfig(options, agent));
-  app.get('/online/viewer/config/page.json', onlinePageConfig(options, agent));
+  app.get('/online/designer/config/page.json', onlinePageConfig(core.options, core.agent ?? undefined));
+  app.get('/online/viewer/config/page.json', onlinePageConfig(core.options, core.agent ?? undefined));
 
 
   // make default proxy options
@@ -21,7 +20,7 @@ export function useOnline(
     changeOrigin: true, // Needed for virtual hosted sites
     ws: false,
     secure: true,
-    agent,
+    agent: core.agent,
     logLevel: 'debug',
     onProxyRes: (proxyRes, req, res) => {
       // set cors to allow all origins
