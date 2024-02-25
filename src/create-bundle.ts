@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { Bundler } from './services';
+import { Bundler, ProxyCore } from './services';
 import _ from 'lodash';
 import { useOptions } from './tools';
 
@@ -25,18 +25,9 @@ async function main() {
   // clientConfig.clientCert = zirconOptions.clientCert;
 
   const options = useOptions();
-  const bundler = new Bundler({
-    db: { path: 'data/zircon.db' },
-    client: {
-      zirconAccessToken: options.zircon.zirconAccessToken,
-      baseUrl: options.zircon.baseUrl,
-      group: options.zircon.group,
-      project: options.zircon.project,
-      clientCert: options.zircon.clientCert
-    }
-  });
-  await bundler.init();
-  await bundler.createBundle();
+  const core = new ProxyCore(options);
+  await core.init();
+  await core.bundler.createBundle();
 
   // const session = await bundler.client.makeSession();
   // // const item = await bundler.client.getApiItem(session, 'api/pub/methods/load_viewer?group=FrCOUUzBcuCS&project=smxhtZa6arCt', 'pub/methods/load_viewer?group=FrCOUUzBcuCS&project=smxhtZa6arCt');

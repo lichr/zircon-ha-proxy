@@ -74,6 +74,8 @@ export interface IBundleManifest {
 export interface IBundle {
   id: string;
   name: string;
+  group: string;
+  project: string;
   description?: string;
   created: string;
   updated: string;
@@ -81,7 +83,12 @@ export interface IBundle {
 
 export interface IBundleResourceOptions {
   type: BundleResourceType;
-  status: 'loading' | 'loaded';
+  /**
+   * cached: served as what is stored in the table
+   * part: this is a part of a larger resource
+   */
+  mode: 'cache' | 'static' | 'part';
+  parent?: string;
 }
 
 export interface IBundleResourceHeader {
@@ -101,6 +108,14 @@ export interface IBundleResource {
   url: string;
   headers: Record<string, string>;
   size: number;
+  body: ArrayBuffer;
+  options: IBundleResourceOptions;
+}
+
+export interface IBundleResourceInput {
+  bundle_id: string;
+  url: string;
+  headers: Record<string, string>;
   body: ArrayBuffer;
   options: IBundleResourceOptions;
 }

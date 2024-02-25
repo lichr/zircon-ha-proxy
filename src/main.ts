@@ -5,13 +5,15 @@ import _ from 'lodash';
 import WebSocket from 'ws';
 import { useOptions } from './tools';
 import { HaClient, ProxyCore, ProxyServer } from './services';
-import { useOffline, useOnline } from './routes';
+import { useOffline, useOnline, useProxy } from './routes';
 
 async function main() {
   const options = useOptions();
   const { ha: { webSocketUrl, accessToken }, zircon: { baseUrl, clientCert } } = options;
-  const core = new ProxyCore(options);
 
+  // create and initialize proxy core
+  const core = new ProxyCore(options);
+  await core.init();
 
   // create express app
   const app = express();
@@ -47,6 +49,10 @@ async function main() {
       res.status(500).send('An error occurred.');
     }
   });
+
+  // api for managing this proxy server
+  app.use('/proxy', useProxy(options, core));
+
 
   // use offline data
   app.use('/offline', useOffline(options, core));

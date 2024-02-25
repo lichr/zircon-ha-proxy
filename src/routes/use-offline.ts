@@ -60,7 +60,7 @@ export function useOffline(options: IOptions, core: ProxyCore) {
           return;
         }
       }
-      res.status(404).send('Not found');
+      res.status(404).json({ code: 'resource-not-found', data: { path } });
     }
   );
 

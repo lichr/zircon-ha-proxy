@@ -42,6 +42,14 @@ export class ZirconClient {
     }
   }
 
+  projectId() {
+    return this.config.project;
+  }
+
+  groupId() {
+    return this.config.group;
+  }
+
   async makeSession() {
     const session = new ZirconSession({
       httpsAgent: this.httpsAgent,

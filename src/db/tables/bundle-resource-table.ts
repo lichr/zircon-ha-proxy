@@ -1,5 +1,5 @@
 import { Database } from 'sqlite3';
-import { IBundleResource } from '../../types';
+import { IBundleResource, IBundleResourceInput } from '../../types';
 
 export class BundleResourceTable {
   getDB: () => Database;
@@ -19,8 +19,7 @@ export class BundleResourceTable {
             size            integer NOT NULL,
             body            blob NOT NULL,
             options         jsonb NOT NULL,
-            PRIMARY KEY     (bundle_id, url),
-            FOREIGN KEY (bundle_id) REFERENCES bundle(id) ON DELETE CASCADE
+            PRIMARY KEY     (bundle_id, url)
           )
         `,
         [],
@@ -38,7 +37,7 @@ export class BundleResourceTable {
   }
 
   async upsert(
-    resource: IBundleResource
+    resource: IBundleResourceInput
   ): Promise<void> {
     const size = resource.body ? resource.body.byteLength : 0;
     return new Promise((resolve, reject) => {
