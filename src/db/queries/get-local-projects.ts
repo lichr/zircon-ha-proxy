@@ -61,7 +61,7 @@ export function getLocalProjects(
       [],
       (err, rows: any[]) => {
         if (err) {
-          console.error("Error getting bundle logs", err);
+          console.error("Error getting local projects", err);
           reject(err);
         } else {
           resolve(

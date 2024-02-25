@@ -6,12 +6,15 @@ import { ZirconClient, ZirconSession } from '../zircon-client';
 import { LocalBranch, OnlineBranch, Project } from './project';
 import _ from 'lodash';
 import { ZirconDB } from '../../db';
+import { access } from 'fs-extra';
+import { Settings } from '../settings';
 
 export class ProxyCore {
   options: IOptions;
   db: ZirconDB;
   bundler: Bundler;
   zirconClient: ZirconClient;
+  settings: Settings;
   agent: Agent | null = null;
 
   constructor(options: IOptions) {
@@ -26,27 +29,46 @@ export class ProxyCore {
     // create zircon db
     this.db = new ZirconDB(options.db);
 
+    // create settings
+    this.settings = new Settings(() => this.db);
+
     // create zircon client
     const clientConfig = {
-      zirconAccessToken: options.zircon.zirconAccessToken,
-      baseUrl: options.zircon.baseUrl,
-      group: options.zircon.group,
-      project: options.zircon.project,
+      db: () => this.db,
       clientCert: options.zircon.clientCert
     };
-    this.zirconClient = new ZirconClient(clientConfig);
+    this.zirconClient = new ZirconClient(clientConfig, this.settings);
 
     // create bundler
-    this.bundler = new Bundler({
-      db: () => this.db,
-      client: () => this.zirconClient
-    });
+    this.bundler = new Bundler(
+      {
+        db: () => this.db,
+        client: () => this.zirconClient
+      },
+      this.settings
+    );
   }
 
   async init() {
     await this.db.init();
+    await this.settings.load();
     await this.zirconClient.init();
-    await this.bundler.init();
+  }
+
+  async getUserInfo() {
+    const session = this.zirconClient.getSession();
+    const user = session.getUser();
+    const accessToken = await this.db.setting.get('access_token');
+    if (accessToken) {
+      const tokenId = accessToken.split('.')[0];
+      return {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        tokenId
+      };
+    }
+    return null
   }
 
   async getActiveProject() {
@@ -54,13 +76,61 @@ export class ProxyCore {
     return data ?? null;
   }
 
-
   async setActiveProject(groupId: string, projectId: string) {
     await this.db.setting.upsert('active_project', { groupId, projectId });
   }
 
-  async getProjects() {
+  async _getProjects() {
     const session = this.zirconClient.getSession();
+    // do parallel requests
+    const [onlineProjects, localProjects] = await Promise.all([
+      // get online projects from zircon api
+      session.apiGet('pub/current_user/projects'),
+      // get offline projects from local store
+      this.bundler.getLocalProjects()
+    ]);
+    return { onlineProjects, localProjects };
+  }
+
+  async getActiveProjectInfo() {
+    const currentProject = await this.getActiveProject();
+    if (currentProject) {
+
+      const { groupId, projectId } = currentProject as { groupId: string, projectId: string };
+      let project: Project | null = null;
+
+      // get online and local projects
+      const { onlineProjects, localProjects } = await this._getProjects();
+
+      // find online project
+      const onlineProject = _.find(
+        onlineProjects,
+        (project: any) => project.project.group === groupId && project.info.id === projectId
+      );
+      if (onlineProject) {
+        project = new Project(groupId, projectId);
+        project.onlineBranch = new OnlineBranch(onlineProject);
+      }
+
+      // find local project
+      const localProject = _.find(
+        localProjects,
+        (project) => project.groupId === groupId && project.projectId === projectId
+      );
+      if (localProject) {
+        if (!project) {
+          project = new Project(groupId, projectId);
+        }
+        project.localBranch = new LocalBranch(localProject);
+      }
+      if (project) {
+        return project.get();
+      }
+    }
+    return null;
+  }
+
+  async getProjects() {
     const currentProject = await this.getActiveProject();
 
     // for receiving projects
@@ -75,13 +145,8 @@ export class ProxyCore {
       return project;
     }
 
-    // do parallel requests
-    const [onlineProjects, localProjects] = await Promise.all([
-      // get online projects from zircon api
-      session.apiGet('pub/current_user/projects'),
-      // get offline projects from local store
-      this.bundler.getLocalProjects()
-    ]);
+    // get online and local projects
+    const { onlineProjects, localProjects } = await this._getProjects();
 
     // merge online and local projects
     _.each(

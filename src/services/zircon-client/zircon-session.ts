@@ -1,12 +1,15 @@
 import axios from 'axios';
 import { FirebaseOptions, initializeApp } from 'firebase/app';
-import { Auth, User, getAuth, onAuthStateChanged, signInWithCustomToken, signInWithEmailAndPassword } from 'firebase/auth';
+import { User, getAuth, signInWithCustomToken } from 'firebase/auth';
 import { Agent } from 'https';
+import { IUser } from '../../types';
+import _ from 'lodash';
 
 export interface IZirconSessionConfig {
   httpsAgent: Agent | null;
   accessToken: string;
   baseUrl: string;
+  onSignIn: (user: IUser) => Promise<void>;
 }
 
 /**
@@ -17,6 +20,12 @@ export class ZirconSession {
   config: IZirconSessionConfig;
   firebaseOptions: FirebaseOptions | null = null;
   user: User | null = null;
+  getUser() {
+    if (!this.user) {
+      throw new Error('Not logged in');
+    }
+    return this.user;
+  }
 
   constructor(config: IZirconSessionConfig) {
     this.config = config;
@@ -51,30 +60,6 @@ export class ZirconSession {
     return firebaseOptions;
   }
 
-  // private async _login(auth: Auth, customToken: string): Promise<User> {
-  //   return new Promise(
-  //     (resolve, reject) => {
-  //       onAuthStateChanged(
-  //         auth,
-  //         (user) => {
-  //           if (user) {
-  //             resolve(user);
-  //           } else {
-  //             // reject(new Error('Failed to login'));
-  //           }
-  //         }
-  //       );
-        
-  //       signInWithCustomToken(auth, customToken).catch(
-  //         (err) => {
-  //           console.error('Error signing in with custom token', err);
-  //           reject(err);
-  //         }
-  //       );
-  //     }
-  //   );
-  // }
-
   async init() {
     // get  firebase options
     const firebaseOptions = await this._getFirebaseOptions();
@@ -90,6 +75,16 @@ export class ZirconSession {
 
     // this.user = await this._login(auth, customToken);
     this.user = (await signInWithCustomToken(auth, customToken)).user;
+
+    // notify sign in
+    const userEntry: IUser = {
+      uid: this.user.uid,
+      email: this.user.email,
+      displayName: this.user.displayName,
+      photoURL: this.user.photoURL,
+      providers: _.map(this.user.providerData, (p) => p.providerId)
+    };
+    await this.config.onSignIn(userEntry);
   }
 
   async apiGet<T = any>(url: string): Promise<T> {

@@ -1,15 +1,14 @@
 import axios from 'axios';
-import { IBundleManifest, IResourceResponse, IZirconClientCert } from '../../types';
+import { IBundleManifest, IResourceResponse, IUser, IZirconClientCert } from '../../types';
 import { Agent } from 'https';
 import { makeAgentPemStrings } from '../../tools';
-import _, { initial } from 'lodash';
+import _ from 'lodash';
 import { ZirconSession } from './zircon-session';
+import { ZirconDB } from '../../db';
+import { Settings } from '../settings';
 
 export interface IZirconClientConfig {
-  zirconAccessToken: string;
-  baseUrl: string;
-  group: string;
-  project: string;
+  db: () => ZirconDB;
   clientCert?: IZirconClientCert;
 }
 
@@ -27,14 +26,15 @@ function makeResponse(url: string, r: any) {
   };
 }
 
-
 export class ZirconClient {
   config: IZirconClientConfig;
   httpsAgent: Agent | null = null;
   session: ZirconSession | null = null;
+  settings: Settings;
 
-  constructor(config: IZirconClientConfig) {
+  constructor(config: IZirconClientConfig, settings: Settings) {
     this.config = config;
+    this.settings = settings;
 
     // make https agent if client-certificate is provided
     if (config.clientCert) {
@@ -47,14 +47,6 @@ export class ZirconClient {
     this.session = await this.makeSession();
   }
 
-  projectId() {
-    return this.config.project;
-  }
-
-  groupId() {
-    return this.config.group;
-  }
-
   getSession() {
     if (!this.session) {
       throw new Error('Session not initialized');
@@ -63,29 +55,41 @@ export class ZirconClient {
   }
 
   async makeSession() {
+    const accessToken = this.settings.accessToken();
+    const baseUrl = this.settings.ZirconBaseUrl();
     const session = new ZirconSession({
       httpsAgent: this.httpsAgent,
-      accessToken: this.config.zirconAccessToken,
-      baseUrl: this.config.baseUrl
+      accessToken,
+      baseUrl,
+      onSignIn: this.onSignIn
     });
     await session.init();
     return session;
   }
 
+  onSignIn = async (user: IUser) => {
+    // save user info to db
+    this.settings.set('user', user);
+  }
+
   async getManifest(session: ZirconSession): Promise<IBundleManifest> {
+    const projectId = this.settings.projectId();
+    const groupId = this.settings.groupId();
     return await session.apiGet(
-      `pub/methods/make_bundle_manifest?group=${this.config.group}&project=${this.config.project}`
+      `pub/methods/make_bundle_manifest?group=${groupId}&project=${projectId}`
     );
   }
 
 
   async getSiteItem(url: string): Promise<IResourceResponse> {
-    const r = await this.get(`${this.config.baseUrl}/${url}`);
+    const baseUrl = this.settings.ZirconBaseUrl();
+    const r = await this.get(`${baseUrl}/${url}`);
     return makeResponse(url, r);
   }
 
   async getAppItem(url: string): Promise<IResourceResponse> {
-    const r = await this.get(`${this.config.baseUrl}/${url}`);
+    const baseUrl = this.settings.ZirconBaseUrl();
+    const r = await this.get(`${baseUrl}/${url}`);
     return makeResponse(url, r);
   }
 
@@ -95,8 +99,9 @@ export class ZirconClient {
   }
 
   async getS3Item(url: string, target_url: string): Promise<IResourceResponse> {
+    const baseUrl = this.settings.ZirconBaseUrl();
     const r2 = await axios.get(
-      `${this.config.baseUrl}/xpi/s3/sign_download_url/${target_url}`,
+      `${baseUrl}/xpi/s3/sign_download_url/${target_url}`,
       {
         httpsAgent: this.httpsAgent
       }

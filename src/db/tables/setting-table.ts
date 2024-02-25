@@ -1,4 +1,5 @@
 import { Database } from 'sqlite3';
+import { ISettingEntry, ISettings } from '../../types';
 
 export class SettingTable {
   getDB: () => Database;
@@ -74,7 +75,7 @@ export class SettingTable {
     });
   }
 
-  async query(): Promise<Record<string, any>> {
+  async query(): Promise<ISettings> {
     return new Promise((resolve, reject) => {
       this.getDB().all(
         `SELECT id, body FROM setting`,
@@ -88,7 +89,7 @@ export class SettingTable {
             rows.forEach((row) => {
               settings[row.id] = JSON.parse(row.body);
             });
-            resolve(settings);
+            resolve(settings as ISettings);
           }
         }
       );

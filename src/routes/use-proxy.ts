@@ -12,11 +12,31 @@ export function useProxy(
   router.get('/config/page.json', proxyUiPageConfig(options));
 
   router.get(
-    '/api/active_project',
+    '/api/user_info',
     async (req, res, next) => {
       try {
-        const data = await core.getActiveProject();
-        res.json(data);
+        const data = await core.getUserInfo();
+        if (data) {
+          res.json(data);
+        } else {
+          res.status(404).json({ status: 'no user' });
+        }
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
+
+  router.get(
+    '/api/active_project_info',
+    async (req, res, next) => {
+      try {
+        const data = await core.getActiveProjectInfo();
+        if (data) {
+          res.json(data);
+        } else {
+          res.status(404).json({ status: 'no active project' });
+        }
       } catch (error) {
         next(error);
       }

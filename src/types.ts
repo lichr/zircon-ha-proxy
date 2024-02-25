@@ -132,3 +132,25 @@ export interface IBundleLogEntry {
   data?: any;
   error?: any;
 }
+
+export interface ISettingEntry<T=any> {
+  id: string;
+  body: any;
+}
+
+export interface IUser {
+  uid: string;
+  email: string | null;
+  displayName: string | null;
+  photoURL: string | null;
+  providers: string[];
+}
+
+
+export interface ISettings {
+  zircon_base_url?: string;
+  access_token?: string;
+  active_bundle?: string;
+  active_project?: IProjectLocation;
+  user?: IUser;
+}

@@ -3,6 +3,7 @@ import { ZirconDB, getLocalProjects } from '../../db';
 import { ZirconClient } from '../zircon-client';
 import { makeNow } from '../../tools';
 import { IBundle } from '../../types';
+import { Settings } from '../settings';
 
 export interface IBundlerConfig {
   client: () => ZirconClient;
@@ -11,26 +12,20 @@ export interface IBundlerConfig {
 
 export class Bundler {
   config: IBundlerConfig;
-  activeBundleId: string | null = null;
+  settings: Settings;
   client() {
     return this.config.client();
   };
 
-  constructor(config: IBundlerConfig) {
+  constructor(config: IBundlerConfig, settings: Settings) {
     this.config = config;
-  }
-
-  async init() {
-    const settings = await this.config.db().setting.query();
-    this.activeBundleId = settings.active_bundle;
+    this.settings = settings;
   }
 
   async getResource(url: string) {
-    if (this.activeBundleId) {
-      const res = await this.config.db().bundleResource.get(this.activeBundleId, url);
-      return res;
-    }
-    return null;
+    const activeBundleId = this.settings.activeBundle();
+    const res = await this.config.db().bundleResource.get(activeBundleId, url);
+    return res;
   }
 
   async saveStaticJson(bundleId: string, url: string, data: any, options:any={ mode: 'static' }) {
@@ -62,12 +57,14 @@ export class Bundler {
 
     const bundleId = manifest.info.id;
     const now = makeNow();
+    const project = this.settings.projectId();
+    const group = this.settings.groupId();
 
     const bundle: IBundle = {
       id: bundleId,
       name: 'new-bundle',
-      group: client.groupId(),
-      project: client.projectId(),
+      group,
+      project,
       created: now,
       updated: now
     };
@@ -126,8 +123,7 @@ export class Bundler {
     }
 
     // set active bundle
-    this.config.db().setting.upsert('active_bundle', bundleId);
-    this.activeBundleId = bundleId;
+    this.settings.set('active_bundle', bundleId);
   }
 
   async getLocalProjects() {
