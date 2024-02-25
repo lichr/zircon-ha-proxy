@@ -77,6 +77,9 @@ export function useOptions(): IOptions {
   }
   const options = {
     mode,
+    db: {
+      path: 'data/zircon.db'
+    },
     zircon,
     ha
   }

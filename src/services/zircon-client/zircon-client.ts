@@ -2,7 +2,7 @@ import axios from 'axios';
 import { IBundleManifest, IResourceResponse, IZirconClientCert } from '../../types';
 import { Agent } from 'https';
 import { makeAgentPemStrings } from '../../tools';
-import _ from 'lodash';
+import _, { initial } from 'lodash';
 import { ZirconSession } from './zircon-session';
 
 export interface IZirconClientConfig {
@@ -31,6 +31,7 @@ function makeResponse(url: string, r: any) {
 export class ZirconClient {
   config: IZirconClientConfig;
   httpsAgent: Agent | null = null;
+  session: ZirconSession | null = null;
 
   constructor(config: IZirconClientConfig) {
     this.config = config;
@@ -42,12 +43,23 @@ export class ZirconClient {
     }
   }
 
+  async init() {
+    this.session = await this.makeSession();
+  }
+
   projectId() {
     return this.config.project;
   }
 
   groupId() {
     return this.config.group;
+  }
+
+  getSession() {
+    if (!this.session) {
+      throw new Error('Session not initialized');
+    }
+    return this.session;
   }
 
   async makeSession() {

@@ -48,7 +48,6 @@ export class Project {
 
   get() {
     return {
-      uid: `${this.groupId}.${this.projectId}`,
       groupId: this.groupId,
       projectId: this.projectId,
       onlineBranch: !_.isNil(this.onlineBranch),

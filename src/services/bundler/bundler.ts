@@ -1,16 +1,15 @@
 import _ from 'lodash';
-import { IZirconDBConfig, ZirconDB, getLocalProjects } from '../../db';
+import { ZirconDB, getLocalProjects } from '../../db';
 import { ZirconClient } from '../zircon-client';
 import { makeNow } from '../../tools';
 import { IBundle } from '../../types';
 
 export interface IBundlerConfig {
-  db: IZirconDBConfig;
   client: () => ZirconClient;
+  db: () => ZirconDB;
 }
 
 export class Bundler {
-  db: ZirconDB;
   config: IBundlerConfig;
   activeBundleId: string | null = null;
   client() {
@@ -19,22 +18,16 @@ export class Bundler {
 
   constructor(config: IBundlerConfig) {
     this.config = config;
-    this.db = new ZirconDB(config.db);
   }
 
   async init() {
-    await this.db.init();
-    const settings = await this.db.setting.query();
+    const settings = await this.config.db().setting.query();
     this.activeBundleId = settings.active_bundle;
-  }
-
-  dispose() {
-    this.db.dispose();
   }
 
   async getResource(url: string) {
     if (this.activeBundleId) {
-      const res = await this.db.bundleResource.get(this.activeBundleId, url);
+      const res = await this.config.db().bundleResource.get(this.activeBundleId, url);
       return res;
     }
     return null;
@@ -44,7 +37,7 @@ export class Bundler {
     // convert json data to array buffer
     const bytes = new TextEncoder().encode(JSON.stringify(data));
     if (bundleId) {
-      await this.db.bundleResource.upsert({
+      await this.config.db().bundleResource.upsert({
         bundle_id: bundleId,
         url,
         headers: {},
@@ -63,7 +56,7 @@ export class Bundler {
 
   async createBundle() {
     const client = this.client();
-    const session = await client.makeSession();
+    const session = client.getSession();
     const manifest = await client.getManifest(session);
     console.log('>>>>>> manifest: ', manifest);
 
@@ -79,7 +72,7 @@ export class Bundler {
       updated: now
     };
 
-    this.db.bundle.upsert(bundle);
+    this.config.db().bundle.upsert(bundle);
     
     for (const url in manifest.items) {
       const item = manifest.items[url];
@@ -117,7 +110,7 @@ export class Bundler {
 
         } else {
           // save cached resource
-          await this.db.bundleResource.upsert({
+          await this.config.db().bundleResource.upsert({
             bundle_id: bundleId,
             url,
             headers: r.headers,
@@ -133,12 +126,12 @@ export class Bundler {
     }
 
     // set active bundle
-    this.db.setting.upsert('active_bundle', bundleId);
+    this.config.db().setting.upsert('active_bundle', bundleId);
     this.activeBundleId = bundleId;
   }
 
   async getLocalProjects() {
-    const projects = await getLocalProjects(this.db.getDB());
+    const projects = await getLocalProjects(this.config.db().getDB());
     return projects;
   }
 

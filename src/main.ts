@@ -21,6 +21,9 @@ async function main() {
   const host = '0.0.0.0';
   const port = 11200;
 
+  // set cors
+  app.use(cors());
+
   // proxy to ha socket
   const ha = new HaClient(webSocketUrl, accessToken);
 
@@ -59,9 +62,6 @@ async function main() {
 
   // proxy to zircon services: designer-page, api, xpi and others
   useOnline(app, core);
-
-  // set cors
-  app.use(cors());
 
   // start the server
   server.listen(

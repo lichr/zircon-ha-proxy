@@ -1,3 +1,5 @@
+import { IZirconDBConfig } from './db';
+
 export interface IAddonOptions {
   zircon_access_token: string;
   group: string;
@@ -38,8 +40,9 @@ export interface IOptionsZircon {
 export type RunMode = 'addon' | 'dev';
 export interface IOptions {
   mode: RunMode;
-  zircon: IOptionsZircon,
-  ha: IOptionsHa,
+  db: IZirconDBConfig;
+  zircon: IOptionsZircon;
+  ha: IOptionsHa;
 }
 
 export interface IProjectLocation {
