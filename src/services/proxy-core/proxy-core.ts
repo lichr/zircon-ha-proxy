@@ -1,5 +1,5 @@
 import { Agent } from 'https';
-import { IOptions } from '../../types';
+import { IOptions, IUserInfo } from '../../types';
 import { Bundler } from '../bundler';
 import { makeAgentPemStrings } from '../../tools';
 import { ZirconClient, ZirconSession } from '../zircon-client';
@@ -27,7 +27,7 @@ export class ProxyCore {
     }
 
     // create zircon db
-    this.db = new ZirconDB(options.db);
+    this.db = new ZirconDB(options.database);
 
     // create settings
     this.settings = new Settings(() => this.db);
@@ -55,16 +55,13 @@ export class ProxyCore {
     await this.zirconClient.init();
   }
 
-  async getUserInfo() {
-    const session = this.zirconClient.getSession();
-    const user = session.getUser();
+  async getUserInfo(): Promise<IUserInfo | null> {
+    const user = this.settings.user();
     const accessToken = await this.db.setting.get('access_token');
     if (accessToken) {
-      const tokenId = accessToken.split('.')[0];
+      const tokenId: string = accessToken.split('.')[0];
       return {
-        uid: user.uid,
-        email: user.email,
-        displayName: user.displayName,
+        ...user,
         tokenId
       };
     }

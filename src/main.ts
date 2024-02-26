@@ -54,11 +54,11 @@ async function main() {
   });
 
   // api for managing this proxy server
-  app.use('/proxy', useProxy(options, core));
+  app.use('/proxy', useProxy(core));
 
 
   // use offline data
-  app.use('/offline', useOffline(options, core));
+  app.use('/offline', useOffline(core));
 
   // proxy to zircon services: designer-page, api, xpi and others
   useOnline(app, core);

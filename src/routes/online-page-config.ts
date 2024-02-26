@@ -1,22 +1,18 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
 import _ from 'lodash';
-import { Agent } from 'https'
-import { IOptions } from '../types';
+import { ProxyCore } from '../services';
 
-export function onlinePageConfig(options: IOptions, agent?: Agent) {
-  const { zircon: { baseUrl, zirconAccessToken, group, project, mpiUrl } } = options;
+export function onlinePageConfig(core: ProxyCore) {
   return async (req: Request, res: Response) => {
     try {
       const ingressPath = req.headers['x-ingress-path'];
-      const response = await axios.get(`${baseUrl}/designer/config/page.json`, {
-        httpsAgent: agent
-      });
-
       console.log('>>> ingressPath: ', ingressPath);
 
+      const session = core.zirconClient.getSession();
+      const pageConfig = await session.apiGet('designer/config/page.json');
+
       // Add login info to received JSON data
-      const pageConfig = response.data;
       const siteBaseUrl = ingressPath ?? '';
       const pageBaseUrl = `${siteBaseUrl}/online`
       pageConfig.page.baseUrl = pageBaseUrl;
@@ -28,34 +24,29 @@ export function onlinePageConfig(options: IOptions, agent?: Agent) {
         "mode": "proxy",
         "config": {
           "path": `${siteBaseUrl}/mpi/ws`,
-          "url": mpiUrl
+          "url": core.options.zircon.mpiUrl
         }
       };
 
       // auto-login: user don't need to login
+      const zirconAccessToken = core.settings.accessToken();
       const [tokenId, token] = zirconAccessToken.split('.');
       // call zircon-api to get a firebase custom token, which can be used by app to login
-      const customToken = (
-        await axios.post(
-          `${baseUrl}/api/pub/methods/make_custom_token`,
-          {
-            id: tokenId,
-            token
-          },
-          {
-            httpsAgent: agent
-          }
-        )
-      ).data.custom_token;
-
+      const customToken = (await session.apiPost(
+        'pub/methods/make_custom_token',
+        {
+          id: tokenId,
+          token
+        }
+      )).custom_token;
       pageConfig.page.autoLogin = {
         customToken
       };
 
       // auto-location: user don't need to specify group and project in url
       pageConfig.project = {
-        groupId: group,
-        projectId: project
+        groupId: core.settings.groupId(),
+        projectId: core.settings.projectId()
       };
 
       // prevent caching

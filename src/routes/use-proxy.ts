@@ -4,12 +4,11 @@ import { IOptions } from '../types';
 import { proxyUiPageConfig } from './proxy-ui-page-config';
 
 export function useProxy(
-  options: IOptions,
   core: ProxyCore
 ) {
   const jsonParser = express.json();
   const router = express.Router();
-  router.get('/config/page.json', proxyUiPageConfig(options));
+  router.get('/config/page.json', proxyUiPageConfig(core.options));
 
   router.get(
     '/api/user_info',

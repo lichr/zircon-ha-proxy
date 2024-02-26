@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
-import { IOptions } from '../types';
+import { ProxyCore } from '../services';
 
-export function offlinePageConfig(options: IOptions): any {
-  const { zircon: { group, project } } = options;
-
+export function offlinePageConfig(core: ProxyCore): any {
   return async (req: Request, res: Response) => {
     const config = {
       mode: 'offline',
@@ -19,8 +17,8 @@ export function offlinePageConfig(options: IOptions): any {
         }
       },
       project: {
-        groupId: group,
-        projectId: project
+        groupId: core.settings.groupId(),
+        projectId: core.settings.projectId()
       }      
     };
     // prevent caching

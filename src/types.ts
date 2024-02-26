@@ -1,19 +1,8 @@
 import { IZirconDBConfig } from './db';
 
-export interface IAddonOptions {
-  zircon_access_token: string;
-  group: string;
-  project: string;
-}
-
 export interface IZirconClientCert {
   key: string;
   cert: string;
-}
-export interface IDevOptions {
-  haBaseUrl: string;
-  haHost: string;
-  haAccessToken: string;
 }
 
 export interface IZirconOptions {
@@ -22,27 +11,38 @@ export interface IZirconOptions {
   clientCert?: IZirconClientCert;
 }
 
-export interface IOptionsHa {
+export interface IHaOptions {
   apiUrl: string;
   webSocketUrl: string;
   accessToken: string;
 }
 
 export interface IOptionsZircon {
-  zirconAccessToken: string;
   baseUrl: string;
-  group: string;
-  project: string;  
   mpiUrl?: string;
   clientCert?: IZirconClientCert;
+}
+
+export interface IHaDevConfig {
+  baseUrl: string;
+  host: string;
+  accessToken: string;
 }
 
 export type RunMode = 'addon' | 'dev';
 export interface IOptions {
   mode: RunMode;
-  db: IZirconDBConfig;
+  database: IZirconDBConfig;
   zircon: IOptionsZircon;
-  ha: IOptionsHa;
+  ha: IHaOptions;
+}
+
+export interface IConfig {
+  mode: RunMode;
+  options: string;
+  database: IZirconDBConfig;
+  zircon: IOptionsZircon;
+  ha?: IHaDevConfig;
 }
 
 export interface IProjectLocation {
@@ -146,6 +146,9 @@ export interface IUser {
   providers: string[];
 }
 
+export interface IUserInfo extends IUser {
+  tokenId: string;
+}
 
 export interface ISettings {
   zircon_base_url?: string;
@@ -153,4 +156,13 @@ export interface ISettings {
   active_bundle?: string;
   active_project?: IProjectLocation;
   user?: IUser;
+}
+
+export interface IProjectInfo {
+  groupId: string;
+  projectId: string;
+  onlineBranch: boolean;
+  localBranch: boolean;
+  name: string | null;
+  updateTime: string | null;
 }

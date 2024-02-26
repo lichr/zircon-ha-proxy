@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "build": "rm -rf build && tsc",
-    "dev": "npm run build && node build/main.js --options ../../options/options.json --dev-options ../../options/dev-options.json --zircon-options ../../options/zircon-options.json",
-    "create-bundle": "npm run build && node build/create-bundle.js --options ../../options/options.json --dev-options ../../options/dev-options.json --zircon-options ../../options/zircon-options.json",
+    "dev": "npm run build && node build/main.js --config ../../options/config.dev.json",
+    "create-bundle": "npm run build && node build/create-bundle.js --config ../../options/config.dev.json",
     "start": "node -r dotenv/config build/main.js",
     "lint": "eslint src",
     "client": "node build/test/client.js",

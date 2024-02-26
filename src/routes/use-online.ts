@@ -10,8 +10,8 @@ export function useOnline(
 ) {
   const { zircon: { baseUrl } } = core.options;
 
-  app.get('/online/designer/config/page.json', onlinePageConfig(core.options, core.agent ?? undefined));
-  app.get('/online/viewer/config/page.json', onlinePageConfig(core.options, core.agent ?? undefined));
+  app.get('/online/designer/config/page.json', onlinePageConfig(core));
+  app.get('/online/viewer/config/page.json', onlinePageConfig(core));
 
 
   // make default proxy options

@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import { ILocalProject } from '../../db';
+import { IProjectInfo } from '../../types';
 
 export interface IBranch {
   name(): string;
@@ -46,7 +47,7 @@ export class Project {
     this.projectId = projectId;
   }
 
-  get() {
+  get(): IProjectInfo {
     return {
       groupId: this.groupId,
       projectId: this.projectId,

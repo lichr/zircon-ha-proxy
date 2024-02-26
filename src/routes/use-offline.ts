@@ -7,10 +7,10 @@ import { IOptions } from '../types';
 
 const pathRegex = /^\/(?<path>.*)$/;
 
-export function useOffline(options: IOptions, core: ProxyCore) {
+export function useOffline(core: ProxyCore) {
   const router = express.Router();
-  router.get('/designer/config/page.json', offlinePageConfig(options));
-  router.get('/viewer/config/page.json', offlinePageConfig(options));
+  router.get('/designer/config/page.json', offlinePageConfig(core));
+  router.get('/viewer/config/page.json', offlinePageConfig(core));
 
   router.use(
     '/api',
