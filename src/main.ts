@@ -63,6 +63,9 @@ async function main() {
   // proxy to zircon services: designer-page, api, xpi and others
   useOnline(app, core);
 
+  // serve static files: proxy ui
+  app.use(express.static('static'));
+
   // start the server
   server.listen(
     port,

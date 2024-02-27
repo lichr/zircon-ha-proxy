@@ -6,11 +6,12 @@ import { ProxyCore } from '../services';
 export function onlinePageConfig(core: ProxyCore) {
   return async (req: Request, res: Response) => {
     try {
+      const settings = await core.getSettings();
       const ingressPath = req.headers['x-ingress-path'];
       console.log('>>> ingressPath: ', ingressPath);
 
       const session = core.zirconClient.getSession();
-      const pageConfig = await session.apiGet('designer/config/page.json');
+      const pageConfig = await session.get('designer/config/page.json');
 
       // Add login info to received JSON data
       const siteBaseUrl = ingressPath ?? '';
@@ -29,7 +30,7 @@ export function onlinePageConfig(core: ProxyCore) {
       };
 
       // auto-login: user don't need to login
-      const zirconAccessToken = core.settings.accessToken();
+      const zirconAccessToken = settings.accessToken();
       const [tokenId, token] = zirconAccessToken.split('.');
       // call zircon-api to get a firebase custom token, which can be used by app to login
       const customToken = (await session.apiPost(
@@ -45,8 +46,8 @@ export function onlinePageConfig(core: ProxyCore) {
 
       // auto-location: user don't need to specify group and project in url
       pageConfig.project = {
-        groupId: core.settings.groupId(),
-        projectId: core.settings.projectId()
+        groupId: settings.groupId(),
+        projectId: settings.projectId()
       };
 
       // prevent caching

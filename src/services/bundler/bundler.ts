@@ -12,18 +12,19 @@ export interface IBundlerConfig {
 
 export class Bundler {
   config: IBundlerConfig;
-  settings: Settings;
+  settings: () => Promise<Settings>;
   client() {
     return this.config.client();
   };
 
-  constructor(config: IBundlerConfig, settings: Settings) {
+  constructor(config: IBundlerConfig, settings: () => Promise<Settings>) {
     this.config = config;
     this.settings = settings;
   }
 
   async getResource(url: string) {
-    const activeBundleId = this.settings.activeBundle();
+    const settings = await this.settings();
+    const activeBundleId = settings.activeBundle();
     const res = await this.config.db().bundleResource.get(activeBundleId, url);
     return res;
   }
@@ -50,6 +51,7 @@ export class Bundler {
   }
 
   async createBundle() {
+    const settings = await this.settings();
     const client = this.client();
     const session = client.getSession();
     const manifest = await client.getManifest(session);
@@ -57,8 +59,8 @@ export class Bundler {
 
     const bundleId = manifest.info.id;
     const now = makeNow();
-    const project = this.settings.projectId();
-    const group = this.settings.groupId();
+    const project = settings.projectId();
+    const group = settings.groupId();
 
     const bundle: IBundle = {
       id: bundleId,
@@ -123,7 +125,7 @@ export class Bundler {
     }
 
     // set active bundle
-    this.settings.set('active_bundle', bundleId);
+    settings.set('active_bundle', bundleId);
   }
 
   async getLocalProjects() {

@@ -12,11 +12,3 @@ ports:
   11200/tcp: 11200
 arch:
   - amd64
-options:
-  zircon_access_token: null
-  group: null
-  project: null
-schema:
-  zircon_access_token: str
-  group: "match(^[a-zA-Z0-9]+$)"
-  project: "match(^[a-zA-Z0-9]+$)"

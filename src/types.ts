@@ -146,8 +146,10 @@ export interface IUser {
   providers: string[];
 }
 
-export interface IUserInfo extends IUser {
-  tokenId: string;
+export interface IUserInfo {
+  session: boolean;
+  user?: IUser;
+  tokenId?: string;
 }
 
 export interface ISettings {

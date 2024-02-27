@@ -54,14 +54,6 @@ export class Settings {
     return v;
   }
 
-  ZirconBaseUrl() {
-    const v = this.settings?.zircon_base_url;
-    if (!v) {
-      throw new Error('Zircon base url not set (settings.zircon_base_url)');
-    }
-    return v;
-  }
-
   activeBundle() {
     const v = this.settings?.active_bundle;
     if (!v) {

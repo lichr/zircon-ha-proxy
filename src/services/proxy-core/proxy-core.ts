@@ -2,7 +2,7 @@ import { Agent } from 'https';
 import { IOptions, IUserInfo } from '../../types';
 import { Bundler } from '../bundler';
 import { makeAgentPemStrings } from '../../tools';
-import { ZirconClient, ZirconSession } from '../zircon-client';
+import { IZirconClientConfig, ZirconClient, ZirconSession } from '../zircon-client';
 import { LocalBranch, OnlineBranch, Project } from './project';
 import _ from 'lodash';
 import { ZirconDB } from '../../db';
@@ -14,7 +14,12 @@ export class ProxyCore {
   db: ZirconDB;
   bundler: Bundler;
   zirconClient: ZirconClient;
-  settings: Settings;
+  getDb = () => this.db;
+  getSettings = async () => {
+    const settings = new Settings(this.getDb);
+    await settings.load();
+    return settings;
+  }
   agent: Agent | null = null;
 
   constructor(options: IOptions) {
@@ -30,14 +35,14 @@ export class ProxyCore {
     this.db = new ZirconDB(options.database);
 
     // create settings
-    this.settings = new Settings(() => this.db);
-
+    // this.settings = new Settings(() => this.db);
     // create zircon client
-    const clientConfig = {
+    const clientConfig: IZirconClientConfig = {
+      zirconBaseUrl: options.zircon.baseUrl,
       db: () => this.db,
       clientCert: options.zircon.clientCert
     };
-    this.zirconClient = new ZirconClient(clientConfig, this.settings);
+    this.zirconClient = new ZirconClient(clientConfig, this.getSettings);
 
     // create bundler
     this.bundler = new Bundler(
@@ -45,32 +50,25 @@ export class ProxyCore {
         db: () => this.db,
         client: () => this.zirconClient
       },
-      this.settings
+      this.getSettings
     );
   }
 
   async init() {
     await this.db.init();
-    await this.settings.load();
     await this.zirconClient.init();
   }
 
   async getUserInfo(): Promise<IUserInfo | null> {
-    const user = this.settings.user();
-    const accessToken = await this.db.setting.get('access_token');
-    if (accessToken) {
-      const tokenId: string = accessToken.split('.')[0];
-      return {
-        ...user,
-        tokenId
-      };
-    }
-    return null
-  }
-
-  async getActiveProject() {
-    const data = await this.db.setting.get('active_project');
-    return data ?? null;
+    const settings = await this.getSettings();
+    const user = settings.settings?.user ?? undefined;
+    const accessToken = settings.settings?.access_token ?? undefined;
+    const tokenId = accessToken?.split('.')[0];
+    return {
+      user,
+      tokenId,
+      session: !_.isNil(this.zirconClient.session)
+    };
   }
 
   async setActiveProject(groupId: string, projectId: string) {
@@ -78,11 +76,16 @@ export class ProxyCore {
   }
 
   async _getProjects() {
-    const session = this.zirconClient.getSession();
     // do parallel requests
     const [onlineProjects, localProjects] = await Promise.all([
       // get online projects from zircon api
-      session.apiGet('pub/current_user/projects'),
+      async () => {
+        const session = this.zirconClient.session;
+        if (session) {
+          return await session.apiGet('pub/current_user/projects')
+        };
+        return {}
+      },
       // get offline projects from local store
       this.bundler.getLocalProjects()
     ]);
@@ -90,7 +93,8 @@ export class ProxyCore {
   }
 
   async getActiveProjectInfo() {
-    const currentProject = await this.getActiveProject();
+    const settings = await this.getSettings();
+    const currentProject = settings.settings?.active_project;
     if (currentProject) {
 
       const { groupId, projectId } = currentProject as { groupId: string, projectId: string };
@@ -128,7 +132,8 @@ export class ProxyCore {
   }
 
   async getProjects() {
-    const currentProject = await this.getActiveProject();
+    const settings = await this.getSettings();
+    const currentProject = settings.settings?.active_project;
 
     // for receiving projects
     const projects: Record<string, Project> = {};

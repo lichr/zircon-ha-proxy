@@ -86,7 +86,6 @@ export class ZirconSession {
     };
     await this.config.onSignIn(userEntry);
   }
-
   async apiGet<T = any>(url: string): Promise<T> {
     if (!this.user) {
       throw new Error('Not logged in');
@@ -98,6 +97,16 @@ export class ZirconSession {
         headers: {
           'Authorization': `Bearer ${idToken}`
         },
+        httpsAgent: this.config.httpsAgent
+      }
+    );
+    return r.data;
+  }
+
+  async get<T = any>(url: string): Promise<T> {
+    const r = await axios.get(
+      `${this.config.baseUrl}/${url}`,
+      {
         httpsAgent: this.config.httpsAgent
       }
     );

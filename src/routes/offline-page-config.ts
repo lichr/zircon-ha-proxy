@@ -3,6 +3,7 @@ import { ProxyCore } from '../services';
 
 export function offlinePageConfig(core: ProxyCore): any {
   return async (req: Request, res: Response) => {
+    const settings = await core.getSettings();
     const config = {
       mode: 'offline',
       page: {
@@ -17,8 +18,8 @@ export function offlinePageConfig(core: ProxyCore): any {
         }
       },
       project: {
-        groupId: core.settings.groupId(),
-        projectId: core.settings.projectId()
+        groupId: settings.groupId(),
+        projectId: settings.projectId()
       }      
     };
     // prevent caching

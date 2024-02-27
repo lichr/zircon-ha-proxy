@@ -2,6 +2,7 @@ node_modules/
 build/
 data/
 tmp/
+static/
 .vscode/settings.json
 options.json
 options-*.json
