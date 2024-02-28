@@ -2,8 +2,6 @@ import express from 'express';
 import _ from 'lodash';
 import { ProxyCore } from '../services';
 import { offlinePageConfig } from './offline-page-config';
-import { IOptions } from '../types';
-
 
 const pathRegex = /^\/(?<path>.*)$/;
 

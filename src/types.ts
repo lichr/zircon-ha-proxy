@@ -54,14 +54,17 @@ export interface IProjectLocation {
 
 export interface IBundleManifestInfo {
   id: string;
+  groupId: string;
+  projectId: string;
   version: string;
   create_time: string;
 }
 
 export type BundleResourceType = 'js' | 'json' | 'bin' | 'html';
-export type BundleResourceScope = 'site' | 'app' | 'api' | 's3';
+export type BundleResourceScope = 'site' | 'app' | 'api' | 's3' | 'part';
 
 export interface IBundleManifestItem {
+  data?: any;
   target: {
     scope: BundleResourceScope;
     url: string;
@@ -102,7 +105,6 @@ export interface IBundleResourceHeader {
 export interface IResourceResponse {
   url: string;
   headers: Record<string, string>;
-  size: number;
   body: ArrayBuffer;
 }
 
@@ -150,6 +152,7 @@ export interface IUserInfo {
   session: boolean;
   user?: IUser;
   tokenId?: string;
+  groups: Record<string, any>;
 }
 
 export interface ISettings {

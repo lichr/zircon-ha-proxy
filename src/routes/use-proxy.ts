@@ -1,6 +1,5 @@
 import express from 'express';
 import { ProxyCore } from '../services';
-import { IOptions } from '../types';
 import { proxyUiPageConfig } from './proxy-ui-page-config';
 
 export function useProxy(
@@ -9,6 +8,28 @@ export function useProxy(
   const jsonParser = express.json();
   const router = express.Router();
   router.get('/config/page.json', proxyUiPageConfig(core.options));
+
+  router.put(
+    '/api/access_token',
+    jsonParser,
+    async (req, res, next) => {
+      try {
+        const { accessToken } = req.body;
+        // set access token and try to start a zircon session
+        await core.setAccessToken(accessToken);
+
+        // return user info
+        const userInfo = await core.getUserInfo();
+        if (userInfo) {
+          res.json(userInfo);
+        } else {
+          res.status(404).json({ status: 'no user' });
+        }
+      } catch (error) {
+        next(error);
+      }
+    }
+  );
 
   router.get(
     '/api/user_info',
@@ -70,7 +91,15 @@ export function useProxy(
 
   router.put(
     '/api/project',
+    jsonParser,
     async (req, res, next) => {
+      try {
+        const payload = req.body;
+        await core.createProject(payload);
+        res.json({ status: 'ok' });
+      } catch (error) {
+        next(error);
+      }
     }
   );
 

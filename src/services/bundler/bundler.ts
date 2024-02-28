@@ -2,8 +2,9 @@ import _ from 'lodash';
 import { ZirconDB, getLocalProjects } from '../../db';
 import { ZirconClient } from '../zircon-client';
 import { makeNow } from '../../tools';
-import { IBundle } from '../../types';
+import { IBundle, IResourceResponse } from '../../types';
 import { Settings } from '../settings';
+import { BundleManifest } from '../schema';
 
 export interface IBundlerConfig {
   client: () => ZirconClient;
@@ -50,33 +51,30 @@ export class Bundler {
     await this.saveStaticJson(bundleId, `parts/${url}`, data, { mode: 'part', parent });
   }
 
-  async createBundle() {
+  async createBundle(manifest: BundleManifest) {
     const settings = await this.settings();
     const client = this.client();
     const session = client.getSession();
-    const manifest = await client.getManifest(session);
-    console.log('>>>>>> manifest: ', manifest);
+    // const manifest = await client.getManifest(session);
 
-    const bundleId = manifest.info.id;
+    const { info: {id, groupId, projectId}, items }  = manifest.data;
     const now = makeNow();
-    const project = settings.projectId();
-    const group = settings.groupId();
-
+    
     const bundle: IBundle = {
-      id: bundleId,
+      id,
       name: 'new-bundle',
-      group,
-      project,
+      group: groupId,
+      project: projectId,
       created: now,
       updated: now
     };
 
     this.config.db().bundle.upsert(bundle);
     
-    for (const url in manifest.items) {
-      const item = manifest.items[url];
-      const { type, target: { scope, url: targetUrl } } = item;
-      let r;
+    for (const url in items) {
+      const item = items[url];
+      const { type, target: { scope, url: targetUrl }, data } = item;
+      let r: IResourceResponse | null = null;
 
       try {
         if (scope === 'site') {
@@ -87,6 +85,13 @@ export class Bundler {
           r = await client.getApiItem(session, url, targetUrl);
         } else if (scope === 's3') {
           r = await client.getS3Item(url, targetUrl);
+        } else if (scope === 'part') {
+          const body = new TextEncoder().encode(JSON.stringify(data));
+          r = {
+            url,
+            headers: {},
+            body
+          }
         }
       } catch (e) {
         console.error('>>>>>> error loading item: ', url);
@@ -94,23 +99,23 @@ export class Bundler {
         
       }
 
-      console.log('>>>>>> resource: ', r?.url, r?.size);
+      console.log('>>>>>> resource: ', r?.url);
 
       if (r) {
         if (url === 'api/pub/methods/load_viewer') {
           // we break down the load_viewer response into parts
           const body = JSON.parse(new TextDecoder().decode(r.body));
-          await this.savePart(bundleId, url, 'group', body.group);
-          await this.savePart(bundleId, url, 'project', body.project);
-          await this.savePart(bundleId, url, 'spacePlan', body.spacePlan);
-          await this.savePart(bundleId, url, 'tagGroups', body.group);
-          await this.savePart(bundleId, url, 'tags', body.group);
-          await this.savePart(bundleId, url, 'tagGroups', body.group);
+          await this.savePart(id, url, 'group', body.group);
+          await this.savePart(id, url, 'project', body.project);
+          await this.savePart(id, url, 'spacePlan', body.spacePlan);
+          await this.savePart(id, url, 'tagGroups', body.group);
+          await this.savePart(id, url, 'tags', body.group);
+          await this.savePart(id, url, 'tagGroups', body.group);
 
         } else {
           // save cached resource
           await this.config.db().bundleResource.upsert({
-            bundle_id: bundleId,
+            bundle_id: id,
             url,
             headers: r.headers,
             body: r.body,
@@ -119,13 +124,9 @@ export class Bundler {
               mode: 'cache'
             }
           });
-
         }
       };
     }
-
-    // set active bundle
-    settings.set('active_bundle', bundleId);
   }
 
   async getLocalProjects() {

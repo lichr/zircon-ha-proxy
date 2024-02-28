@@ -13,7 +13,7 @@ export interface IZirconClientConfig {
   clientCert?: IZirconClientCert;
 }
 
-function makeResponse(url: string, r: any) {
+function makeResponse(url: string, r: any): IResourceResponse {
   const headers = _.mapValues(
     r.headers,
     (value, key) => value.toString()
@@ -22,7 +22,6 @@ function makeResponse(url: string, r: any) {
   return {
     url,
     headers,
-    size: r.data.byteLength,
     body: r.data,
   };
 }

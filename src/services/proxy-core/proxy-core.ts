@@ -1,13 +1,14 @@
 import { Agent } from 'https';
 import { IOptions, IUserInfo } from '../../types';
 import { Bundler } from '../bundler';
-import { makeAgentPemStrings } from '../../tools';
+import { makeAgentPemStrings, makeUid } from '../../tools';
 import { IZirconClientConfig, ZirconClient, ZirconSession } from '../zircon-client';
 import { LocalBranch, OnlineBranch, Project } from './project';
 import _ from 'lodash';
 import { ZirconDB } from '../../db';
 import { access } from 'fs-extra';
 import { Settings } from '../settings';
+import { IGroupEntity, ProjectPackage, makeProjectPackage } from '../schema';
 
 export class ProxyCore {
   options: IOptions;
@@ -59,15 +60,34 @@ export class ProxyCore {
     await this.zirconClient.init();
   }
 
+  async setAccessToken(accessToken: string) {
+    // save access token to settings
+    await this.db.setting.upsert('access_token', accessToken);
+
+    // re-init zircon client
+    await this.zirconClient.init();
+  }
+
   async getUserInfo(): Promise<IUserInfo | null> {
+    // get user info from settings
     const settings = await this.getSettings();
     const user = settings.settings?.user ?? undefined;
     const accessToken = settings.settings?.access_token ?? undefined;
     const tokenId = accessToken?.split('.')[0];
+
+    // get groups from zircon api
+    let onlineInfo = null;
+    const session = this.zirconClient.session;
+    if (session) {
+      onlineInfo = await session.apiGet('pub/current_user');
+    }
+
+    // return
     return {
       user,
       tokenId,
-      session: !_.isNil(this.zirconClient.session)
+      session: !_.isNil(this.zirconClient.session),
+      groups: onlineInfo?.groups ?? {},
     };
   }
 
@@ -75,18 +95,19 @@ export class ProxyCore {
     await this.db.setting.upsert('active_project', { groupId, projectId });
   }
 
+  async _getOnlineProjects() {
+    const session = this.zirconClient.session;
+    if (session) {
+      return await session.apiGet('pub/current_user/projects')
+    } else {
+      return {}
+    }
+  }
+
   async _getProjects() {
     // do parallel requests
     const [onlineProjects, localProjects] = await Promise.all([
-      // get online projects from zircon api
-      async () => {
-        const session = this.zirconClient.session;
-        if (session) {
-          return await session.apiGet('pub/current_user/projects')
-        };
-        return {}
-      },
-      // get offline projects from local store
+      this._getOnlineProjects(),
       this.bundler.getLocalProjects()
     ]);
     return { onlineProjects, localProjects };
@@ -178,5 +199,54 @@ export class ProxyCore {
         }
       }
     );
+  }
+
+  async pushProject(pack: ProjectPackage) {
+    const session = this.zirconClient.getSession();
+    const groupId = pack.groupId();
+    const projectId = pack.projectId();
+    const planId = pack.planId();
+
+    await session.apiPut(
+      `pub/groups/${groupId}/projects/${projectId}`,
+      pack.data.project
+    );
+
+    await session.apiPut(
+      `pub/groups/${groupId}/projects/${projectId}/plans/${planId}`,
+      pack.data.spacePlan
+    );
+  }
+
+  async createProject(
+    props: {
+      groupId: string;
+      name: string;
+      createOnlineBranch: boolean;
+      setActive: boolean;
+    }
+  ) {
+    const { groupId, name, createOnlineBranch, setActive } = props;
+    const session = this.zirconClient.getSession();
+
+    // get group info
+    const group = await session.apiGet<IGroupEntity>(`pub/groups/${groupId}`);
+
+    // make new project entity
+    const pack = makeProjectPackage({ group, name });
+
+    // create offline bundle from project entity
+    const manifest = pack.makeBundleManifest();
+    await this.bundler.createBundle(manifest);
+
+    // push it to online branch
+    if (createOnlineBranch) {
+      await this.pushProject(pack);
+    }
+
+    // set as active project
+    if (setActive) {
+      await this.setActiveProject(groupId, pack.projectId());
+    }
   }
 }

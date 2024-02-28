@@ -17,9 +17,7 @@
         "${workspaceFolder}/build/**/*.js"
       ],
       "args": [
-        "--options", "../../options/options.json",
-        "--dev-options", "../../options/dev-options.json",
-        "--zircon-options", "../../options/zircon-options.json"
+        "--config", "../../options/config.dev.json"
       ]
     },
     {

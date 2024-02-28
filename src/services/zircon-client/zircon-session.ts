@@ -131,6 +131,24 @@ export class ZirconSession {
     return r.data;
   }
 
+  async apiPut<T = any, R = any>(url: string, data: T): Promise<R> {
+    if (!this.user) {
+      throw new Error('Not logged in');
+    }
+    const idToken = await this.user.getIdToken();
+    const r = await axios.put(
+      `${this.config.baseUrl}/api/${url}`,
+      data,
+      {
+        headers: {
+          'Authorization': `Bearer ${idToken}`
+        },
+        httpsAgent: this.config.httpsAgent
+      }
+    );
+    return r.data;
+  }
+
 
   async apiGetRaw(url: string) {
     if (!this.user) {
