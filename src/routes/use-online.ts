@@ -21,7 +21,7 @@ export function useOnline(
     ws: false,
     secure: true,
     agent: core.agent,
-    logLevel: 'debug',
+    logLevel: 'warn',
     onProxyRes: (proxyRes, req, res) => {
       // set cors to allow all origins
       proxyRes.headers['Access-Control-Allow-Origin'] = '*';

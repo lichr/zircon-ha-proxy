@@ -5,7 +5,7 @@ export function activePageConfig(core: ProxyCore): any {
   return async (req: Request, res: Response) => {
     const settings = await core.getSettings();
     const config = {
-      mode: 'offline',
+      mode: 'active',
       page: {
         baseUrl: "/active",
         apiBaseUrl: "/active/api",
