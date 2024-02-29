@@ -11,8 +11,8 @@ export interface IInfoComponent {
 
 export interface ISpaceEntity {
   info: IInfoComponent;
-  position: any;
-  shape: any;
+  position?: any;
+  shape?: any;
   space: any;
 }
 
@@ -46,9 +46,22 @@ export interface IGroupEntity {
 }
 
 export interface IProjectPackage {
-  group: IGroupEntity;
   project: IProjectEntity;
   spacePlan: ISpacePlanEntity;
+  user: any;
+  group: IGroupEntity;
   tags: Record<string, any>;
   tagGroups: Record<string, any>;
+  quotas: any;
+  system: any;
+}
+
+
+export interface IDesignerDependencies {
+  user: any;
+  group: IGroupEntity;
+  tags: Record<string, any>;
+  tagGroups: Record<string, any>;
+  quotas: any;
+  system: any;
 }

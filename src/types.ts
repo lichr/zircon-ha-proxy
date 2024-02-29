@@ -87,6 +87,12 @@ export interface IBundle {
   updated: string;
 }
 
+export interface IProjectEntry {
+  id: string;
+  localOnly: boolean;
+  bundleId?: string;
+}
+
 export interface IBundleResourceOptions {
   type: BundleResourceType;
   /**
@@ -158,7 +164,6 @@ export interface IUserInfo {
 export interface ISettings {
   zircon_base_url?: string;
   access_token?: string;
-  active_bundle?: string;
   active_project?: IProjectLocation;
   user?: IUser;
 }

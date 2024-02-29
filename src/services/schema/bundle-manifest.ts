@@ -77,7 +77,8 @@ export class BundleManifest {
         scope: 'part',
         url
       },
-      type: 'bin'
+      type: 'bin',
+      data
     };
   }  
 }

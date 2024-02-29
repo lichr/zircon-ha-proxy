@@ -54,9 +54,11 @@ export function getLocalProjects(
             inner join bundle_resource p
               on p.bundle_id = b.id
                 and p.url = 'parts/project'
+                and json_valid(p.body)
             inner join bundle_resource sp
               on sp.bundle_id = b.id
                 and sp.url = 'parts/spacePlan'
+                and json_valid(sp.body)
       `,
       [],
       (err, rows: any[]) => {

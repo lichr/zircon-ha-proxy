@@ -5,7 +5,7 @@ import _ from 'lodash';
 import WebSocket from 'ws';
 import { useOptions } from './tools';
 import { HaClient, ProxyCore, ProxyServer } from './services';
-import { useOffline, useOnline, useProxy } from './routes';
+import { useActive, useOffline, useOnline, useProxy } from './routes';
 
 async function main() {
   const options = useOptions();
@@ -59,6 +59,9 @@ async function main() {
 
   // use offline data
   app.use('/offline', useOffline(core));
+
+  // use active project data
+  useActive(app, core);
 
   // proxy to zircon services: designer-page, api, xpi and others
   useOnline(app, core);

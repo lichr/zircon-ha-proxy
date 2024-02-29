@@ -54,6 +54,14 @@ export class ZirconClient {
     return this.session;
   }
 
+  async getIdToken() {
+    const user = this.session?.user;
+    if (user) {
+      return await user.getIdToken();
+    }
+    return null;
+  }
+
   async makeSession() {
     const settings = await this.settings();
     const accessToken = settings.settings?.access_token ?? null;

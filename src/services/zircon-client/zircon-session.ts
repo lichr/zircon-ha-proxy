@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import { FirebaseOptions, initializeApp } from 'firebase/app';
 import { User, getAuth, signInWithCustomToken } from 'firebase/auth';
 import { Agent } from 'https';
@@ -86,7 +86,7 @@ export class ZirconSession {
     };
     await this.config.onSignIn(userEntry);
   }
-  async apiGet<T = any>(url: string): Promise<T> {
+  async apiGet<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
     if (!this.user) {
       throw new Error('Not logged in');
     }
@@ -97,7 +97,8 @@ export class ZirconSession {
         headers: {
           'Authorization': `Bearer ${idToken}`
         },
-        httpsAgent: this.config.httpsAgent
+        httpsAgent: this.config.httpsAgent,
+        ...config
       }
     );
     return r.data;

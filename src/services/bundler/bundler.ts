@@ -23,11 +23,28 @@ export class Bundler {
     this.settings = settings;
   }
 
-  async getResource(url: string) {
+  async getActiveBundleId() {
     const settings = await this.settings();
-    const activeBundleId = settings.activeBundle();
-    const res = await this.config.db().bundleResource.get(activeBundleId, url);
-    return res;
+    const projectId =  settings.projectId();
+    const pe = await this.config.db().projectEntry.get(projectId);
+    return pe.bundleId ?? null;
+  }
+
+  async getResource(url: string) {
+    const activeBundleId = await this.getActiveBundleId();
+    if (activeBundleId) {
+      const res = await this.config.db().bundleResource.get(activeBundleId, url);
+      return res;
+    }
+    return null;
+  }
+
+  async getResourceJson<T=any>(url: string): Promise<T | null> {
+    const res = await this.getResource(url);
+    if (res) {
+      return JSON.parse(new TextDecoder().decode(res.body)) as T;
+    }
+    return null;
   }
 
   async saveStaticJson(bundleId: string, url: string, data: any, options:any={ mode: 'static' }) {
@@ -75,6 +92,8 @@ export class Bundler {
       const item = items[url];
       const { type, target: { scope, url: targetUrl }, data } = item;
       let r: IResourceResponse | null = null;
+
+      console.log('>>> load item: ', scope, url, targetUrl);
 
       try {
         if (scope === 'site') {

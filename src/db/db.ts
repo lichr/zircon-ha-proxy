@@ -1,5 +1,5 @@
 import { Database } from "sqlite3";
-import { BundleLogTable, BundleResourceTable, BundleTable } from './tables';
+import { BundleLogTable, BundleResourceTable, BundleTable, ProjectEntryTable } from './tables';
 import { SettingTable } from './tables/setting-table';
 
 export interface IZirconDBConfig {
@@ -16,6 +16,7 @@ export class ZirconDB {
     return this.db;
   }
   setting: SettingTable = new SettingTable(this.getDB);
+  projectEntry: ProjectEntryTable = new ProjectEntryTable(this.getDB);
   bundle: BundleTable = new BundleTable(this.getDB);
   bundleResource: BundleResourceTable = new BundleResourceTable(this.getDB);
   bundleLog: BundleLogTable = new BundleLogTable(this.getDB);

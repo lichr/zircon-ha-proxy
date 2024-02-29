@@ -2,6 +2,7 @@ import _ from 'lodash';
 import { makeBundleManifest } from './bundle-manifest';
 import { IProjectPackage } from './types';
 
+const rxPath = /^(zircon:)(?<path>.+)$/
 export class ProjectPackage {
   data: IProjectPackage;
 
@@ -30,15 +31,16 @@ export class ProjectPackage {
     manifest.addAppItem('viewer/', 'html');
     manifest.addAppItem('viewer/bundle.js', 'js');
     manifest.addAppItem('viewer/config/page.json', 'json');
-    manifest.addSiteItem('favicon.icon', 'bin');
+    manifest.addSiteItem('favicon.ico', 'bin');
     manifest.addAppItem('resources/lebombo_1k.hdr', 'bin');
 
-    // project items
-    manifest.addPartItem('group', this.data.group);
-    manifest.addPartItem('project', this.data.project);
-    manifest.addPartItem('spacePlan', this.data.spacePlan);
-    manifest.addPartItem('tags', this.data.tags);
-    manifest.addPartItem('tagGroups', this.data.tagGroups);
+    // project part items
+    _.each(
+      this.data,
+      (v, k) => {
+        manifest.addPartItem(k, v);
+      }
+    )
 
     // space items
     _.each(
@@ -50,7 +52,10 @@ export class ProjectPackage {
           (part) => {
             let url = part.data?.file?.url;
             if (url) {
-              manifest.addS3Item(url)
+              const path = url.match(rxPath)?.groups?.path;
+              if (path) {
+                manifest.addS3Item(path)
+              }
             }
           }
         )

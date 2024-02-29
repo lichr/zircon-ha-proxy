@@ -8,7 +8,7 @@ import _ from 'lodash';
 import { ZirconDB } from '../../db';
 import { access } from 'fs-extra';
 import { Settings } from '../settings';
-import { IGroupEntity, ProjectPackage, makeProjectPackage } from '../schema';
+import { IDesignerDependencies, IGroupEntity, IProjectPackage, ProjectPackage, makeProjectPackage } from '../schema';
 
 export class ProxyCore {
   options: IOptions;
@@ -116,8 +116,8 @@ export class ProxyCore {
   async getActiveProjectInfo() {
     const settings = await this.getSettings();
     const currentProject = settings.settings?.active_project;
-    if (currentProject) {
 
+    if (currentProject) {
       const { groupId, projectId } = currentProject as { groupId: string, projectId: string };
       let project: Project | null = null;
 
@@ -207,13 +207,17 @@ export class ProxyCore {
     const projectId = pack.projectId();
     const planId = pack.planId();
 
+    const projectUrl = `pub/groups/${groupId}/projects/${projectId}`
+    console.log('>>> push project to: ', projectUrl);
     await session.apiPut(
-      `pub/groups/${groupId}/projects/${projectId}`,
+      projectUrl,
       pack.data.project
     );
 
+    const planUrl = `pub/groups/${groupId}/projects/${projectId}/space_plans/${planId}`
+    console.log('>>> push space-plan to: ', planUrl);
     await session.apiPut(
-      `pub/groups/${groupId}/projects/${projectId}/plans/${planId}`,
+      planUrl,
       pack.data.spacePlan
     );
   }
@@ -229,24 +233,48 @@ export class ProxyCore {
     const { groupId, name, createOnlineBranch, setActive } = props;
     const session = this.zirconClient.getSession();
 
-    // get group info
-    const group = await session.apiGet<IGroupEntity>(`pub/groups/${groupId}`);
+    // get designer dependencies
+    const deps = await session.apiGet<IDesignerDependencies>(`pub/methods/load_designer_deps`, { params: { group: groupId } });
 
     // make new project entity
-    const pack = makeProjectPackage({ group, name });
+    const pack = makeProjectPackage({ deps, name });
 
     // create offline bundle from project entity
     const manifest = pack.makeBundleManifest();
     await this.bundler.createBundle(manifest);
+    console.log('>>>>>>>>> bundle created');
 
     // push it to online branch
     if (createOnlineBranch) {
-      await this.pushProject(pack);
+      try {
+        await this.pushProject(pack);
+      } catch (e) {
+        console.error('>>> error creating online branch', e);
+      }
     }
 
     // set as active project
     if (setActive) {
       await this.setActiveProject(groupId, pack.projectId());
     }
+  }
+
+  async loadDesigner(): Promise<IProjectPackage> {
+    // load designer dependencies from online api
+    const session = this.zirconClient.getSession();
+    const settings = await this.getSettings();
+    const groupId = settings.groupId();
+    const deps = await session.apiGet<IDesignerDependencies>(`pub/methods/load_designer_deps`, { params: { group: groupId } });
+
+    // get data from local bundle
+    const project = await this.bundler.getResourceJson('parts/project');
+    const spacePlan = await this.bundler.getResourceJson('parts/spacePlan');
+
+    // return
+    return {
+      ...deps,
+      project,
+      spacePlan,
+    };
   }
 }

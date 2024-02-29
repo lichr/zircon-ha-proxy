@@ -53,12 +53,4 @@ export class Settings {
     }
     return v;
   }
-
-  activeBundle() {
-    const v = this.settings?.active_bundle;
-    if (!v) {
-      throw new Error('Active bundle not set (settings.active_bundle)');
-    }
-    return v;
-  }
 }

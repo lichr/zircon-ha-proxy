@@ -1,0 +1,408 @@
+{
+  "group": {
+      "access": {},
+      "group": {
+          "owner": "h9sdHDOm6IVn",
+          "type": "system"
+      },
+      "info": {
+          "createTime": "2020-06-23T06:00:00.000Z",
+          "id": "FrCOUUzBcuCS",
+          "kind": "group",
+          "name": "development",
+          "status": "normal",
+          "updateTime": "2020-06-23T06:00:00.000Z"
+      }
+  },
+  "project": {
+      "info": {
+          "createTime": "2024-02-14T06:44:36.576Z",
+          "id": "smxhtZa6arCt",
+          "kind": "project",
+          "name": "C100",
+          "status": "normal",
+          "updateTime": "2024-02-14T06:44:36.576Z"
+      },
+      "members": {
+          "h9sdHDOm6IVn": {
+              "maintainer": true
+          }
+      },
+      "project": {
+          "group": "FrCOUUzBcuCS",
+          "spacePlan": "btayipz4LCFG"
+      }
+  },
+  "quotas": {
+      "floor_size": {
+          "x": 20,
+          "y": 20,
+          "z": 6
+      },
+      "number_dashboard": 10,
+      "number_devices": null,
+      "number_floors": 6,
+      "number_objects": 300
+  },
+  "spacePlan": {
+      "info": {
+          "createTime": "2024-02-14T06:44:36.589Z",
+          "id": "btayipz4LCFG",
+          "kind": "space_plan",
+          "name": "My Space Plan",
+          "status": "normal",
+          "updateTime": "2024-02-14T06:44:36.589Z"
+      },
+      "plan": {
+          "isPrimary": true,
+          "project": "smxhtZa6arCt",
+          "root": "HqeQMoUK6uAd",
+          "spaces": {
+              "6msTysFlCKjM": {
+                  "info": {
+                      "createTime": "2024-02-19T01:35:30.088Z",
+                      "id": "6msTysFlCKjM",
+                      "kind": "space",
+                      "name": "Section 1",
+                      "status": "normal",
+                      "updateTime": "2024-02-19T01:35:30.088Z"
+                  },
+                  "position": {
+                      "data": {
+                          "transform": {
+                              "r": {
+                                  "c": "zxy",
+                                  "x": 0,
+                                  "y": 0,
+                                  "z": 0
+                              },
+                              "t": {
+                                  "x": 0,
+                                  "y": 0,
+                                  "z": 0
+                              }
+                          }
+                      },
+                      "type": "space-position"
+                  },
+                  "shape": {
+                      "data": {
+                          "data": {},
+                          "points": [
+                              {
+                                  "c": {},
+                                  "i": "p0",
+                                  "p": {
+                                      "x": 10,
+                                      "y": 10
+                                  }
+                              },
+                              {
+                                  "c": {},
+                                  "i": "p1",
+                                  "p": {
+                                      "x": -10,
+                                      "y": 10
+                                  }
+                              },
+                              {
+                                  "c": {},
+                                  "i": "p2",
+                                  "p": {
+                                      "x": -10,
+                                      "y": -10
+                                  }
+                              },
+                              {
+                                  "c": {},
+                                  "i": "p3",
+                                  "p": {
+                                      "x": 10,
+                                      "y": -10
+                                  }
+                              }
+                          ],
+                          "type": "room"
+                      },
+                      "type": "area-shape"
+                  },
+                  "space": {
+                      "data": {},
+                      "parent": "n8S3KCoBGRqz",
+                      "type": "area"
+                  }
+              },
+              "FCPrwXV2rxqu": {
+                  "info": {
+                      "createTime": "2024-02-19T01:35:30.088Z",
+                      "id": "FCPrwXV2rxqu",
+                      "kind": "space",
+                      "name": "New Building",
+                      "status": "normal",
+                      "updateTime": "2024-02-19T01:35:30.088Z"
+                  },
+                  "position": {
+                      "data": {
+                          "transform": {
+                              "r": {
+                                  "c": "zxy",
+                                  "x": 0,
+                                  "y": 0,
+                                  "z": 0
+                              },
+                              "t": {
+                                  "x": 0,
+                                  "y": 0,
+                                  "z": 0
+                              }
+                          }
+                      },
+                      "type": "space-position"
+                  },
+                  "space": {
+                      "data": {},
+                      "parent": "HqeQMoUK6uAd",
+                      "type": "building"
+                  }
+              },
+              "HqeQMoUK6uAd": {
+                  "info": {
+                      "createTime": "2024-02-14T06:44:36.589Z",
+                      "id": "btayipz4LCFG",
+                      "kind": "space",
+                      "name": "My Space Plan",
+                      "status": "normal",
+                      "updateTime": "2024-02-14T06:44:36.589Z"
+                  },
+                  "position": {
+                      "type": "identity"
+                  },
+                  "shape": {
+                      "type": "identity"
+                  },
+                  "space": {
+                      "type": "site"
+                  }
+              },
+              "i7QTXfKqafLb": {
+                  "info": {
+                      "createTime": "2024-01-30T16:35:35.796Z",
+                      "id": "i7QTXfKqafLb",
+                      "kind": "device",
+                      "name": "sofa white",
+                      "status": "normal",
+                      "thumbnail": "zircon:pub/lib/device_models/WQi94Obh4ytl/thumbnail.png",
+                      "updateTime": "2024-01-30T16:36:02.037Z"
+                  },
+                  "placement": {
+                      "data": {
+                          "transform": {
+                              "t": {
+                                  "x": -5.641796399455496,
+                                  "y": 1.6778670975032384,
+                                  "z": 0
+                              }
+                          }
+                      },
+                      "type": "floor"
+                  },
+                  "position": {
+                      "data": {
+                          "transform": {
+                              "r": {
+                                  "c": "zxy",
+                                  "x": 0,
+                                  "y": 0,
+                                  "z": 0
+                              },
+                              "t": {
+                                  "x": -5.641796399455496,
+                                  "y": 1.6778670975032384,
+                                  "z": 0.562
+                              }
+                          }
+                      },
+                      "type": "space-position"
+                  },
+                  "shape": {
+                      "data": {
+                          "parts": {
+                              "main": {
+                                  "data": {
+                                      "file": {
+                                          "url": "zircon:pub/lib/device_models/WQi94Obh4ytl/shape.parts.main.mesh.glb",
+                                          "version": "2024-01-30T16:35:55.599Z"
+                                      },
+                                      "node": [],
+                                      "size": {
+                                          "x": 5.199,
+                                          "y": 3.069,
+                                          "z": 1.124
+                                      }
+                                  },
+                                  "type": "mesh-part"
+                              }
+                          },
+                          "size": {
+                              "x": 5.199,
+                              "y": 3.069,
+                              "z": 1.124
+                          }
+                      },
+                      "type": "device-shape"
+                  },
+                  "space": {
+                      "data": {},
+                      "parent": "6msTysFlCKjM",
+                      "type": "device"
+                  }
+              },
+              "n8S3KCoBGRqz": {
+                  "info": {
+                      "createTime": "2024-02-19T01:35:30.088Z",
+                      "id": "n8S3KCoBGRqz",
+                      "kind": "space",
+                      "name": "Floor 1",
+                      "status": "normal",
+                      "updateTime": "2024-02-19T01:35:30.088Z"
+                  },
+                  "position": {
+                      "data": {
+                          "transform": {
+                              "r": {
+                                  "c": "zxy",
+                                  "x": 0,
+                                  "y": 0,
+                                  "z": 0
+                              },
+                              "t": {
+                                  "x": 0,
+                                  "y": 0,
+                                  "z": 0
+                              }
+                          }
+                      },
+                      "type": "space-position"
+                  },
+                  "shape": {
+                      "data": {
+                          "height": 2.4
+                      },
+                      "type": "floor-shape"
+                  },
+                  "space": {
+                      "data": {
+                          "data": {
+                              "index": 0
+                          },
+                          "floorType": "level"
+                      },
+                      "parent": "FCPrwXV2rxqu",
+                      "type": "floor"
+                  }
+              }
+          },
+          "type": "personal"
+      }
+  },
+  "system": {
+      "access": {
+          "editor": true,
+          "owner": true,
+          "viewer": true
+      }
+  },
+  "tagGroups": [
+      {
+          "id": "uac",
+          "name": "User Access"
+      },
+      {
+          "id": "prj",
+          "name": "Project"
+      },
+      {
+          "id": "vtp",
+          "name": "Visualization Topic"
+      },
+      {
+          "id": "rrm",
+          "name": "Related Room"
+      },
+      {
+          "id": "plm",
+          "name": "Preferred Placement"
+      }
+  ],
+  "tags": [
+      {
+          "id": "rrm:bed-room",
+          "name": "Bed Room"
+      },
+      {
+          "id": "rrm:living-room",
+          "name": "Living Room"
+      },
+      {
+          "id": "rrm:kitchen",
+          "name": "Kitchen"
+      },
+      {
+          "id": "rrm:bath-room",
+          "name": "Bath Room"
+      },
+      {
+          "id": "rrm:dining-room",
+          "name": "Dining Room"
+      },
+      {
+          "id": "rrm:laundry-room",
+          "name": "Laundry Room"
+      },
+      {
+          "id": "rrm:home-office",
+          "name": "Home Office"
+      },
+      {
+          "id": "rrm:gym-room",
+          "name": "Gym Room"
+      },
+      {
+          "id": "rrm:garage",
+          "name": "Garage"
+      },
+      {
+          "id": "plm:on-wall",
+          "name": "On Wall"
+      },
+      {
+          "id": "plm:on-floor",
+          "name": "On Floor"
+      },
+      {
+          "id": "plm:on-ceiling",
+          "name": "On Ceiling"
+      },
+      {
+          "id": "plm:free",
+          "name": "Free Transform"
+      },
+      {
+          "id": "plm:in-wall",
+          "name": "In Wall"
+      }
+  ],
+  "user": {
+      "info": {
+          "createTime": "2023-04-02T03:47:24.134Z",
+          "id": "h9sdHDOm6IVn",
+          "kind": "user",
+          "name": "Developer",
+          "status": "normal",
+          "updateTime": "2023-04-02T03:47:24.134Z"
+      },
+      "user": {
+          "email": "dev@zircon.app"
+      }
+  }
+}
