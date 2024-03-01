@@ -57,7 +57,7 @@ export class ProjectEntryTable {
     });
   }
 
-  async get(id: string): Promise<IProjectEntry> {
+  async get(id: string): Promise<IProjectEntry | null> {
     return new Promise((resolve, reject) => {
       this.getDB().get(
         `

@@ -3,13 +3,13 @@ import { BundleResourceType, IBundleManifest } from '../../types';
 
 export function makeBundleManifest(
   props: {
+    id: string;
     groupId: string;
     projectId: string;
   }
 ) {
-  const { groupId, projectId } = props;
+  const { id, groupId, projectId } = props;
   const now = makeNow();
-  const id = makeUid();
 
   const data: IBundleManifest = {
     info: {

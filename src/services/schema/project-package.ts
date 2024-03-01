@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { makeBundleManifest } from './bundle-manifest';
 import { IProjectPackage } from './types';
+import { makeUid } from '../../tools';
 
 const rxPath = /^(zircon:)(?<path>.+)$/
 export class ProjectPackage {
@@ -23,9 +24,10 @@ export class ProjectPackage {
   }
 
   makeBundleManifest() {
+    const bundleId = makeUid();
     const groupId = this.groupId();
     const projectId = this.projectId();
-    const manifest = makeBundleManifest({ groupId, projectId });
+    const manifest = makeBundleManifest({ id: bundleId, groupId, projectId });
 
     // basic items
     manifest.addAppItem('viewer/', 'html');

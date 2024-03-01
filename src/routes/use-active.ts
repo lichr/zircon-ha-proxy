@@ -1,4 +1,4 @@
-import { Express, NextFunction, Request, Response, RequestHandler } from 'express';
+import { Express, NextFunction, Request, Response, RequestHandler, json } from 'express';
 import { Options, createProxyMiddleware } from 'http-proxy-middleware';
 import { activePageConfig } from './active-page-config';
 import _ from 'lodash';
@@ -9,6 +9,7 @@ export function useActive(
   core: ProxyCore
 ) {
   const { zircon: { baseUrl } } = core.options;
+  const jsonParser = json();
 
   const setAuth = async (req: Request, res: Response, next: NextFunction) => {
     // set id token
@@ -26,8 +27,6 @@ export function useActive(
   // viewers
 
   // access local data
-  // app.get('/active/api/data', (req, res) => {
-  // });
   app.get(
     '/active/api/pub/methods/load_designer',
     async (req, res, next) => {
@@ -39,6 +38,27 @@ export function useActive(
       }
     }
   );
+
+  // save space plan
+  app.put(
+    '/active/api/pub/group/:groupId/projects/:projectId/space_plans/:planId',
+    jsonParser,
+    async (req, res, next) => {
+      try {
+        const { body, params: { groupId, projectId, planId }} = req;
+        await core.saveSpacePlan({
+          groupId,
+          projectId,
+          planId,
+          spacePlan: body
+        });
+        res.json({ status: 'ok', message: 'space-plan saved' });
+      } catch (error) {
+        next(error);
+      }
+    }
+  )
+
 
   // PART II: proxy to online services
   // make default proxy options

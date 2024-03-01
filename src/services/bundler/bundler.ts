@@ -27,7 +27,7 @@ export class Bundler {
     const settings = await this.settings();
     const projectId =  settings.projectId();
     const pe = await this.config.db().projectEntry.get(projectId);
-    return pe.bundleId ?? null;
+    return pe?.bundleId ?? null;
   }
 
   async getResource(url: string) {
@@ -68,11 +68,11 @@ export class Bundler {
     await this.saveStaticJson(bundleId, `parts/${url}`, data, { mode: 'part', parent });
   }
 
+
+  // make this upsert
   async createBundle(manifest: BundleManifest) {
-    const settings = await this.settings();
     const client = this.client();
     const session = client.getSession();
-    // const manifest = await client.getManifest(session);
 
     const { info: {id, groupId, projectId}, items }  = manifest.data;
     const now = makeNow();
@@ -146,6 +146,12 @@ export class Bundler {
         }
       };
     }
+    return bundle;
+  }
+
+
+  async pruneByProject(projectId: string, bundleId: string) {
+    await this.config.db().bundle.pruneByProject(projectId, bundleId);
   }
 
   async getLocalProjects() {

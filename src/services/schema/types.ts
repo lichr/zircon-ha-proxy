@@ -45,6 +45,11 @@ export interface IGroupEntity {
  }
 }
 
+export interface IProjectData {
+  project: IProjectEntity;
+  spacePlan: ISpacePlanEntity;
+}
+
 export interface IProjectPackage {
   project: IProjectEntity;
   spacePlan: ISpacePlanEntity;

@@ -97,4 +97,29 @@ export class BundleTable {
       );
     });
   }
+
+  async pruneByProject(
+    projectId: string,
+    bundleId: string
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getDB().run(
+        `
+          DELETE
+            FROM bundle
+            WHERE body->>'project' = ?
+              and id <> ?;
+        `,
+        [projectId, bundleId],
+        (err) => {
+          if (err) {
+            console.error("Error inserting bundle", err);
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+  }  
 }

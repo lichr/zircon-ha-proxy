@@ -13,7 +13,7 @@ export function activePageConfig(core: ProxyCore): any {
         mpi: {
           mode: "proxy",
           config: {
-            url: "/mpi/ws"
+            path: "/mpi/ws"
           }
         }
       },

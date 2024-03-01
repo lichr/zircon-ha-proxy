@@ -1,14 +1,13 @@
 import { Agent } from 'https';
 import { IOptions, IUserInfo } from '../../types';
 import { Bundler } from '../bundler';
-import { makeAgentPemStrings, makeUid } from '../../tools';
-import { IZirconClientConfig, ZirconClient, ZirconSession } from '../zircon-client';
+import { makeAgentPemStrings } from '../../tools';
+import { IZirconClientConfig, ZirconClient } from '../zircon-client';
 import { LocalBranch, OnlineBranch, Project } from './project';
 import _ from 'lodash';
 import { ZirconDB } from '../../db';
-import { access } from 'fs-extra';
 import { Settings } from '../settings';
-import { IDesignerDependencies, IGroupEntity, IProjectPackage, ProjectPackage, makeProjectPackage } from '../schema';
+import { IDesignerDependencies, IProjectPackage, ProjectPackage, makeNewProject } from '../schema';
 
 export class ProxyCore {
   options: IOptions;
@@ -201,6 +200,7 @@ export class ProxyCore {
     );
   }
 
+  // before pushing project to online branch, we need to make sure the local bundle is newer
   async pushProject(pack: ProjectPackage) {
     const session = this.zirconClient.getSession();
     const groupId = pack.groupId();
@@ -237,7 +237,7 @@ export class ProxyCore {
     const deps = await session.apiGet<IDesignerDependencies>(`pub/methods/load_designer_deps`, { params: { group: groupId } });
 
     // make new project entity
-    const pack = makeProjectPackage({ deps, name });
+    const pack = new ProjectPackage({ ...deps, ...makeNewProject({ groupId, name }) });
 
     // create offline bundle from project entity
     const manifest = pack.makeBundleManifest();
@@ -276,5 +276,51 @@ export class ProxyCore {
       project,
       spacePlan,
     };
+  }
+
+
+  async saveSpacePlan(
+    props: {
+      groupId: string;
+      projectId: string;
+      planId: string;
+      spacePlan: any;
+    }
+  ) {
+    const { groupId, projectId, planId, spacePlan } = props;
+
+    // make project package from space-plan
+    const session = this.zirconClient.getSession();
+    const deps = await session.apiGet<IDesignerDependencies>(`pub/methods/load_designer_deps`, { params: { group: groupId } });
+    const project = await this.bundler.getResourceJson('parts/project');
+    const pack = new ProjectPackage({ ...deps, project, spacePlan });
+
+    // create new bundle
+    const manifest = pack.makeBundleManifest();
+
+    // upsert bundle
+    const bundle = await this.bundler.createBundle(manifest);
+
+    // set active bundle for this project
+    let entry = await this.getDb().projectEntry.get(projectId);
+    if (entry) {
+      entry.bundleId = bundle.id;
+    } else {
+      // in most cases this should not happen
+      entry = {
+        id: projectId,
+        localOnly: false,
+        bundleId: bundle.id
+      }
+    }
+    this.getDb().projectEntry.upsert(entry);
+
+    // prune old bundles
+    this.bundler.pruneByProject(projectId, bundle.id);
+
+    // save to online branch if not local only
+    if (!entry.localOnly) {
+      await this.pushProject(pack);
+    }
   }
 }

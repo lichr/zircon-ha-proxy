@@ -1,23 +1,20 @@
 import { makeNow, makeUid } from '../../tools';
-import { ProjectPackage } from './project-package';
-import { IDesignerDependencies, IGroupEntity, IProjectPackage } from './types';
+import { IProjectData } from './types';
 
-export function makeProjectPackage(
+
+export function makeNewProject(
   props: {
-    deps: IDesignerDependencies;
+    groupId: string;
     name: string;
   }
-): ProjectPackage {
-  const { deps, name } = props;
-
-  const groupId = deps.group.info.id;
+): IProjectData {
+  const { groupId, name } = props;
   const projectId = makeUid();
   const spacePlanId = makeUid();
   const siteId = makeUid();
-  const now = makeNow();
+  const now = makeNow();  
 
-  const data: IProjectPackage = {
-    ...deps,
+  return {
     project: {
       info: {
         id: projectId,
@@ -68,9 +65,6 @@ export function makeProjectPackage(
           }
         }
       }
-    },
-    tags: {},
-    tagGroups: {}
-  };
-  return new ProjectPackage(data);
+    }    
+  }
 }
