@@ -1,8 +1,9 @@
-import { Express, NextFunction, Request, Response, RequestHandler, json } from 'express';
+import { Express, NextFunction, Request, Response, json } from 'express';
 import { Options, createProxyMiddleware } from 'http-proxy-middleware';
 import { activePageConfig } from './active-page-config';
 import _ from 'lodash';
 import { ProxyCore } from '../services';
+import { loadDesigner, saveSpacePlan } from './handlers';
 
 export function useActive(
   app: Express,
@@ -31,7 +32,7 @@ export function useActive(
     '/active/api/pub/methods/load_designer',
     async (req, res, next) => {
       try {
-        const pack = await core.loadDesigner();
+        const pack = await loadDesigner(core);
         res.json(pack);
       } catch (error) {
         next(error);
@@ -41,12 +42,14 @@ export function useActive(
 
   // save space plan
   app.put(
-    '/active/api/pub/group/:groupId/projects/:projectId/space_plans/:planId',
+    '/active/api/pub/groups/:groupId/projects/:projectId/space_plans/:planId',
     jsonParser,
     async (req, res, next) => {
       try {
         const { body, params: { groupId, projectId, planId }} = req;
-        await core.saveSpacePlan({
+        await saveSpacePlan(
+          core,
+          {
           groupId,
           projectId,
           planId,

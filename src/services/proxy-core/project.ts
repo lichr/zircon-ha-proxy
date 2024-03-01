@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { ILocalProject } from '../../db';
-import { IProjectInfo } from '../../types';
+import { IProjectEntry, IProjectInfo } from '../../types';
 
 export interface IBranch {
   name(): string;
@@ -41,6 +41,8 @@ export class Project {
   projectId: string;
   onlineBranch: OnlineBranch | null = null;
   localBranch: LocalBranch | null = null;
+  projectEntry: IProjectEntry | null = null;
+  active: boolean = false;
 
   constructor(groupId: string, projectId: string) {
     this.groupId = groupId;
@@ -51,6 +53,8 @@ export class Project {
     return {
       groupId: this.groupId,
       projectId: this.projectId,
+      active: this.active,
+      localOnly: this.projectEntry?.localOnly ?? false,
       onlineBranch: !_.isNil(this.onlineBranch),
       localBranch: !_.isNil(this.localBranch),
       name: this.localBranch?.name() ?? this.onlineBranch?.name() ?? null,

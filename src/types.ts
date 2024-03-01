@@ -171,6 +171,8 @@ export interface ISettings {
 export interface IProjectInfo {
   groupId: string;
   projectId: string;
+  active: boolean;
+  localOnly: boolean;
   onlineBranch: boolean;
   localBranch: boolean;
   name: string | null;

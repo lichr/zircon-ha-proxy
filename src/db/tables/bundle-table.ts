@@ -78,6 +78,29 @@ export class BundleTable {
     });
   }
 
+  async getLatestBundle(projectId: string): Promise<IBundle | null> {
+    return new Promise((resolve, reject) => {
+      this.getDB().get(
+        `
+          SELECT body
+            FROM bundle
+            WHERE body->>'project' = ?
+            ORDER BY datetime(body->>'created') DESC
+            LIMIT 1
+        `,
+        [projectId],
+        (err, row) => {
+          if (err) {
+            console.error("Error getting bundle", err);
+            reject(err);
+          } else {
+            resolve(row ? JSON.parse((row as any).body) : null);
+          }
+        }
+      );
+    });
+  }
+  
   async query(): Promise<IBundle[]> {
     return new Promise((resolve, reject) => {
       this.getDB().all(

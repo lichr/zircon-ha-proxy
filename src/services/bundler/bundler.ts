@@ -30,6 +30,10 @@ export class Bundler {
     return pe?.bundleId ?? null;
   }
 
+  async getLatestBundle(projectId: string): Promise<IBundle | null> {
+    return await this.config.db().bundle.getLatestBundle(projectId);
+  }
+
   async getResource(url: string) {
     const activeBundleId = await this.getActiveBundleId();
     if (activeBundleId) {
