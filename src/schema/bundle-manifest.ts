@@ -1,5 +1,5 @@
-import { makeNow, makeUid } from '../../tools';
-import { BundleResourceType, IBundleManifest } from '../../types';
+import { makeNow, makeUid } from '../tools';
+import { IBundleManifest, BundleResourceType } from './bundle';
 
 export function makeBundleManifest(
   props: {

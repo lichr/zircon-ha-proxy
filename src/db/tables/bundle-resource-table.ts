@@ -1,5 +1,5 @@
 import { Database } from 'sqlite3';
-import { IBundleResource, IBundleResourceInput } from '../../types';
+import { IBundleResource, IBundleResourceInput } from '../../schema';
 
 export class BundleResourceTable {
   getDB: () => Database;

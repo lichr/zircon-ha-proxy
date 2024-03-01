@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { ProxyCore } from '../../services';
-import { IProjectInfo } from '../../types';
+import { IProjectInfo } from '../../schema';
 import { getProjectInfo } from './get-project-info';
 
 export async function getActiveProjectInfo(

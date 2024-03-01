@@ -1,4 +1,5 @@
-import { IDesignerDependencies, ProjectPackage, ProxyCore, makeNewProject } from '../../services';
+import { IDesignerDependencies, ProjectPackage, makeNewProject } from '../../schema';
+import { ProxyCore } from '../../services';
 import { pushProject } from './push-project';
 import { setActiveProject } from './set-active-project';
 

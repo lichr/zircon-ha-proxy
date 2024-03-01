@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { ProxyCore } from '../../services';
-import { IUserInfo } from '../../types';
+import { IUserInfo } from '../../schema';
 
 export async function getUserInfo(
   core: ProxyCore

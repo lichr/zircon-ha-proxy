@@ -1,5 +1,5 @@
 import { Database } from 'sqlite3';
-import { IProjectEntry } from '../../types';
+import { IProjectEntry } from '../../schema';
 
 export class ProjectEntryTable {
   getDB: () => Database;

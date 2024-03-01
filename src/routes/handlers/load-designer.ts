@@ -1,4 +1,5 @@
-import { ProxyCore, IProjectPackage, IDesignerDependencies } from '../../services';
+import { IProjectPackage, IDesignerDependencies } from '../../schema';
+import { ProxyCore } from '../../services';
 
 export async function loadDesigner(
   core: ProxyCore

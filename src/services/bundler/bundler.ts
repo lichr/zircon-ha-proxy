@@ -2,9 +2,8 @@ import _ from 'lodash';
 import { ZirconDB, getLocalProjects } from '../../db';
 import { ZirconClient } from '../zircon-client';
 import { makeNow } from '../../tools';
-import { IBundle, IResourceResponse } from '../../types';
 import { Settings } from '../settings';
-import { BundleManifest } from '../schema';
+import { BundleManifest, IBundle, IResourceResponse } from '../../schema';
 
 export interface IBundlerConfig {
   client: () => ZirconClient;

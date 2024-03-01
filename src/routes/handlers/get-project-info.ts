@@ -1,7 +1,7 @@
 
 import _ from 'lodash';
 import { LocalBranch, OnlineBranch, Project, ProxyCore } from '../../services';
-import { IProjectInfo } from '../../types';
+import { IProjectInfo } from '../../schema';
 import { _getProjects } from './private';
 
 export async function getProjectInfo(

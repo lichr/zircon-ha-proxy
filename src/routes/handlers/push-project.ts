@@ -1,4 +1,5 @@
-import { ProjectPackage, ProxyCore } from '../../services';
+import { ProjectPackage } from '../../schema';
+import { ProxyCore } from '../../services';
 
   // before pushing project to online branch, we need to make sure the local bundle is newer
   export async function pushProject(

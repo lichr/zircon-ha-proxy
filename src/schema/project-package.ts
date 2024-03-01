@@ -1,7 +1,7 @@
 import _ from 'lodash';
-
-import { makeUid } from '../../tools';
-import { IProjectPackage, makeBundleManifest } from '../../schema';
+import { makeBundleManifest } from './bundle-manifest';
+import { IProjectPackage } from './project';
+import { makeUid } from '../tools';
 
 const rxPath = /^(zircon:)(?<path>.+)$/
 export class ProjectPackage {

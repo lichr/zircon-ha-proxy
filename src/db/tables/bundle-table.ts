@@ -1,5 +1,5 @@
 import { Database } from 'sqlite3';
-import { IBundle } from '../../types';
+import { IBundle } from '../../schema';
 
 export class BundleTable {
   getDB: () => Database;

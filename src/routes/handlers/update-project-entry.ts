@@ -1,5 +1,5 @@
 import { ProxyCore } from '../../services';
-import { IProjectEntry } from '../../types';
+import { IProjectEntry } from '../../schema';
 
 export async function updateProjectEntry(
   core: ProxyCore,

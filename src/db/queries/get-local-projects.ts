@@ -1,13 +1,6 @@
 import _ from 'lodash';
 import { Database } from 'sqlite3';
-
-export interface ILocalProject {
-  groupId: string;
-  projectId: string;
-  bundleId: string;
-  name: string;
-  updateTime: string;
-}
+import { ILocalProject } from '../../schema';
 
 export function getLocalProjects(
   db: Database

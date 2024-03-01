@@ -1,5 +1,5 @@
 import { Database } from 'sqlite3';
-import { IBundleLogEntry } from '../../types';
+import { IBundleLogEntry } from '../../schema';
 import _ from 'lodash';
 
 export class BundleLogTable {

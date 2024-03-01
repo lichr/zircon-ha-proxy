@@ -1,7 +1,8 @@
 
 import _ from 'lodash';
-import { IDesignerDependencies, ProjectPackage, ProxyCore } from '../../services';
+import { ProxyCore } from '../../services';
 import { pushProject } from './push-project';
+import { IDesignerDependencies, ProjectPackage } from '../../schema';
 
 export async function saveSpacePlan(
   core: ProxyCore,

@@ -1,5 +1,5 @@
-import { makeNow, makeUid } from '../../tools';
-import { IProjectData } from './types';
+import { makeNow, makeUid } from '../tools';
+import { IProjectData } from './project';
 
 
 export function makeNewProject(

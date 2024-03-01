@@ -1,4 +1,3 @@
-
 export interface IInfoComponent {
   id: string;
   kind: string;
@@ -43,30 +42,4 @@ export interface IGroupEntity {
     owner: string;
     type: string;
  }
-}
-
-export interface IProjectData {
-  project: IProjectEntity;
-  spacePlan: ISpacePlanEntity;
-}
-
-export interface IProjectPackage {
-  project: IProjectEntity;
-  spacePlan: ISpacePlanEntity;
-  user: any;
-  group: IGroupEntity;
-  tags: Record<string, any>;
-  tagGroups: Record<string, any>;
-  quotas: any;
-  system: any;
-}
-
-
-export interface IDesignerDependencies {
-  user: any;
-  group: IGroupEntity;
-  tags: Record<string, any>;
-  tagGroups: Record<string, any>;
-  quotas: any;
-  system: any;
 }
