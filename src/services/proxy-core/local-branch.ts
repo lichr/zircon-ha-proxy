@@ -1,15 +1,25 @@
-import { ILocalProject } from '../../schema';
+import { ILocalProject, ILocalBranchData } from '../../schema';
 import { IBranch } from './types';
 
 export class LocalBranch implements IBranch {
-  raw: ILocalProject;
-  constructor(raw: any) {
-    this.raw = raw;
+  data: ILocalBranchData;
+  constructor(data: ILocalBranchData) {
+    this.data = data;
   }
+
+  groupId(): string {
+    return this.data.groupId;
+  }
+
+  projectId(): string {
+    return this.data.projectId;
+  }
+
   name(): string {
-    return this.raw.name;
+    return this.data.project.info.name;
   }
+
   updateTime(): string {
-    return this.raw.updateTime;
+    return this.data.spacePlan.info.updateTime;
   }
 }

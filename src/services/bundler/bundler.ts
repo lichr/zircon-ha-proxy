@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { ZirconDB, getLocalProjects } from '../../db';
+import { ZirconDB } from '../../db';
 import { ZirconClient } from '../zircon-client';
 import { makeNow } from '../../tools';
 import { Settings } from '../settings';
@@ -67,8 +67,8 @@ export class Bundler {
     }
   }
 
-  async savePart(bundleId: string, parent: string, url: string, data: any) {
-    await this.saveStaticJson(bundleId, `parts/${url}`, data, { mode: 'part', parent });
+  async savePart(bundleId: string, url: string, data: any) {
+    await this.saveStaticJson(bundleId, `parts/${url}`, data, { mode: 'part' });
   }
 
 
@@ -127,12 +127,12 @@ export class Bundler {
         if (url === 'api/pub/methods/load_viewer') {
           // we break down the load_viewer response into parts
           const body = JSON.parse(new TextDecoder().decode(r.body));
-          await this.savePart(id, url, 'group', body.group);
-          await this.savePart(id, url, 'project', body.project);
-          await this.savePart(id, url, 'spacePlan', body.spacePlan);
-          await this.savePart(id, url, 'tagGroups', body.group);
-          await this.savePart(id, url, 'tags', body.group);
-          await this.savePart(id, url, 'tagGroups', body.group);
+          await this.savePart(id, 'group', body.group);
+          await this.savePart(id, 'project', body.project);
+          await this.savePart(id, 'spacePlan', body.spacePlan);
+          await this.savePart(id, 'tagGroups', body.group);
+          await this.savePart(id, 'tags', body.group);
+          await this.savePart(id, 'tagGroups', body.group);
 
         } else {
           // save cached resource
@@ -152,14 +152,7 @@ export class Bundler {
     return bundle;
   }
 
-
   async pruneByProject(projectId: string, bundleId: string) {
     await this.config.db().bundle.pruneByProject(projectId, bundleId);
   }
-
-  async getLocalProjects() {
-    const projects = await getLocalProjects(this.config.db().getDB());
-    return projects;
-  }
-
 }

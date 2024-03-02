@@ -1,5 +1,5 @@
 import { Database } from 'sqlite3';
-import { ISettingEntry, ISettings } from '../../types';
+import { ISettings } from '../../schema';
 
 export class SettingTable {
   getDB: () => Database;

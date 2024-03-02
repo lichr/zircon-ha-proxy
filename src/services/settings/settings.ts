@@ -1,5 +1,5 @@
 import { ZirconDB } from '../../db';
-import { ISettings } from '../../types';
+import { ISettings } from '../../schema';
 
 // TODO: add initial value from config files
 export class Settings {

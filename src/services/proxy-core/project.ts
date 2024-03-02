@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { ILocalProject, IProjectEntry, IProjectInfo } from '../../schema';
+import { ILocalBranchData, ILocalProject, IOnlineBranchData, IProjectEntry, IProjectInfo } from '../../schema';
 import { LocalBranch } from './local-branch';
 import { OnlineBranch } from './online-branch';
 
@@ -15,8 +15,15 @@ export class Project {
   active: boolean = false;
 
   constructor(groupId: string, projectId: string) {
+    if (!groupId || !projectId) {
+      throw new Error('groupId and projectId are required');
+    }
     this.groupId = groupId;
     this.projectId = projectId;
+  }
+
+  isValid() {
+    return (this.onlineBranch || this.localBranch);
   }
 
   get(): IProjectInfo {
@@ -27,7 +34,6 @@ export class Project {
       localOnly: this.projectEntry?.localOnly ?? false,
       onlineBranch: !_.isNil(this.onlineBranch),
       localBranch: !_.isNil(this.localBranch),
-      bundleId: this.projectEntry?.bundleId ?? null,
       name: this.localBranch?.name() ?? this.onlineBranch?.name() ?? null,
       updateTime: this.localBranch?.updateTime() ?? this.onlineBranch?.updateTime() ?? null
     }

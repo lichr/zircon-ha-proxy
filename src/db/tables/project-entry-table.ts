@@ -42,7 +42,7 @@ export class ProjectEntryTable {
             ON CONFLICT(id) DO UPDATE SET body = excluded.body
         `,
         [
-          body.id,
+          body.projectId,
           JSON.stringify(body)
         ],
         (err) => {

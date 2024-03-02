@@ -34,7 +34,8 @@ export async function saveSpacePlan(
   } else {
     // in most cases this should not happen
     entry = {
-      id: projectId,
+      projectId,
+      groupId,
       localOnly: false,
       bundleId: bundle.id
     }

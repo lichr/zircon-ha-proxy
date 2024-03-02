@@ -24,6 +24,7 @@
     "firebase": "^10.8.0",
     "fs-extra": "^11.1.1",
     "http-proxy-middleware": "^2.0.6",
+    "immer": "^10.0.3",
     "lodash": "^4.17.21",
     "luxon": "^3.3.0",
     "mime": "^4.0.1",

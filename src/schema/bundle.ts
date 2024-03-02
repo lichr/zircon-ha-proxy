@@ -1,11 +1,3 @@
-
-export interface IProjectLocation {
-  groupId: string;
-  projectId: string;
-}
-
-// offline-bundle
-
 export interface IBundleManifestInfo {
   id: string;
   groupId: string;

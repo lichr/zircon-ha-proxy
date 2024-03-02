@@ -1,4 +1,11 @@
-import { IProjectEntity, ISpacePlanEntity, IGroupEntity } from './zircon-entities';
+import { IBundle } from './bundle';
+import { IProjectEntity, ISpacePlanEntity, IGroupEntity, ISpaceEntity } from './zircon-entities';
+
+
+export interface IProjectLocation {
+  groupId: string;
+  projectId: string;
+}
 
 export interface IProjectData {
   project: IProjectEntity;
@@ -40,13 +47,29 @@ export interface IProjectInfo {
   localOnly: boolean;
   onlineBranch: boolean;
   localBranch: boolean;
-  bundleId: string | null;
   name: string | null;
   updateTime: string | null;
 }
 
 export interface IProjectEntry {
-  id: string;
+  projectId: string;
+  groupId: string;
   localOnly: boolean;
-  bundleId?: string;
+  bundleId: string;
+}
+
+export interface ILocalBranchData {
+  groupId: string;
+  projectId: string;
+  active: boolean;
+  entry: IProjectEntry;
+  bundle: IBundle;
+  project: IProjectEntity;
+  spacePlan: ISpacePlanEntity;
+}
+
+export interface IOnlineBranchData {
+  groupId: string;
+  projectId: string;
+  project: IProjectEntity;
 }

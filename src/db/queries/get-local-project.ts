@@ -2,11 +2,12 @@ import _ from 'lodash';
 import { Database } from 'sqlite3';
 import { ILocalBranchData } from '../../schema';
 
-export function getLocalProjects(
-  db: Database
-): Promise<Record<string, ILocalBranchData>> {
+export function getLocalProject(
+  db: Database,
+  projectId: string
+): Promise<ILocalBranchData | null> {
   return new Promise((resolve, reject) => {
-    db.all(
+    db.get(
       `
         select
           e.id,
@@ -30,29 +31,24 @@ export function getLocalProjects(
             left join setting s
               on s.id = 'active_project'
                 and s.body ->> 'projectId' = e.id
+          where e.id = ?
       `,
-      [],
-      (err, rows: any[]) => {
+      [projectId],
+      (err, row: any) => {
         if (err) {
           console.error("Error getting local projects", err);
           reject(err);
         } else {
           resolve(
-            _.keyBy(
-              _.map(
-                rows,
-                (row) => ({
-                  projectId: row.id,
-                  groupId: row.groupId,
-                  active: row.active === 1,
-                  entry: JSON.parse(row.entity),
-                  bundle: JSON.parse(row.bundle),
-                  project: JSON.parse(new TextDecoder().decode(row.project)),
-                  spacePlan: JSON.parse(new TextDecoder().decode(row.spacePlan))
-                })
-              ),
-              'projectId'
-            )
+            row ? {
+              projectId: row.id,
+              groupId: row.groupId,
+              active: row.active,
+              entry: JSON.parse(row.entity),
+              bundle: JSON.parse(row.bundle),
+              project: JSON.parse(new TextDecoder().decode(row.project)),
+              spacePlan: JSON.parse(new TextDecoder().decode(row.spacePlan))
+            } : null
           );
         }
       }

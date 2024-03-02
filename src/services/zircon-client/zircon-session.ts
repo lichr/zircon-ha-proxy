@@ -2,8 +2,8 @@ import axios, { AxiosRequestConfig } from 'axios';
 import { FirebaseOptions, initializeApp } from 'firebase/app';
 import { User, getAuth, signInWithCustomToken } from 'firebase/auth';
 import { Agent } from 'https';
-import { IUser } from '../../types';
 import _ from 'lodash';
+import { IUser } from '../../schema';
 
 export interface IZirconSessionConfig {
   httpsAgent: Agent | null;

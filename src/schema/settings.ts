@@ -1,4 +1,4 @@
-import { IProjectLocation } from './bundle';
+import { IProjectLocation } from './project';
 
 export interface ISettingEntry<T=any> {
   id: string;

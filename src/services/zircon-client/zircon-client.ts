@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { IBundleManifest, IResourceResponse, IUser, IZirconClientCert } from '../../types';
 import { Agent } from 'https';
-import { makeAgentPemStrings } from '../../tools';
 import _ from 'lodash';
-import { ZirconSession } from './zircon-session';
+import { IZirconClientCert } from '../../types';
+import { makeAgentPemStrings } from '../../tools';
 import { ZirconDB } from '../../db';
+import { IResourceResponse, IUser, IBundleManifest } from '../../schema';
 import { Settings } from '../settings';
+import { ZirconSession } from './zircon-session';
 
 export interface IZirconClientConfig {
   zirconBaseUrl: string;
