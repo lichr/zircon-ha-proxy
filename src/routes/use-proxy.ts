@@ -1,7 +1,7 @@
 import express from 'express';
 import { ProxyCore } from '../services';
 import { proxyUiPageConfig } from './proxy-ui-page-config';
-import { getActiveProjectInfo, getProjectInfo, getProjects, getUserInfo, upsertProject } from './handlers';
+import { deleteProject, getActiveProjectInfo, getProjectInfo, getProjects, getUserInfo, upsertProject } from './handlers';
 import { setAccessToken } from './handlers/set-access-token';
 import { setActiveProject } from './handlers/set-active-project';
 
@@ -86,6 +86,32 @@ export function useProxy(
       try {
         const projects = await getProjects(core);
         res.json(projects);
+      } catch (error) {
+        next(error);
+      }      
+    }
+  );
+
+  router.get(
+    '/api/groups/:groupId/projects/:projectId',
+    async (req, res, next) => {
+      try {
+        const { groupId, projectId } = req.params;
+        const projects = await getProjectInfo(core, groupId, projectId);
+        res.json(projects);
+      } catch (error) {
+        next(error);
+      }      
+    }
+  );
+
+  router.delete(
+    '/api/groups/:groupId/projects/:projectId',
+    async (req, res, next) => {
+      try {
+        const { groupId, projectId } = req.params;
+        await deleteProject(core, groupId, projectId);
+        res.json({ status: 'ok' });
       } catch (error) {
         next(error);
       }      

@@ -1,3 +1,4 @@
+export * from './delete-project';
 export * from './get-active-project-info';
 export * from './get-project-info';
 export * from './get-projects';
