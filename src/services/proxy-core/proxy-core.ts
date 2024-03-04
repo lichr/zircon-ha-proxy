@@ -58,6 +58,12 @@ export class ProxyCore {
     await this.zirconClient.init();
   }
 
+  async getProjectEntry(projectId: string) {
+    const entry = await this.getDb().projectEntry.get(projectId);
+    return entry;
+  }
+
+  // active project
   async getActiveProjectId(): Promise<{ groupId: string, projectId: string } | null> {
     return this.db.setting.get('active_project');
   }
@@ -67,15 +73,11 @@ export class ProxyCore {
     return active?.projectId === projectId;
   }
 
+  // local branches
   async getLocalBranches() {
     const data = await getLocalProjects(this.getDb().getDB());
     const branches = _.map(data, (d) => new LocalBranch(d));
     return branches;
-  }
-
-  async getProjectEntry(projectId: string) {
-    const entry = await this.getDb().projectEntry.get(projectId);
-    return entry;
   }
 
   async getLocalBranch(projectId: string) {
@@ -83,18 +85,23 @@ export class ProxyCore {
     return data ? new LocalBranch(data) : null;
   }
 
+  // project entry
+  async deleteProjectEntry(projectId: string) {
+    return await this.getDb().projectEntry.delete(projectId);
+  }
+
+  // online branches
   async getOnlineBranch(groupId: string, projectId: string): Promise<OnlineBranch | null> {
     const session = this.zirconClient.session;
     if (session) {
       try {
-        const r = await session.apiGet(
-          `pub/methods/load_designer?group=${groupId}&project=${projectId}`
+        const project = await session.apiGet<IProjectEntity>(
+          `pub/groups/${groupId}/projects/${projectId}`
         )
         return new OnlineBranch({
           groupId,
           projectId,
-          project: r.project,
-          // spacePlan: r.spacePlan
+          project
         });
       } catch (e) {
         return null;
@@ -125,7 +132,7 @@ export class ProxyCore {
     return [];
   }
 
-  async updateOnlineProject(groupId: string, projectId: string, project: IProjectEntity) {
+  async updateOnlineBranch(groupId: string, projectId: string, project: IProjectEntity) {
     const session = this.zirconClient.getSession();
     await session.apiPut(
       `pub/groups/${groupId}/projects/${projectId}`,
@@ -133,4 +140,12 @@ export class ProxyCore {
     );
   }
 
+  async deleteOnlineBranch(groupId: string, projectId: string) {
+    const session = this.zirconClient.getSession();
+    // api should delete the project and all related data
+    // including: space-plans, dashboards, etc.
+    await session.apiDelete(
+      `pub/groups/${groupId}/projects/${projectId}`
+    );
+  }
 }

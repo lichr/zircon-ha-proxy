@@ -11,7 +11,7 @@ export function onlinePageConfig(core: ProxyCore) {
       console.log('>>> ingressPath: ', ingressPath);
 
       const session = core.zirconClient.getSession();
-      const pageConfig = await session.get('designer/config/page.json');
+      const pageConfig = await session.apiGet('designer/config/page.json', null, false);
 
       // Add login info to received JSON data
       const siteBaseUrl = ingressPath ?? '';

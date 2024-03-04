@@ -119,7 +119,7 @@ export function useProxy(
   );
 
   router.get(
-    '/api/projects/:groupId/:projectId',
+    '/api/groups/:groupId/projects/:projectId',
     async (req, res, next) => {
       try {
         const { groupId, projectId } = req.params;

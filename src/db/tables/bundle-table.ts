@@ -145,4 +145,30 @@ export class BundleTable {
       );
     });
   }  
+
+  async prune(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getDB().run(
+        `
+          delete
+            from bundle
+            where id not in (
+              select b.id
+                from bundle b
+                  inner join project_entry e
+                    on e.id = b.body->>'project'
+            );
+        `,
+        [],
+        (err) => {
+          if (err) {
+            console.error("Error pruning bundle", err);
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+  }
 }

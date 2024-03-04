@@ -17,7 +17,14 @@ export async function saveSpacePlan(
 
   // make project package from space-plan
   const session = core.zirconClient.getSession();
-  const deps = await session.apiGet<IDesignerDependencies>(`pub/methods/load_designer_deps`, { params: { group: groupId } });
+  const deps = await session.apiGet<IDesignerDependencies>(
+    `pub/methods/load_designer_deps`,
+    {
+      params: {
+        group: groupId
+      }
+    }
+  );
   const project = await core.bundler.getResourceJson('parts/project');
   const pack = new ProjectPackage({ ...deps, project, spacePlan });
 

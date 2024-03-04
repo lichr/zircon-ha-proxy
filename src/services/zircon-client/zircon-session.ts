@@ -86,70 +86,75 @@ export class ZirconSession {
     };
     await this.config.onSignIn(userEntry);
   }
-  async apiGet<T = any>(url: string, config?: AxiosRequestConfig): Promise<T> {
-    if (!this.user) {
-      throw new Error('Not logged in');
+
+  async apiCall<R = any>(config: AxiosRequestConfig, needsAuth = true): Promise<R> {
+    const headers: Record<string, string> = {};
+    if (needsAuth) {
+      if (!this.user) {
+        throw new Error('Not logged in');
+      }
+      const idToken = await this.user.getIdToken();
+      headers['Authorization'] = `Bearer ${idToken}`;
     }
-    const idToken = await this.user.getIdToken();
-    const r = await axios.get(
-      `${this.config.baseUrl}/api/${url}`,
+    const r = await axios(
       {
         headers: {
-          'Authorization': `Bearer ${idToken}`
+          ...headers,
+          ...config.headers
         },
         httpsAgent: this.config.httpsAgent,
         ...config
       }
     );
-    return r.data;
+    return r.data as R;
   }
 
-  async get<T = any>(url: string): Promise<T> {
-    const r = await axios.get(
-      `${this.config.baseUrl}/${url}`,
+  async apiGet<R = any>(
+    url: string,
+    config?: AxiosRequestConfig | null,
+    needsAuth = true
+  ): Promise<R> {
+    return await this.apiCall<R>(
       {
-        httpsAgent: this.config.httpsAgent
-      }
+        method: 'get',
+        url: `${this.config.baseUrl}/api/${url}`,
+        ...config
+      },
+      needsAuth
     );
-    return r.data;
   }
 
-  async apiPost<T = any, R = any>(url: string, data: T): Promise<R> {
-    if (!this.user) {
-      throw new Error('Not logged in');
-    }
-    const idToken = await this.user.getIdToken();
-    const r = await axios.post(
-      `${this.config.baseUrl}/api/${url}`,
-      data,
+  async apiPost<T = any, R = any>(url: string, data: T, needsAuth = true): Promise<R> {
+    return await this.apiCall<R>(
       {
-        headers: {
-          'Authorization': `Bearer ${idToken}`
-        },
-        httpsAgent: this.config.httpsAgent
-      }
-    );
-    return r.data;
+        method: 'post',
+        data,
+        url: `${this.config.baseUrl}/api/${url}`
+      },
+      needsAuth
+    );    
   }
 
-  async apiPut<T = any, R = any>(url: string, data: T): Promise<R> {
-    if (!this.user) {
-      throw new Error('Not logged in');
-    }
-    const idToken = await this.user.getIdToken();
-    const r = await axios.put(
-      `${this.config.baseUrl}/api/${url}`,
-      data,
+  async apiPut<T = any, R = any>(url: string, data: T, needsAuth = true): Promise<R> {
+    return await this.apiCall<R>(
       {
-        headers: {
-          'Authorization': `Bearer ${idToken}`
-        },
-        httpsAgent: this.config.httpsAgent
-      }
-    );
-    return r.data;
+        method: 'put',
+        data,
+        url: `${this.config.baseUrl}/api/${url}`
+      },
+      needsAuth
+    );      
   }
 
+  async apiDelete<R = any>(url: string, needsAuth = true): Promise<R> {
+    return await this.apiCall<R>(
+      {
+        method: 'delete',
+        url: `${this.config.baseUrl}/api/${url}`
+      },
+      needsAuth
+    );
+  }
 
   async apiGetRaw(url: string) {
     if (!this.user) {
@@ -167,5 +172,5 @@ export class ZirconSession {
       }
     );
     return r;
-  }  
+  }
 }

@@ -78,6 +78,27 @@ export class ProjectEntryTable {
     });
   }
 
+  async delete(
+    id: string
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getDB().run(
+        `
+          DELETE FROM project_entry WHERE id = ?
+        `,
+        [id],
+        (err) => {
+          if (err) {
+            console.error("Error deleting project_entry", err);
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+  }
+
   async query(): Promise<IProjectEntry[]> {
     return new Promise((resolve, reject) => {
       this.getDB().all(

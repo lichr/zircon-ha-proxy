@@ -102,6 +102,40 @@ export class BundleResourceTable {
     });
   }
 
+  async prune(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.getDB().run(
+        `
+          with t1 as
+            (
+                select r.bundle_id, r.url
+                  from bundle_resource r
+                    left join bundle b
+                      on b.id = r.bundle_id
+                  where b.id is null
+            )
+            delete
+              from bundle_resource
+              where exists (
+                select 1
+                  from t1 x 
+                  where x.bundle_id = bundle_resource.bundle_id
+                    and x.url = bundle_resource.url
+              );
+        `,
+        [],
+        (err) => {
+          if (err) {
+            console.error("Error pruning bundle", err);
+            reject(err);
+          } else {
+            resolve();
+          }
+        }
+      );
+    });
+  }
+
   async query(): Promise<IBundleResource[]> {
     return new Promise((resolve, reject) => {
       this.getDB().all(

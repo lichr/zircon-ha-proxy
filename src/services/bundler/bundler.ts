@@ -155,4 +155,11 @@ export class Bundler {
   async pruneByProject(projectId: string, bundleId: string) {
     await this.config.db().bundle.pruneByProject(projectId, bundleId);
   }
+
+  async prune() {
+    // delete all bundles that do not have a project entry
+    await this.config.db().bundle.prune();
+    // delete all resources that do not have a bundle entry
+    await this.config.db().bundleResource.prune();
+  }
 }
