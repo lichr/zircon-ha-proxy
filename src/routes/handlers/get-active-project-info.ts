@@ -6,7 +6,7 @@ import { getProjectInfo } from './get-project-info';
 export async function getActiveProjectInfo(
   core: ProxyCore
 ): Promise<IProjectInfo | null> {
-  const activeProject = await core.getActiveProjectId();
+  const activeProject = await core.activeProjectId();
 
   if (activeProject) {
     const { groupId, projectId } = activeProject as { groupId: string, projectId: string };

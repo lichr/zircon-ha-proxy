@@ -1,7 +1,6 @@
 
 import _ from 'lodash';
 import { ProxyCore } from '../../services';
-import { pushProject } from './push-project';
 import { IDesignerDependencies, ProjectPackage } from '../../schema';
 
 export async function saveSpacePlan(
@@ -25,35 +24,36 @@ export async function saveSpacePlan(
       }
     }
   );
-  const project = await core.bundler.getResourceJson('parts/project');
+  const bundle = await core.activeBundle();
+  const project = await bundle.getJson('parts/project');
   const pack = new ProjectPackage({ ...deps, project, spacePlan });
 
   // create new bundle
   const manifest = pack.makeBundleManifest();
 
   // upsert bundle
-  const bundle = await core.bundler.createBundle(manifest);
+  const nb = await core.bundler.createBundle(manifest);
 
   // set active bundle for this project
   let entry = await core.getDb().projectEntry.get(projectId);
   if (entry) {
-    entry.bundleId = bundle.id;
+    entry.bundleId = nb.id;
   } else {
     // in most cases this should not happen
     entry = {
       projectId,
       groupId,
       localOnly: false,
-      bundleId: bundle.id
+      bundleId: nb.id
     }
   }
   core.getDb().projectEntry.upsert(entry);
 
   // prune old bundles
-  core.bundler.pruneByProject(projectId, bundle.id);
+  core.bundler.pruneByProject(projectId, nb.id);
 
   // save to online branch if not local only
   if (!entry.localOnly) {
-    await pushProject(core, pack);
+    await core.pushBranch(groupId, projectId);
   }
 }

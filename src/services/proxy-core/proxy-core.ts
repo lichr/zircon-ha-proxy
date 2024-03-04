@@ -6,7 +6,7 @@ import { IZirconClientConfig, ZirconClient } from '../zircon-client';
 import _ from 'lodash';
 import { ZirconDB, getLocalProject, getLocalProjects } from '../../db';
 import { Settings } from '../settings';
-import { IOnlineBranchData, IProjectEntity } from '../../schema';
+import { IOnlineBranchData, IProjectEntity, IProjectPackage, ProjectPackage } from '../../schema';
 import { OnlineBranch } from './online-branch';
 import { LocalBranch } from './local-branch';
 
@@ -64,12 +64,20 @@ export class ProxyCore {
   }
 
   // active project
-  async getActiveProjectId(): Promise<{ groupId: string, projectId: string } | null> {
+  async activeProjectId(): Promise<{ groupId: string, projectId: string } | null> {
     return this.db.setting.get('active_project');
   }
 
+  async activeBundle() {
+    const active = await this.activeProjectId();
+    if (active) {
+      return await this.bundler.getBundle(active.projectId);
+    }
+    throw new Error('No active project');
+  }
+
   async isActiveProject(projectId: string) {
-    const active = await this.getActiveProjectId();
+    const active = await this.activeProjectId();
     return active?.projectId === projectId;
   }
 
@@ -147,5 +155,85 @@ export class ProxyCore {
     await session.apiDelete(
       `pub/groups/${groupId}/projects/${projectId}`
     );
+  }
+
+  async pushBranch(groupId: string, projectId: string) {
+    const session = this.zirconClient.getSession();
+
+    const pack = await this.getLocalProjectPackage(projectId);
+    const planId = pack.planId();
+
+    await session.apiPut(
+      `pub/groups/${groupId}/projects/${projectId}`,
+      pack.data.project
+    );
+  
+    await session.apiPut(
+      `pub/groups/${groupId}/projects/${projectId}/space_plans/${planId}`,
+      pack.data.spacePlan
+    );    
+  }
+
+  async pullBranch(groupId: string, projectId: string) {
+    const session = this.zirconClient.getSession();
+    const packageData = await session.apiGet<IProjectPackage>(
+      `pub/methods/load_designer`,
+      { params: { group: groupId, project: projectId } }
+    );
+    const pack = new ProjectPackage(packageData);
+    const manifest = pack.makeBundleManifest();
+    return await this.bundler.createBundle(manifest);
+  }
+
+  async getLocalProjectPackage(projectId: string) {
+    const bundle = await this.bundler.getBundle(projectId);
+    const data: IProjectPackage = {
+      project: await bundle.getJson('parts/project'),
+      spacePlan: await bundle.getJson('parts/spacePlan'),
+      user: await bundle.getJson('parts/user'),
+      group: await bundle.getJson('parts/group'),
+      tags: await bundle.getJson('parts/tags'),
+      tagGroups: await bundle.getJson('parts/tagGroups'),
+      quotas: await bundle.getJson('parts/quotas'),
+      system: await bundle.getJson('parts/system'),
+    } ;
+    return new ProjectPackage(data);
+  }
+
+  /**
+   * NOTE: this function should not fail that's why we catch errors fro each step
+   */
+  async checkBranches(groupId: string, projectId: string) {
+    const entry = await this.getProjectEntry(projectId);
+    const localBranch = await this.getLocalBranch(projectId);
+    const onlineBranch = await this.getOnlineBranch(groupId, projectId);
+    const isLocalOnly = entry?.localOnly ?? false;
+
+    if (!localBranch && onlineBranch) {
+      // pull from online
+      try {
+        await this.pullBranch(groupId, projectId);
+      } catch (e) {
+        console.error('>>>>>> error pulling branch: ', e);
+      }
+    }
+
+    if (localBranch && !onlineBranch && !isLocalOnly) {
+      // push to online
+      try {
+        await this.pushBranch(groupId, projectId);
+      } catch (e) {
+        console.error('>>>>>> error pushing branch: ', e);
+      }
+    }
+
+    if (onlineBranch && isLocalOnly) {
+      try {
+        // delete online
+        await this.deleteOnlineBranch(groupId, projectId);
+      } catch (e) {
+        console.error('>>>>>> error deleting online branch: ', e);
+      } 
+    }
   }
 }

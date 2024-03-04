@@ -11,8 +11,9 @@ export async function loadDesigner(
   const deps = await session.apiGet<IDesignerDependencies>(`pub/methods/load_designer_deps`, { params: { group: groupId } });
 
   // get data from local bundle
-  const project = await core.bundler.getResourceJson('parts/project');
-  const spacePlan = await core.bundler.getResourceJson('parts/spacePlan');
+  const bundle = await core.activeBundle();
+  const project = await bundle.getJson('parts/project');
+  const spacePlan = await bundle.getJson('parts/spacePlan');
 
   // return
   return {

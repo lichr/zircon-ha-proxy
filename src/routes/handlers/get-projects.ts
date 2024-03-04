@@ -6,7 +6,7 @@ import { _getBranches } from './private';
 export async function getProjects(
   core: ProxyCore
 ): Promise<IProjectInfo[]> {
-  const activeProject = await core.getActiveProjectId();
+  const activeProject = await core.activeProjectId();
   const isActive = (projectId: string) => {
     return activeProject?.projectId === projectId;
   }

@@ -16,7 +16,8 @@ export function useOffline(core: ProxyCore) {
       // include query string
       const path = req.url.match(pathRegex)?.groups?.path;
       if (path) {
-        const r = await core.bundler.getResource(`api/${path}`);
+        const bundle = await core.activeBundle();
+        const r = await bundle.getResource(`api/${path}`);
         console.log('>>>> get resource: ', r?.url);
         if (r) {
           _.each(
@@ -40,7 +41,8 @@ export function useOffline(core: ProxyCore) {
       // ignore query string
       const path = req.path.match(pathRegex)?.groups?.path;
       if (path) {
-        const r = await core.bundler.getResource(path);
+        const bundle = await core.activeBundle();
+        const r = await bundle.getResource(`api/${path}`);
         console.log('>>>> get resource: ', r?.url);
         if (r) {
           _.each(

@@ -4,6 +4,7 @@ import { ZirconClient } from '../zircon-client';
 import { makeNow } from '../../tools';
 import { Settings } from '../settings';
 import { BundleManifest, IBundle, IResourceResponse } from '../../schema';
+import { Bundle } from './bundle';
 
 export interface IBundlerConfig {
   client: () => ZirconClient;
@@ -22,55 +23,17 @@ export class Bundler {
     this.settings = settings;
   }
 
-  async getActiveBundleId() {
-    const settings = await this.settings();
-    const projectId =  settings.projectId();
+  async getBundle(projectId: string) {
     const pe = await this.config.db().projectEntry.get(projectId);
-    return pe?.bundleId ?? null;
+    if (pe?.bundleId) {
+      return new Bundle(pe.bundleId, this.config.db);
+    }
+    throw new Error('Can not get bundle because project-entry was not found');
   }
 
   async getLatestBundle(projectId: string): Promise<IBundle | null> {
     return await this.config.db().bundle.getLatestBundle(projectId);
   }
-
-  async getResource(url: string) {
-    const activeBundleId = await this.getActiveBundleId();
-    if (activeBundleId) {
-      const res = await this.config.db().bundleResource.get(activeBundleId, url);
-      return res;
-    }
-    return null;
-  }
-
-  async getResourceJson<T=any>(url: string): Promise<T | null> {
-    const res = await this.getResource(url);
-    if (res) {
-      return JSON.parse(new TextDecoder().decode(res.body)) as T;
-    }
-    return null;
-  }
-
-  async saveStaticJson(bundleId: string, url: string, data: any, options:any={ mode: 'static' }) {
-    // convert json data to array buffer
-    const bytes = new TextEncoder().encode(JSON.stringify(data));
-    if (bundleId) {
-      await this.config.db().bundleResource.upsert({
-        bundle_id: bundleId,
-        url,
-        headers: {},
-        body: bytes,
-        options: {
-          type: 'json',
-          ...options
-        }
-      });
-    }
-  }
-
-  async savePart(bundleId: string, url: string, data: any) {
-    await this.saveStaticJson(bundleId, `parts/${url}`, data, { mode: 'part' });
-  }
-
 
   // make this upsert
   async createBundle(manifest: BundleManifest) {
@@ -80,7 +43,7 @@ export class Bundler {
     const { info: {id, groupId, projectId}, items }  = manifest.data;
     const now = makeNow();
     
-    const bundle: IBundle = {
+    const bundleData: IBundle = {
       id,
       name: 'new-bundle',
       group: groupId,
@@ -89,7 +52,8 @@ export class Bundler {
       updated: now
     };
 
-    this.config.db().bundle.upsert(bundle);
+    this.config.db().bundle.upsert(bundleData);
+    const bundle = new Bundle(id, this.config.db);
     
     for (const url in items) {
       const item = items[url];
@@ -127,12 +91,12 @@ export class Bundler {
         if (url === 'api/pub/methods/load_viewer') {
           // we break down the load_viewer response into parts
           const body = JSON.parse(new TextDecoder().decode(r.body));
-          await this.savePart(id, 'group', body.group);
-          await this.savePart(id, 'project', body.project);
-          await this.savePart(id, 'spacePlan', body.spacePlan);
-          await this.savePart(id, 'tagGroups', body.group);
-          await this.savePart(id, 'tags', body.group);
-          await this.savePart(id, 'tagGroups', body.group);
+          await bundle.savePart(id, 'group', body.group);
+          await bundle.savePart(id, 'project', body.project);
+          await bundle.savePart(id, 'spacePlan', body.spacePlan);
+          await bundle.savePart(id, 'tagGroups', body.group);
+          await bundle.savePart(id, 'tags', body.group);
+          await bundle.savePart(id, 'tagGroups', body.group);
 
         } else {
           // save cached resource
@@ -149,7 +113,7 @@ export class Bundler {
         }
       };
     }
-    return bundle;
+    return bundleData;
   }
 
   async pruneByProject(projectId: string, bundleId: string) {
